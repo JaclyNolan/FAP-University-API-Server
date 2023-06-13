@@ -10,7 +10,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasFactory;
+    use HasApiTokens, HasFactory, Notifiable;
 
     protected $table = 'users';
     protected $primaryKey = 'user_id';
@@ -28,14 +28,26 @@ class User extends Authenticatable
         'deleted_at',
     ];
 
+    public function getAccordingIdFromRole() {
+        switch ($this->role_id) {
+            case 1: //Admin
+                return null;
+            case 2: //Staff
+                return $this->staff_id;
+            case 3: //Instructor
+                return $this->instructor_id;
+            case 4: //Student
+                return $this->student_id;
+        }
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *
      * @var array<int, string>
      */
     protected $hidden = [
-        'password',
-        'remember_token',
+        'password'
     ];
 
     /**
