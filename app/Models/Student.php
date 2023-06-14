@@ -1,13 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
 {
+    protected $table = 'Students';
+    protected $primaryKey = 'student_id';
+
     protected $fillable = [
-        'student_id',
         'major_id',
         'full_name',
         'date_of_birth',
@@ -30,11 +32,16 @@ class Student extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 
     public function enrollments()
     {
         return $this->hasMany(Enrollment::class);
+    }
+
+    public function classEnrollments()
+    {
+        return $this->hasMany(ClassEnrollment::class);
     }
 }

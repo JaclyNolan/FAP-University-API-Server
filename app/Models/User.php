@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -29,16 +30,20 @@ class User extends Authenticatable
     ];
 
     public function getAccordingIdFromRole() {
-        switch ($this->role_id) {
-            case 1: //Admin
+        switch ($this->getRoleName()) {
+            case "Admin": //Admin
                 return null;
-            case 2: //Staff
+            case "Staff": //Staff
                 return $this->staff_id;
-            case 3: //Instructor
+            case "Instructor": //Instructor
                 return $this->instructor_id;
-            case 4: //Student
+            case "Student": //Student
                 return $this->student_id;
         }
+    }
+
+    public function getRoleName() {
+        return $this->role->role_name;
     }
 
     /**

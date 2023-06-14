@@ -1,11 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
 class ClassModel extends Model
 {
+    protected $table = 'Class';
+    protected $primaryKey = 'class_id';
+
     protected $fillable = [
         'major_id',
         'class_name',

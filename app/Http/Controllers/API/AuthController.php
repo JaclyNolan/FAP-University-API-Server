@@ -37,13 +37,13 @@ class AuthController extends Controller
                     'message' => 'Successful',
                     'email' => $email,
                     'username' => $username,
-                    'role_id' => $role_id,
+                    'role' => $user->getRoleName(),
                     'info_id' => $info_id,
                     'token' => $token
                 ],
                     200);
             } else {
-                return response(['message' => 'No Permission'], 403);
+                return response(['message' => "This google account do not have permission to enter the site"], 403);
             }
         } else {
             return response()->json(['message' => 'Invalid token'], 400);
