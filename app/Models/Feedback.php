@@ -1,11 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
 class Feedback extends Model
 {
+    protected $table = 'Feedbacks';
+    protected $primaryKey = 'feedback_id';
+
     protected $fillable = [
         'class_enrollment_id',
         'feedback_content',

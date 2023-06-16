@@ -1,14 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
-use App\Models\Course;
-use App\Models\Instructor;
-use App\Models\Student;
 use Illuminate\Database\Eloquent\Model;
 
 class Major extends Model
 {
+    protected $table = 'Majors';
+    protected $primaryKey = 'major_id';
+
     protected $fillable = [
         'major_name',
     ];

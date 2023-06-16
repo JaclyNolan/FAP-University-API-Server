@@ -1,11 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Instructor extends Model
 {
+    protected $table = 'Instructors';
+    protected $primaryKey = 'instructor_id';
+
     protected $fillable = [
         'instructor_id',
         'major_id',
@@ -28,7 +31,7 @@ class Instructor extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 
     public function classCourses()
