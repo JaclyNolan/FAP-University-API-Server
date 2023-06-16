@@ -62,7 +62,8 @@ class StudentController extends Controller
             $query->where(function ($q) use ($keyword) {
                 $q->where($this->student->getTable() . '.full_name', 'LIKE', "%$keyword%")
                     ->orWhere((new User)->getTable() . '.email', 'LIKE', "%$keyword%")
-                    ->orWhere($this->student->getTable() . '.phone_number', 'LIKE', "%$keyword%");
+                    ->orWhere($this->student->getTable() . '.phone_number', 'LIKE', "%$keyword%")
+                    ->orWhere($this->student->getTable() . '.student_id', 'LIKE', "$keyword");
             });
         }
 
