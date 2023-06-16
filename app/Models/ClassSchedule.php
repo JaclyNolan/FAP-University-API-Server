@@ -1,11 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
 class ClassSchedule extends Model
 {
+    protected $table = 'Class_schedules';
+    protected $primaryKey = 'class_schedule_id';
+
     protected $fillable = [
         'class_course_id',
         'day',
