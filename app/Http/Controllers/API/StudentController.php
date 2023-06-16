@@ -156,3 +156,4 @@ class StudentController extends Controller
             'message' => 'Student Delete Successfully!',
         ]);
     }
+}
