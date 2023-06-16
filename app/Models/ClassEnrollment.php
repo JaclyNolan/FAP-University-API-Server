@@ -1,11 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class ClassEnrollment extends Model
 {
+    protected $table = 'Class_enrollments';
+    protected $primaryKey = 'class_enrollment_id';
+
     protected $fillable = [
         'class_course_id',
         'student_id',
@@ -29,13 +32,13 @@ class ClassEnrollment extends Model
         return $this->hasMany(Grade::class);
     }
 
+    public function attendance()
+    {
+        return $this->hasOne(Attendance::class);
+    }
+
     public function feedbacks()
     {
         return $this->hasMany(Feedback::class);
-    }
-
-    public function attendances()
-    {
-        return $this->hasMany(Attendance::class);
     }
 }

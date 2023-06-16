@@ -1,11 +1,14 @@
 <?php
 
-namespace App;
+namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Staff extends Model
 {
+    protected $table = 'Staffs';
+    protected $primaryKey = 'staff_id';
+
     protected $fillable = [
         'staff_id',
         'full_name',
@@ -23,6 +26,6 @@ class Staff extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->hasOne(User::class);
     }
 }

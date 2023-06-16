@@ -1,11 +1,15 @@
 <?php
 
-namespace App;
+namespace App\Models;
+
 
 use Illuminate\Database\Eloquent\Model;
 
 class Attendance extends Model
 {
+    protected $table = 'Attendances';
+    protected $primaryKey = 'attendance_id';
+
     protected $fillable = [
         'class_schedule_id',
         'class_enrollment_id',
