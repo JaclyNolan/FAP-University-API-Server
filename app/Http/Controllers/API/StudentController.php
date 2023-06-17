@@ -62,7 +62,8 @@ class StudentController extends Controller
             $query->where(function ($q) use ($keyword) {
                 $q->where($this->student->getTable() . '.full_name', 'LIKE', "%$keyword%")
                     ->orWhere((new User)->getTable() . '.email', 'LIKE', "%$keyword%")
-                    ->orWhere($this->student->getTable() . '.phone_number', 'LIKE', "%$keyword%");
+                    ->orWhere($this->student->getTable() . '.phone_number', 'LIKE', "%$keyword%")
+                    ->orWhere($this->student->getTable() . '.student_id', 'LIKE', "$keyword");
             });
         }
 
@@ -139,7 +140,7 @@ class StudentController extends Controller
         $student->image = $request->input('image');
         $student->updated_at = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
         $student->update();
-
+      
         return response()->json([
             'status' => 200,
             'message' => 'Student Update Successfully!',
@@ -151,7 +152,6 @@ class StudentController extends Controller
         $student = $this->student::find($id);
         $student->deleted_at = date('Y-m-d H:i:s');
         $student->update();
-
         return response()->json([
             'status' => 200,
             'message' => 'Student Delete Successfully!',
