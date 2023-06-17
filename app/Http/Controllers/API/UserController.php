@@ -55,6 +55,7 @@ class UserController extends Controller
 
         return response()->json([
             'status' => 200,
+            'message'=> 'Success',
             'users' => $users->items(),
             'total_pages' => $users->lastPage(),
         ]);

@@ -71,6 +71,7 @@ class StudentController extends Controller
 
         return response()->json([
             'status' => 200,
+            'message'=> 'Success',
             'students' => $students->items(),
             'total_pages' => $students->lastPage(),
         ]);
@@ -156,4 +157,5 @@ class StudentController extends Controller
             'message' => 'Student Delete Successfully!',
         ]);
     }
+
 }
