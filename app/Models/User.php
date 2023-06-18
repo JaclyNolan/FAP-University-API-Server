@@ -14,7 +14,7 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
 
 
-    protected $table = 'users';
+    protected $table = 'Users';
     protected $primaryKey = 'user_id';
 
     protected $fillable = [
@@ -27,7 +27,7 @@ class User extends Authenticatable
         'email',
         'created_at',
         'updated_at',
-        'deleted_at',
+        'deleted_at'
     ];
 
     public function getAccordingIdFromRole() {
@@ -68,7 +68,7 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class);
+        return $this->belongsTo(Role::class, 'role_id', 'role_id');
     }
 
     public function student()
