@@ -4,6 +4,9 @@ use App\Http\Controllers\API\Admin\UserController;
 use App\Http\Controllers\API\Admin\AuthController;
 use App\Http\Controllers\API\Admin\StudentController;
 use App\Http\Controllers\API\Admin\StaffController;
+use App\Http\Controllers\API\Admin\InstructorController;
+use App\Http\Controllers\API\Admin\NewsController;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -40,6 +43,23 @@ Route::group(['prefix' => 'staffs'], function () {
     Route::get('/edit-staff/{id}', [StaffController::class, 'edit']);
     Route::put('/update-staff/{id}', [StaffController::class, 'update']);
     Route::put('/delete-staff/{id}', [StaffController::class, 'delete']);
+});
+// instructors
+Route::group(['prefix' => 'instructors'], function () {
+    Route::get('/', [InstructorController::class, 'index']);
+    Route::post('/add-instructor', [InstructorController::class, 'store']);
+    Route::get('/edit-instructor/{id}', [InstructorController::class, 'edit']);
+    Route::put('/update-instructor/{id}', [InstructorController::class, 'update']);
+    Route::put('/delete-instructor/{id}', [InstructorController::class, 'delete']);
+});
+
+// newContents
+Route::group(['prefix' => 'newContents'], function () {
+    Route::get('/', [NewsController::class, 'index']);
+    Route::post('/add-newContent', [NewsController::class, 'store']);
+    Route::get('/edit-newContent/{id}', [NewsController::class, 'edit']);
+    Route::put('/update-newContent/{id}', [NewsController::class, 'update']);
+    Route::put('/delete-newContent/{id}', [NewsController::class, 'delete']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
