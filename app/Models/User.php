@@ -12,9 +12,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
-
-    protected $table = 'Users';
-
+    protected $table = 'users';
     protected $primaryKey = 'user_id';
     protected $fillable = [
         'role_id',
@@ -26,7 +24,7 @@ class User extends Authenticatable
         'email',
         'created_at',
         'updated_at',
-        'deleted_at'
+        'deleted_at',
     ];
 
     public function getAccordingIdFromRole() {
@@ -67,7 +65,7 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo(Role::class, 'role_id', 'role_id');
+        return $this->belongsTo(Role::class);
     }
 
     public function student()

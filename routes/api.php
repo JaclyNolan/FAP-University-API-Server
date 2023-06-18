@@ -62,9 +62,8 @@ Route::group(['prefix' => 'newContents'], function () {
     Route::put('/delete-newContent/{id}', [NewsController::class, 'delete']);
 });
 
-Route::middleware('auth:sanctum')->group(function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::get('/check-token', [AuthController::class, 'checkToken']);
+Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+    return $request->user();
 });
-
 Route::post('/google-login', [AuthController::class, 'googleLogin']);
+Route::post('/logout', [AuthController::class, 'logout']);
