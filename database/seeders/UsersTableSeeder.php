@@ -14,12 +14,12 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        
+
 
         \DB::table('Users')->delete();
-        
+
         \DB::table('Users')->insert(array (
-            0 => 
+            0 =>
             array (
                 'user_id' => '1',
                 'role_id' => '2',
@@ -33,7 +33,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'user_id' => '2',
                 'role_id' => '2',
@@ -47,7 +47,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'user_id' => '3',
                 'role_id' => '2',
@@ -61,7 +61,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'user_id' => '4',
                 'role_id' => '2',
@@ -75,7 +75,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'user_id' => '5',
                 'role_id' => '3',
@@ -89,7 +89,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'user_id' => '6',
                 'role_id' => '3',
@@ -103,7 +103,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'user_id' => '7',
                 'role_id' => '3',
@@ -117,7 +117,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'user_id' => '8',
                 'role_id' => '3',
@@ -131,7 +131,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'user_id' => '9',
                 'role_id' => '4',
@@ -145,7 +145,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'user_id' => '10',
                 'role_id' => '4',
@@ -159,7 +159,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'user_id' => '11',
                 'role_id' => '4',
@@ -173,7 +173,7 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'user_id' => '12',
                 'role_id' => '4',
@@ -188,7 +188,7 @@ class UsersTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }
