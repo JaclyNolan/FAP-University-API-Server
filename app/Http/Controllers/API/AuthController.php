@@ -1,16 +1,11 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use App\Http\Controllers\Controller;
-use App\Http\Requests\CheckTokenRequest;
-use App\Http\Requests\LoginRequest;
 use App\Models\User;
-use Carbon\Carbon;
 use Google_Client;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
