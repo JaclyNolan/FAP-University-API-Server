@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\Admin\UserController;
-use App\Http\Controllers\API\Admin\AuthController;
+use App\Http\Controllers\API\AuthController;
 use App\Http\Controllers\API\Admin\StudentController;
 use App\Http\Controllers\API\Admin\StaffController;
 use App\Http\Controllers\API\Admin\InstructorController;
