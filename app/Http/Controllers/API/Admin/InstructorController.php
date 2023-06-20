@@ -110,7 +110,7 @@ class InstructorController extends Controller
                 'status' => 200,
                 'message' => 'Instructor added Successfully!',
             ]);
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add course',
