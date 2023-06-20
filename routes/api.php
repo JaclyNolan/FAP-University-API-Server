@@ -6,6 +6,7 @@ use App\Http\Controllers\API\Admin\StudentController;
 use App\Http\Controllers\API\Admin\StaffController;
 use App\Http\Controllers\API\Admin\InstructorController;
 use App\Http\Controllers\API\Admin\NewsController;
+use App\Http\Controllers\API\Admin\CourseController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -67,6 +68,15 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-newContent/{id}', [NewsController::class, 'update']);
         Route::put('/delete-newContent/{id}', [NewsController::class, 'delete']);
     });
+});
+
+// Courses
+Route::group(['prefix' => 'courses'], function () {
+    Route::get('/', [CourseController::class, 'index']);
+    Route::post('/add-course', [CourseController::class, 'store']);
+    Route::get('/edit-course/{id}', [CourseController::class, 'edit']);
+    Route::put('/update-course/{id}', [CourseController::class, 'update']);
+    Route::put('/delete-course/{id}', [CourseController::class, 'delete']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function() {
