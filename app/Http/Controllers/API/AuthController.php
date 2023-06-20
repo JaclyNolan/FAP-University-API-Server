@@ -1,59 +1,101 @@
 <?php
 
 namespace App\Http\Controllers\API;
-
 use App\Http\Controllers\Controller;
-use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Google_Client;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-
+use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
-    public function googleLogin(LoginRequest $request)
+    /**
+     * googleLogin is a function that verify the idToken that client send
+     * return user data and token is successful
+     *
+     * @param  mixed $request
+     * @return JsonResponse
+     */
+    public function googleLogin(Request $request)
     {
-        //Verify the ID token with GoogleAPI
+        // Verify the ID token with GoogleAPI
         $idToken = $request->input('idToken');
         $client = new Google_Client(['client_id' => env('971766812836-re275ffnj3jnf9gcefunt2tavn29on7q.apps.googleusercontent.com')]);
         $payload = $client->verifyIdToken($idToken);
-        // Log::info("message");($idToken);
 
-        if ($payload) {
-            // IdToken is valid, extract user information
-            $email = $payload['email'];
-
-            // Perform authentication or any other necessary actions
-            $user = User::where('email', $email)->first();
-
-            if ($user) {
-                $role_id = $user->role_id;
-                $username = $user->username;
-                $info_id = $user->getAccordingIdFromRole();
-                /** @var User $user */
-                $token = $user->createToken('main')->plainTextToken;
-                // Return a success response
-                return response()->json([
-                    'message' => 'Successful',
-                    'email' => $email,
-                    'username' => $username,
-                    'role' => $user->getRoleName(),
-                    'info_id' => $info_id,
-                    'token' => $token
-                ],
-                    200);
-            } else {
-                return response(['message' => "This google account do not have permission to enter the site"], 403);
-            }
-        } else {
+        // If idToken is invalid
+        if (!$payload)
             return response()->json(['message' => 'Invalid token'], 400);
-        }
+
+        // IdToken is valid, extract user information
+        $email = $payload['email'];
+
+        $user = User::where('email', $email)->first();
+
+        // If email doesn't exist in the database
+        if (!$user)
+            return response()->json(['message' => "This google account do not have permission to enter the site"], 403);
+
+        // Email exist in the database return userdata
+        /** @var User $user */
+        $token = $user->createToken('main')->plainTextToken;
+
+        // Return a success response
+        return response()->json(
+            [
+                'message' => 'Successful',
+                'user' => [
+                    'username' => $user->username,
+                    'email' => $user->email,
+                    'role' => $user->getRoleName(),
+                ],
+                'token' => $token
+            ],
+            200
+        );
     }
+
+    /**
+     * checkToken is a function that checks the avaliablity of the jwt (expired or not)
+     * return user data if not expired
+     * return an error if expired or not exist
+     *
+     * @param  mixed $request
+     * @return JsonResponse
+     */
+    public function checkToken(Request $request)
+    {
+        //Get PersonalAccessToken model
+        /** @var User $user */
+        $user = $request->user();
+
+        // The token is valid and not expired
+        return response()->json([
+            'message' => 'Token is valid',
+            'user' => [
+                'username' => $user->username,
+                'email' => $user->email,
+                'role' => $user->getRoleName(),
+            ]
+        ], 200);
+    }
+
+
+
+    /**
+     * logout is a function that soft delete the current access token
+     *
+     * @param  mixed $request
+     * @return JsonResponse
+     */
     public function logout(Request $request)
     {
-        // $user = $request->user();
-        // /** @var User $user */
-        // $user->currentAccessToken()->delete();
-        // return response()->json([''], 204);
+        /** @var User $user */
+        $user = $request->user();
+        $currentToken = $user->currentAccessToken();
+        /** @var PersonalAccessToken $currentToken */
+        $currentToken->delete();
+        return response()->json('', 204);
     }
 }
