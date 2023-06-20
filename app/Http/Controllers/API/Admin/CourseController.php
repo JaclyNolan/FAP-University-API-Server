@@ -99,70 +99,98 @@ class CourseController extends Controller
 
     public function edit($id)
     {
-        $course = Course::select(
-            $this->course->getTable() . '.course_id AS id',
-            $this->course->getTable() . '.course_name AS name',
-            (new Major)->getTable() . '.major_id',
-            (new Major)->getTable() . '.major_name',
-            $this->course->getTable() . '.credits',
-            Course::raw('courses.credits * 300 as tuition_fee')
-        )
-            ->join((new Major)->getTable(),  $this->course->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
-            ->where($this->course->getTable() . '.course_id', $id)
-            ->whereNull($this->course->getTable() . '.deleted_at')
-            ->first();
+        try {
+            $course = Course::select(
+                $this->course->getTable() . '.course_id AS id',
+                $this->course->getTable() . '.course_name AS name',
+                (new Major)->getTable() . '.major_id',
+                (new Major)->getTable() . '.major_name',
+                $this->course->getTable() . '.credits',
+                Course::raw('courses.credits * 300 as tuition_fee')
+            )
+                ->join((new Major)->getTable(), $this->course->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
+                ->where($this->course->getTable() . '.course_id', $id)
+                ->whereNull($this->course->getTable() . '.deleted_at')
+                ->first();
 
-        if (!$course) {
+            if (!$course) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Course not found',
+                    'error' => 'The requested course does not exist.',
+                ], 404);
+            }
+
             return response()->json([
-                'status' => 404,
-                'message' => 'Course not found',
-                'error' => 'The requested course does not exist.',
-            ], 404);
+                'status' => 200,
+                'course' => $course,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server Error',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-        return response()->json([
-            'status' => 200,
-            'course' => $course,
-        ]);
     }
 
     public function update(Request $request, $id)
     {
-        $course = $this->course::find($id);
-        $course->course_name = $request->input('course_name');
-        $course->major_id = $request->input('major_id');
-        $course->credits = $request->input('credits');
-        $course->updated_at = date('Y-m-d H:i:s');
-        $course->update();
+        try {
+            $course = $this->course::find($id);
 
-        // Kiểm tra xem khóa học có tồn tại không
-        if (!$course) {
+            // Kiểm tra xem khóa học có tồn tại không
+            if (!$course) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Course not found',
+                ], 404);
+            }
+
+            $course->course_name = $request->input('course_name');
+            $course->major_id = $request->input('major_id');
+            $course->credits = $request->input('credits');
+            $course->updated_at = date('Y-m-d H:i:s');
+            $course->update();
+
             return response()->json([
-                'status' => 404,
-                'message' => 'Course not found',
-            ], 404);
+                'status' => 200,
+                'message' => 'Course Update Successfully!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server Error',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        return response()->json([
-            'status' => 200,
-            'message' => 'Course Update Successfully!',
-        ]);
     }
-
     public function delete($id)
     {
-        $course = $this->course::find($id);
-        // Kiểm tra xem khóa học có tồn tại không
-        if (!$course) {
+        try {
+            $course = $this->course::find($id);
+
+            // Kiểm tra xem khóa học có tồn tại không
+            if (!$course) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Course not found',
+                ], 404);
+            }
+
+            $course->deleted_at = date('Y-m-d H:i:s');
+            $course->update();
+
             return response()->json([
-                'status' => 404,
-                'message' => 'Course not found',
-            ], 404);
+                'status' => 200,
+                'message' => 'Course Delete Successfully!',
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server Error',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-        $course->deleted_at = date('Y-m-d H:i:s');
-        $course->update();
-        return response()->json([
-            'status' => 200,
-            'message' => 'Course Delete Successfully!',
-        ]);
     }
 }
