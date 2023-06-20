@@ -108,7 +108,7 @@ class StaffController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
-                'message' => 'Failed to add course',
+                'message' => 'Failed to add staff',
                 'error' => $e->getMessage(),
             ], 500);
         }
