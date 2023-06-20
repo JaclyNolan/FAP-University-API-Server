@@ -43,7 +43,7 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-student/{id}', [StudentController::class, 'update']);
         Route::put('/delete-student/{id}', [StudentController::class, 'delete']);
     });
-    // staffs
+    //staffs
     Route::group(['prefix' => 'staffs'], function () {
         Route::get('/', [StaffController::class, 'index']);
         Route::post('/add-staff', [StaffController::class, 'store']);
@@ -51,7 +51,7 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-staff/{id}', [StaffController::class, 'update']);
         Route::put('/delete-staff/{id}', [StaffController::class, 'delete']);
     });
-    // instructors
+    //instructors
     Route::group(['prefix' => 'instructors'], function () {
         Route::get('/', [InstructorController::class, 'index']);
         Route::post('/add-instructor', [InstructorController::class, 'store']);
@@ -68,22 +68,22 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-newContent/{id}', [NewsController::class, 'update']);
         Route::put('/delete-newContent/{id}', [NewsController::class, 'delete']);
     });
+
+    // Courses
+    Route::group(['prefix' => 'courses'], function () {
+        Route::get('/', [CourseController::class, 'index']);
+        Route::post('/add-course', [CourseController::class, 'store']);
+        Route::get('/edit-course/{id}', [CourseController::class, 'edit']);
+        Route::put('/update-course/{id}', [CourseController::class, 'update']);
+        Route::put('/delete-course/{id}', [CourseController::class, 'delete']);
+    });
 });
 
-// Courses
-Route::group(['prefix' => 'courses'], function () {
-    Route::get('/', [CourseController::class, 'index']);
-    Route::post('/add-course', [CourseController::class, 'store']);
-    Route::get('/edit-course/{id}', [CourseController::class, 'edit']);
-    Route::put('/update-course/{id}', [CourseController::class, 'update']);
-    Route::put('/delete-course/{id}', [CourseController::class, 'delete']);
-});
-
-Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function() {
+Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
     // User with instructor role can access these routes
 });
 
-Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function() {
+Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
     // User with student role can access these routes
 });
 
