@@ -55,6 +55,16 @@ class NewsController extends Controller
                 ], 400);
             }
 
+            // Kiểm tra số lượng bản ghi trả về
+            if ($newsContents->count() === 0) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'No records found.',
+                    'newsContents' => [],
+                    'total_pages' => $newsContents->lastPage(),
+                ]);
+            }
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Success',

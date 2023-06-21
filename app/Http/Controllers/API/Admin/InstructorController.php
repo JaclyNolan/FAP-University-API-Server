@@ -75,7 +75,15 @@ class InstructorController extends Controller
                     'error' => 'The requested page does not exist.',
                 ], 400);
             }
-
+            // Kiểm tra số lượng bản ghi trả về
+            if ($instructors->count() === 0) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'No records found.',
+                    'instructors' => [],
+                    'total_pages' => $instructors->lastPage(),
+                ]);
+            }
             return response()->json([
                 'status' => 200,
                 'message' => 'Success',

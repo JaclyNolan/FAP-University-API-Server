@@ -51,6 +51,15 @@ class ClassController extends Controller
                     'message' => 'Page out of range',
                 ], 400);
             }
+            // Kiểm tra số lượng bản ghi trả về
+            if ($class->count() === 0) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'No records found.',
+                    'class' => [],
+                    'total_pages' => $class->lastPage(),
+                ]);
+            }
             return response()->json([
                 'status' => 200,
                 'message' => 'Success',

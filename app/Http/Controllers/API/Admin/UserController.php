@@ -62,6 +62,16 @@ class UserController extends Controller
                 ], 400);
             }
 
+            // Kiểm tra số lượng bản ghi trả về
+            if ($users->count() === 0) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'No records found.',
+                    'users' => [],
+                    'total_pages' => $users->lastPage(),
+                ]);
+            }
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Success',

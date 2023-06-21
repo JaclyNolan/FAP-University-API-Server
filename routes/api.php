@@ -8,6 +8,7 @@ use App\Http\Controllers\API\Admin\InstructorController;
 use App\Http\Controllers\API\Admin\NewsController;
 use App\Http\Controllers\API\Admin\CourseController;
 use App\Http\Controllers\API\Admin\ClassController;
+use App\Http\Controllers\API\Admin\ClassCourseController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -88,6 +89,16 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/delete-class/{id}', [ClassController::class, 'delete']);
     });
 });
+
+// ClassCourse
+Route::group(['prefix' => 'classCourses'], function () {
+    Route::get('/', [ClassCourseController::class, 'index']);
+    Route::post('/add-classCourse', [ClassCourseController::class, 'store']);
+    Route::get('/edit-classCourse/{id}', [ClassCourseController::class, 'edit']);
+    Route::put('/update-classCourse/{id}', [ClassCourseController::class, 'update']);
+    Route::put('/delete-classCourse/{id}', [ClassCourseController::class, 'delete']);
+});
+
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
     // User with instructor role can access these routes
 });

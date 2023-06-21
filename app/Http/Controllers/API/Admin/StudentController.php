@@ -77,6 +77,16 @@ class StudentController extends Controller
                 ], 400);
             }
 
+            // Kiểm tra số lượng bản ghi trả về
+            if ($students->count() === 0) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'No records found.',
+                    'students' => [],
+                    'total_pages' => $students->lastPage(),
+                ]);
+            }
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Success',
