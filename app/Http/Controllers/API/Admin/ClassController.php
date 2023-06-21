@@ -3,77 +3,68 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Course;
-use App\Models\Major;
 use Illuminate\Http\Request;
+
+use App\Models\ClassModel;
+use App\Models\Major;
 use Illuminate\Database\QueryException;
 
-
-class CourseController extends Controller
+class ClassController extends Controller
 {
-    //
-    private $course;
-
+    private $class;
     public function __construct()
     {
-        $this->course = new Course;
+        $this->class = new ClassModel;
     }
 
     public function index(Request $request)
     {
         try {
-            $query = Course::select(
-                $this->course->getTable() . '.course_id AS id',
-                $this->course->getTable() . '.course_name AS name',
+            $query = ClassModel::select(
+                $this->class->getTable() . '.class_id AS id',
+                $this->class->getTable() . '.class_name AS name',
                 (new Major)->getTable() . '.major_id',
                 (new Major)->getTable() . '.major_name',
-                $this->course->getTable() . '.credits',
-                Course::raw('courses.credits * 300 as tuition_fee')
             )
-                ->join((new Major)->getTable(), $this->course->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
-                ->whereNull($this->course->getTable() . '.deleted_at')
-                ->orderBy($this->course->getTable() . '.course_id');
+                ->join((new Major)->getTable(), $this->class->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
+                ->whereNull($this->class->getTable() . '.deleted_at')
+                ->orderBy($this->class->getTable() . '.class_id');
 
             if ($request->has('major')) {
                 $major = $request->input('major');
-                $query->where($this->course->getTable() . '.major_id', $major);
-            }
-
-            if ($request->has('credit')) {
-                $credit = $request->input('credit');
-                $query->where($this->course->getTable() . '.credits', $credit);
+                $query->where($this->class->getTable() . '.major_id', $major);
             }
 
             if ($request->has('keyword')) {
                 $keyword = $request->input('keyword');
                 $query->where(function ($q) use ($keyword) {
-                    $q->where($this->course->getTable() . '.course_name', 'LIKE', "%$keyword%")
-                        ->orWhere($this->course->getTable() . '.course_id', 'LIKE', "$keyword");
+                    $q->where($this->class->getTable() . '.class_name', 'LIKE', "%$keyword%")
+                        ->orWhere($this->class->getTable() . '.class_id', 'LIKE', "$keyword");
                 });
             }
 
-            $courses = $query->paginate(10); // Số bản ghi trên mỗi trang
+            $class = $query->paginate(10); // Số bản ghi trên mỗi trang
             // Kiểm tra xem trang hiện tại có lớn hơn tổng số trang không
-            if ($request->has('page') && $courses->currentPage() > $courses->lastPage()) {
+            if ($request->has('page') && $class->currentPage() > $class->lastPage()) {
                 return response()->json([
                     'status' => 400,
                     'message' => 'Page out of range',
                 ], 400);
             }
             // Kiểm tra số lượng bản ghi trả về
-            if ($courses->count() === 0) {
+            if ($class->count() === 0) {
                 return response()->json([
                     'status' => 200,
                     'message' => 'No records found.',
-                    'courses' => [],
-                    'total_pages' => $courses->lastPage(),
+                    'class' => [],
+                    'total_pages' => $class->lastPage(),
                 ]);
             }
             return response()->json([
                 'status' => 200,
                 'message' => 'Success',
-                'courses' => $courses->items(),
-                'total_pages' => $courses->lastPage(),
+                'class' => $class->items(),
+                'total_pages' => $class->lastPage(),
             ]);
         } catch (QueryException $e) {
             return response()->json([
@@ -87,20 +78,19 @@ class CourseController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->course->course_name = $request->input('course_name');
-            $this->course->major_id = $request->input('major_id');
-            $this->course->credits = $request->input('credits');
-            $this->course->created_at = date('Y-m-d H:i:s');
-            $this->course->save();
+            $this->class->class_name = $request->input('class_name');
+            $this->class->major_id = $request->input('major_id');
+            $this->class->created_at = date('Y-m-d H:i:s');
+            $this->class->save();
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Course added successfully!',
+                'message' => 'Class added successfully!',
             ]);
         } catch (QueryException $e) {
             return response()->json([
                 'status' => 500,
-                'message' => 'Failed to add course',
+                'message' => 'Failed to add class',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -109,30 +99,28 @@ class CourseController extends Controller
     public function edit($id)
     {
         try {
-            $course = Course::select(
-                $this->course->getTable() . '.course_id AS id',
-                $this->course->getTable() . '.course_name AS name',
+            $class = ClassModel::select(
+                $this->class->getTable() . '.class_id AS id',
+                $this->class->getTable() . '.class_name AS name',
                 (new Major)->getTable() . '.major_id',
                 (new Major)->getTable() . '.major_name',
-                $this->course->getTable() . '.credits',
-                Course::raw('courses.credits * 300 as tuition_fee')
             )
-                ->join((new Major)->getTable(), $this->course->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
-                ->where($this->course->getTable() . '.course_id', $id)
-                ->whereNull($this->course->getTable() . '.deleted_at')
+                ->join((new Major)->getTable(), $this->class->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
+                ->whereNull($this->class->getTable() . '.deleted_at')
+                ->where($this->class->getTable() . '.class_id', $id)
                 ->first();
 
-            if (!$course) {
+            if (!$class) {
                 return response()->json([
                     'status' => 404,
-                    'message' => 'Course not found',
-                    'error' => 'The requested course does not exist.',
+                    'message' => 'Class not found',
+                    'error' => 'The requested class does not exist.',
                 ], 404);
             }
 
             return response()->json([
                 'status' => 200,
-                'course' => $course,
+                'class' => $class,
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -146,25 +134,24 @@ class CourseController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            $course = $this->course::find($id);
+            $class = $this->class::find($id);
 
             // Kiểm tra xem khóa học có tồn tại không
-            if (!$course) {
+            if (!$class) {
                 return response()->json([
                     'status' => 404,
-                    'message' => 'Course not found',
+                    'message' => 'Class not found',
                 ], 404);
             }
 
-            $course->course_name = $request->input('course_name');
-            $course->major_id = $request->input('major_id');
-            $course->credits = $request->input('credits');
-            $course->updated_at = date('Y-m-d H:i:s');
-            $course->update();
+            $class->class_name = $request->input('class_name');
+            $class->major_id = $request->input('major_id');
+            $class->updated_at = date('Y-m-d H:i:s');
+            $class->update();
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Course Update Successfully!',
+                'message' => 'Class Update Successfully!',
             ]);
         } catch (\Exception $e) {
             return response()->json([
@@ -174,25 +161,26 @@ class CourseController extends Controller
             ], 500);
         }
     }
+
     public function delete($id)
     {
         try {
-            $course = $this->course::find($id);
+            $class = $this->class::find($id);
 
             // Kiểm tra xem khóa học có tồn tại không
-            if (!$course) {
+            if (!$class) {
                 return response()->json([
                     'status' => 404,
-                    'message' => 'Course not found',
+                    'message' => 'Class not found',
                 ], 404);
             }
 
-            $course->deleted_at = date('Y-m-d H:i:s');
-            $course->update();
+            $class->deleted_at = date('Y-m-d H:i:s');
+            $class->update();
 
             return response()->json([
                 'status' => 200,
-                'message' => 'Course Delete Successfully!',
+                'message' => 'Class Delete Successfully!',
             ]);
         } catch (\Exception $e) {
             return response()->json([

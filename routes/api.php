@@ -7,6 +7,8 @@ use App\Http\Controllers\API\Admin\StaffController;
 use App\Http\Controllers\API\Admin\InstructorController;
 use App\Http\Controllers\API\Admin\NewsController;
 use App\Http\Controllers\API\Admin\CourseController;
+use App\Http\Controllers\API\Admin\ClassController;
+use App\Http\Controllers\API\Admin\ClassCourseController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -77,6 +79,24 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-course/{id}', [CourseController::class, 'update']);
         Route::put('/delete-course/{id}', [CourseController::class, 'delete']);
     });
+
+    // Class
+    Route::group(['prefix' => 'class'], function () {
+        Route::get('/', [ClassController::class, 'index']);
+        Route::post('/add-class', [ClassController::class, 'store']);
+        Route::get('/edit-class/{id}', [ClassController::class, 'edit']);
+        Route::put('/update-class/{id}', [ClassController::class, 'update']);
+        Route::put('/delete-class/{id}', [ClassController::class, 'delete']);
+    });
+});
+
+// ClassCourse
+Route::group(['prefix' => 'classCourses'], function () {
+    Route::get('/', [ClassCourseController::class, 'index']);
+    Route::post('/add-classCourse', [ClassCourseController::class, 'store']);
+    Route::get('/edit-classCourse/{id}', [ClassCourseController::class, 'edit']);
+    Route::put('/update-classCourse/{id}', [ClassCourseController::class, 'update']);
+    Route::put('/delete-classCourse/{id}', [ClassCourseController::class, 'delete']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {

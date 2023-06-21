@@ -71,6 +71,16 @@ class StaffController extends Controller
                 ], 400);
             }
 
+            // Kiểm tra số lượng bản ghi trả về
+            if ($staffs->count() === 0) {
+                return response()->json([
+                    'status' => 200,
+                    'message' => 'No records found.',
+                    'staffs' => [],
+                    'total_pages' => $staffs->lastPage(),
+                ]);
+            }
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Success',
