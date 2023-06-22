@@ -15,6 +15,7 @@ class Enrollment extends Model
         'course_id',
         'status',
         'created_at',
+        'updated_at',
     ];
 
     public function student()

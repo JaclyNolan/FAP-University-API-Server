@@ -92,7 +92,7 @@ class ClassEnrollmentController extends Controller
                 return response()->json([
                     'status' => 200,
                     'message' => 'No records found.',
-                    'class' => [],
+                    'classEnrollments' => [],
                     'total_pages' => $classEnrollments->lastPage(),
                 ]);
             }

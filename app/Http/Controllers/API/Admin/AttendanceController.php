@@ -93,7 +93,7 @@ class AttendanceController extends Controller
                 return response()->json([
                     'status' => 200,
                     'message' => 'No records found.',
-                    'feedbacks' => [],
+                    'attendances' => [],
                     'total_pages' => $attendances->lastPage(),
                 ]);
             }
