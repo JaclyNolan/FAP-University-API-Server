@@ -10,6 +10,11 @@ use App\Http\Controllers\API\Admin\CourseController;
 use App\Http\Controllers\API\Admin\ClassController;
 use App\Http\Controllers\API\Admin\ClassCourseController;
 use App\Http\Controllers\API\Admin\ClassEnrollmentController;
+use App\Http\Controllers\API\Admin\ClassScheduleController;
+use App\Http\Controllers\API\Admin\GradeController;
+use App\Http\Controllers\API\Admin\FeedbackController;
+use App\Http\Controllers\API\Admin\AttendanceController;
+use App\Http\Controllers\API\Admin\EnrollmentController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -98,15 +103,51 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-classCourse/{id}', [ClassCourseController::class, 'update']);
         Route::put('/delete-classCourse/{id}', [ClassCourseController::class, 'delete']);
     });
+
+    // class Enrollments
+    Route::group(['prefix' => 'classEnrollments'], function () {
+        Route::get('/', [ClassEnrollmentController::class, 'index']);
+        Route::post('/add-classEnrollment', [ClassEnrollmentController::class, 'store']);
+        Route::get('/edit-classEnrollment/{id}', [ClassEnrollmentController::class, 'edit']);
+        Route::put('/update-classEnrollment/{id}', [ClassEnrollmentController::class, 'update']);
+        Route::put('/delete-classEnrollment/{id}', [ClassEnrollmentController::class, 'delete']);
+    });
+
+    // Class Schedules
+    Route::group(['prefix' => 'classSchedules'], function () {
+        Route::get('/', [ClassScheduleController::class, 'index']);
+        Route::post('/add-classSchedule', [ClassScheduleController::class, 'store']);
+        Route::get('/edit-classSchedule/{id}', [ClassScheduleController::class, 'edit']);
+        Route::put('/update-classSchedule/{id}', [ClassScheduleController::class, 'update']);
+        Route::put('/delete-classSchedule/{id}', [ClassScheduleController::class, 'delete']);
+    });
+
+    // Grades
+    Route::group(['prefix' => 'grades'], function () {
+        Route::get('/', [GradeController::class, 'index']);
+        Route::get('/edit-grade/{id}', [GradeController::class, 'edit']);
+        Route::put('/update-grade/{id}', [GradeController::class, 'update']);
+    });
+
+    // Feedbacks
+    Route::group(['prefix' => 'feedbacks'], function () {
+        Route::get('/', [FeedbackController::class, 'index']);
+        Route::get('/edit-feedback/{id}', [FeedbackController::class, 'edit']);
+    });
+
+    // Attendance 
+    Route::group(['prefix' => 'attendances'], function () {
+        Route::get('/', [AttendanceController::class, 'index']);
+        Route::get('/edit-attendance/{id}', [AttendanceController::class, 'edit']);
+        Route::put('/update-attendance/{id}', [AttendanceController::class, 'update']);
+    });
 });
 
-// class Enrollments
-Route::group(['prefix' => 'classEnrollments'], function () {
-    Route::get('/', [ClassEnrollmentController::class, 'index']);
-    Route::post('/add-classEnrollment', [ClassEnrollmentController::class, 'store']);
-    Route::get('/edit-classEnrollment/{id}', [ClassEnrollmentController::class, 'edit']);
-    Route::put('/update-classEnrollment/{id}', [ClassEnrollmentController::class, 'update']);
-    Route::put('/delete-classEnrollment/{id}', [ClassEnrollmentController::class, 'delete']);
+// Enrollments 
+Route::group(['prefix' => 'enrollments'], function () {
+    Route::get('/', [EnrollmentController::class, 'index']);
+    Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
+    Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
