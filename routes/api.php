@@ -13,6 +13,7 @@ use App\Http\Controllers\API\Admin\ClassEnrollmentController;
 use App\Http\Controllers\API\Admin\ClassScheduleController;
 use App\Http\Controllers\API\Admin\GradeController;
 use App\Http\Controllers\API\Admin\FeedbackController;
+use App\Http\Controllers\API\Admin\AttendanceController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -126,12 +127,21 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::get('/edit-grade/{id}', [GradeController::class, 'edit']);
         Route::put('/update-grade/{id}', [GradeController::class, 'update']);
     });
+
+    // Feedbacks
+    Route::group(['prefix' => 'feedbacks'], function () {
+        Route::get('/', [FeedbackController::class, 'index']);
+        Route::get('/edit-feedback/{id}', [FeedbackController::class, 'edit']);
+    });
 });
 
-// Feedbacks
-Route::group(['prefix' => 'feedbacks'], function () {
-    Route::get('/', [FeedbackController::class, 'index']);
-    Route::get('/edit-feedback/{id}', [FeedbackController::class, 'edit']);
+// Attendance 
+Route::group(['prefix' => 'attendances'], function () {
+    Route::get('/', [AttendanceController::class, 'index']);
+    Route::post('/add-attendance', [AttendanceController::class, 'store']);
+    Route::get('/edit-attendance/{id}', [AttendanceController::class, 'edit']);
+    Route::put('/update-attendance/{id}', [AttendanceController::class, 'update']);
+    Route::put('/delete-attendance/{id}', [AttendanceController::class, 'delete']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
