@@ -11,6 +11,7 @@ use App\Http\Controllers\API\Admin\ClassController;
 use App\Http\Controllers\API\Admin\ClassCourseController;
 use App\Http\Controllers\API\Admin\ClassEnrollmentController;
 use App\Http\Controllers\API\Admin\ClassScheduleController;
+use App\Http\Controllers\API\Admin\GradeController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -108,15 +109,24 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-classEnrollment/{id}', [ClassEnrollmentController::class, 'update']);
         Route::put('/delete-classEnrollment/{id}', [ClassEnrollmentController::class, 'delete']);
     });
+
+    // Class Schedules
+    Route::group(['prefix' => 'classSchedules'], function () {
+        Route::get('/', [ClassScheduleController::class, 'index']);
+        Route::post('/add-classSchedule', [ClassScheduleController::class, 'store']);
+        Route::get('/edit-classSchedule/{id}', [ClassScheduleController::class, 'edit']);
+        Route::put('/update-classSchedule/{id}', [ClassScheduleController::class, 'update']);
+        Route::put('/delete-classSchedule/{id}', [ClassScheduleController::class, 'delete']);
+    });
 });
 
-// Class Schedules
-Route::group(['prefix' => 'classSchedules'], function () {
-    Route::get('/', [ClassScheduleController::class, 'index']);
-    Route::post('/add-classSchedule', [ClassScheduleController::class, 'store']);
-    Route::get('/edit-classSchedule/{id}', [ClassScheduleController::class, 'edit']);
-    Route::put('/update-classSchedule/{id}', [ClassScheduleController::class, 'update']);
-    Route::put('/delete-classSchedule/{id}', [ClassScheduleController::class, 'delete']);
+// Grades
+Route::group(['prefix' => 'grades'], function () {
+    Route::get('/', [GradeController::class, 'index']);
+    Route::post('/add-grade', [GradeController::class, 'store']);
+    Route::get('/edit-grade/{id}', [GradeController::class, 'edit']);
+    Route::put('/update-grade/{id}', [GradeController::class, 'update']);
+    Route::put('/delete-grade/{id}', [GradeController::class, 'delete']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
