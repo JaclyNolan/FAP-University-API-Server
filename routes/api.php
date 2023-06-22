@@ -10,6 +10,7 @@ use App\Http\Controllers\API\Admin\CourseController;
 use App\Http\Controllers\API\Admin\ClassController;
 use App\Http\Controllers\API\Admin\ClassCourseController;
 use App\Http\Controllers\API\Admin\ClassEnrollmentController;
+use App\Http\Controllers\API\Admin\ClassScheduleController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -98,15 +99,24 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-classCourse/{id}', [ClassCourseController::class, 'update']);
         Route::put('/delete-classCourse/{id}', [ClassCourseController::class, 'delete']);
     });
+
+    // class Enrollments
+    Route::group(['prefix' => 'classEnrollments'], function () {
+        Route::get('/', [ClassEnrollmentController::class, 'index']);
+        Route::post('/add-classEnrollment', [ClassEnrollmentController::class, 'store']);
+        Route::get('/edit-classEnrollment/{id}', [ClassEnrollmentController::class, 'edit']);
+        Route::put('/update-classEnrollment/{id}', [ClassEnrollmentController::class, 'update']);
+        Route::put('/delete-classEnrollment/{id}', [ClassEnrollmentController::class, 'delete']);
+    });
 });
 
-// class Enrollments
-Route::group(['prefix' => 'classEnrollments'], function () {
-    Route::get('/', [ClassEnrollmentController::class, 'index']);
-    Route::post('/add-classEnrollment', [ClassEnrollmentController::class, 'store']);
-    Route::get('/edit-classEnrollment/{id}', [ClassEnrollmentController::class, 'edit']);
-    Route::put('/update-classEnrollment/{id}', [ClassEnrollmentController::class, 'update']);
-    Route::put('/delete-classEnrollment/{id}', [ClassEnrollmentController::class, 'delete']);
+// Class Schedules
+Route::group(['prefix' => 'classSchedules'], function () {
+    Route::get('/', [ClassScheduleController::class, 'index']);
+    Route::post('/add-classSchedule', [ClassScheduleController::class, 'store']);
+    Route::get('/edit-classSchedule/{id}', [ClassScheduleController::class, 'edit']);
+    Route::put('/update-classSchedule/{id}', [ClassScheduleController::class, 'update']);
+    Route::put('/delete-classSchedule/{id}', [ClassScheduleController::class, 'delete']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
