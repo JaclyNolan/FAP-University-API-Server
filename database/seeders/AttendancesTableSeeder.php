@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class AttendancesTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class AttendancesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Attendances')->delete();
-        
-        \DB::table('Attendances')->insert(array (
-            0 => 
+
+        DB::table('Attendances')->delete();
+
+        DB::table('Attendances')->insert(array (
+            0 =>
             array (
                 'attendance_id' => '1',
                 'class_schedule_id' => '1',
@@ -28,7 +29,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-18',
                 'update_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'attendance_id' => '2',
                 'class_schedule_id' => '1',
@@ -37,7 +38,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-18',
                 'update_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'attendance_id' => '3',
                 'class_schedule_id' => '1',
@@ -46,7 +47,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-18',
                 'update_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'attendance_id' => '4',
                 'class_schedule_id' => '2',
@@ -55,7 +56,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-19',
                 'update_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'attendance_id' => '5',
                 'class_schedule_id' => '2',
@@ -64,7 +65,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-19',
                 'update_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'attendance_id' => '6',
                 'class_schedule_id' => '2',
@@ -73,7 +74,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-19',
                 'update_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'attendance_id' => '7',
                 'class_schedule_id' => '3',
@@ -82,7 +83,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-20',
                 'update_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'attendance_id' => '8',
                 'class_schedule_id' => '3',
@@ -91,7 +92,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-20',
                 'update_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'attendance_id' => '9',
                 'class_schedule_id' => '3',
@@ -100,7 +101,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-20',
                 'update_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'attendance_id' => '10',
                 'class_schedule_id' => '4',
@@ -109,7 +110,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-21',
                 'update_at' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'attendance_id' => '11',
                 'class_schedule_id' => '4',
@@ -118,7 +119,7 @@ class AttendancesTableSeeder extends Seeder
                 'attendance_time' => '2023-05-21',
                 'update_at' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'attendance_id' => '12',
                 'class_schedule_id' => '4',
@@ -128,7 +129,7 @@ class AttendancesTableSeeder extends Seeder
                 'update_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

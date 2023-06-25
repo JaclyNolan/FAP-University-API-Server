@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class GradesTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class GradesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Grades')->delete();
-        
-        \DB::table('Grades')->insert(array (
-            0 => 
+
+        DB::table('Grades')->delete();
+
+        DB::table('Grades')->insert(array (
+            0 =>
             array (
                 'grade_id' => '1',
                 'class_enrollment_id' => '1',
@@ -28,7 +29,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'grade_id' => '2',
                 'class_enrollment_id' => '2',
@@ -37,7 +38,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'grade_id' => '3',
                 'class_enrollment_id' => '3',
@@ -46,7 +47,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'grade_id' => '4',
                 'class_enrollment_id' => '4',
@@ -55,7 +56,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'grade_id' => '5',
                 'class_enrollment_id' => '5',
@@ -64,7 +65,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'grade_id' => '6',
                 'class_enrollment_id' => '6',
@@ -73,7 +74,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'grade_id' => '7',
                 'class_enrollment_id' => '7',
@@ -82,7 +83,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'grade_id' => '8',
                 'class_enrollment_id' => '8',
@@ -91,7 +92,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'grade_id' => '9',
                 'class_enrollment_id' => '9',
@@ -100,7 +101,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'grade_id' => '10',
                 'class_enrollment_id' => '10',
@@ -109,7 +110,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'grade_id' => '11',
                 'class_enrollment_id' => '11',
@@ -118,7 +119,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'grade_id' => '12',
                 'class_enrollment_id' => '12',
@@ -127,7 +128,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            12 => 
+            12 =>
             array (
                 'grade_id' => '13',
                 'class_enrollment_id' => '13',
@@ -136,7 +137,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            13 => 
+            13 =>
             array (
                 'grade_id' => '14',
                 'class_enrollment_id' => '14',
@@ -145,7 +146,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            14 => 
+            14 =>
             array (
                 'grade_id' => '15',
                 'class_enrollment_id' => '15',
@@ -154,7 +155,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            15 => 
+            15 =>
             array (
                 'grade_id' => '16',
                 'class_enrollment_id' => '16',
@@ -163,7 +164,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            16 => 
+            16 =>
             array (
                 'grade_id' => '17',
                 'class_enrollment_id' => '17',
@@ -172,7 +173,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            17 => 
+            17 =>
             array (
                 'grade_id' => '18',
                 'class_enrollment_id' => '18',
@@ -181,7 +182,7 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            18 => 
+            18 =>
             array (
                 'grade_id' => '19',
                 'class_enrollment_id' => '19',
@@ -191,7 +192,7 @@ class GradesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }
