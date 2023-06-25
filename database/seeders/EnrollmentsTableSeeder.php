@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class EnrollmentsTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class EnrollmentsTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Enrollments')->delete();
-        
-        \DB::table('Enrollments')->insert(array (
-            0 => 
+
+        DB::table('Enrollments')->delete();
+
+        DB::table('Enrollments')->insert(array (
+            0 =>
             array (
                 'enrollment_id' => '1',
                 'student_id' => 'CS001',
@@ -27,7 +28,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            1 => 
+            1 =>
             array (
                 'enrollment_id' => '2',
                 'student_id' => 'CS002',
@@ -35,7 +36,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            2 => 
+            2 =>
             array (
                 'enrollment_id' => '3',
                 'student_id' => 'CS003',
@@ -43,7 +44,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            3 => 
+            3 =>
             array (
                 'enrollment_id' => '4',
                 'student_id' => 'CS004',
@@ -51,7 +52,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            4 => 
+            4 =>
             array (
                 'enrollment_id' => '5',
                 'student_id' => 'BA001',
@@ -59,7 +60,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            5 => 
+            5 =>
             array (
                 'enrollment_id' => '6',
                 'student_id' => 'BA002',
@@ -67,7 +68,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            6 => 
+            6 =>
             array (
                 'enrollment_id' => '7',
                 'student_id' => 'BA003',
@@ -75,7 +76,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            7 => 
+            7 =>
             array (
                 'enrollment_id' => '8',
                 'student_id' => 'BA004',
@@ -83,7 +84,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            8 => 
+            8 =>
             array (
                 'enrollment_id' => '9',
                 'student_id' => 'ME001',
@@ -91,7 +92,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
-            9 => 
+            9 =>
             array (
                 'enrollment_id' => '10',
                 'student_id' => 'ME002',
@@ -100,7 +101,7 @@ class EnrollmentsTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.890',
             ),
         ));
-        
-        
+
+
     }
 }

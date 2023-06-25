@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class NewsContentsTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class NewsContentsTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('News_contents')->delete();
-        
-        \DB::table('News_contents')->insert(array (
-            0 => 
+
+        DB::table('News_contents')->delete();
+
+        DB::table('News_contents')->insert(array (
+            0 =>
             array (
                 'news_id' => '1',
                 'title' => 'New Feature Release',
@@ -30,7 +31,7 @@ class NewsContentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'news_id' => '2',
                 'title' => 'Upcoming Event: Conference',
@@ -41,7 +42,7 @@ class NewsContentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'news_id' => '3',
                 'title' => 'Important Announcement',
@@ -52,7 +53,7 @@ class NewsContentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'news_id' => '4',
                 'title' => 'Student Achievements',
@@ -64,7 +65,7 @@ class NewsContentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

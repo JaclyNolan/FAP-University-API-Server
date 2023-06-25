@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ClassCoursesTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class ClassCoursesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Class_courses')->delete();
-        
-        \DB::table('Class_courses')->insert(array (
-            0 => 
+
+        DB::table('Class_courses')->delete();
+
+        DB::table('Class_courses')->insert(array (
+            0 =>
             array (
                 'class_course_id' => '1',
                 'class_id' => '1',
@@ -29,7 +30,7 @@ class ClassCoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'class_course_id' => '2',
                 'class_id' => '1',
@@ -39,7 +40,7 @@ class ClassCoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'class_course_id' => '3',
                 'class_id' => '2',
@@ -49,7 +50,7 @@ class ClassCoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'class_course_id' => '4',
                 'class_id' => '2',
@@ -59,7 +60,7 @@ class ClassCoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'class_course_id' => '5',
                 'class_id' => '3',
@@ -69,7 +70,7 @@ class ClassCoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'class_course_id' => '6',
                 'class_id' => '3',
@@ -79,7 +80,7 @@ class ClassCoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'class_course_id' => '7',
                 'class_id' => '4',
@@ -89,7 +90,7 @@ class ClassCoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'class_course_id' => '8',
                 'class_id' => '4',
@@ -100,7 +101,7 @@ class ClassCoursesTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

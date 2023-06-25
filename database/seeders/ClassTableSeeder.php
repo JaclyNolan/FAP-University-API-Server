@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ClassTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class ClassTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Class')->delete();
-        
-        \DB::table('Class')->insert(array (
-            0 => 
+
+        DB::table('Class')->delete();
+
+        DB::table('Class')->insert(array (
+            0 =>
             array (
                 'class_id' => '1',
                 'major_id' => '1',
@@ -28,7 +29,7 @@ class ClassTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'class_id' => '2',
                 'major_id' => '2',
@@ -37,7 +38,7 @@ class ClassTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'class_id' => '3',
                 'major_id' => '3',
@@ -46,7 +47,7 @@ class ClassTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'class_id' => '4',
                 'major_id' => '4',
@@ -56,7 +57,7 @@ class ClassTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }
