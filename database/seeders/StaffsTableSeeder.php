@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class StaffsTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class StaffsTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Staffs')->delete();
-        
-        \DB::table('Staffs')->insert(array (
-            0 => 
+
+        DB::table('Staffs')->delete();
+
+        DB::table('Staffs')->insert(array (
+            0 =>
             array (
                 'staff_id' => 'ST001',
                 'full_name' => 'John Smith',
@@ -34,7 +35,7 @@ class StaffsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'staff_id' => 'ST002',
                 'full_name' => 'Sarah Johnson',
@@ -49,7 +50,7 @@ class StaffsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'staff_id' => 'ST003',
                 'full_name' => 'Michael Brown',
@@ -64,7 +65,7 @@ class StaffsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'staff_id' => 'ST004',
                 'full_name' => 'Emily Davis',
@@ -79,7 +80,7 @@ class StaffsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'staff_id' => 'ST005',
                 'full_name' => 'Robert Anderson',
@@ -95,7 +96,7 @@ class StaffsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }
