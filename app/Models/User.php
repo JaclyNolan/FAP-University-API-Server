@@ -42,6 +42,19 @@ class User extends Authenticatable
         }
     }
 
+    public function getInfoAccordingToRole() {
+        switch ($this->role_id) {
+            case 1:
+                return null;
+            case 2:
+                return $this->staff;
+            case 3:
+                return $this->instructor;
+            case 4:
+                return $this->student;
+        }
+    }
+
     public function getRoleName() {
         return $this->role->role_name;
     }

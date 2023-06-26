@@ -38,7 +38,10 @@ class AuthController extends Controller
             return response()->json(['message' => "This google account do not have permission to enter the site"], 403);
 
         $user->username = $payload['name'];
-        $user->email_avatar = $payload['picture'];
+        $info = $user->getInfoAccordingToRole();
+
+        $picture = $info ? $info->picture : $payload['picture'];
+        $user->email_avatar = $picture;
 
         // Email exist in the database return userdata
         /** @var User $user */
@@ -52,6 +55,7 @@ class AuthController extends Controller
                     'username' => $user->username,
                     'email' => $user->email,
                     'role' => $user->getRoleName(),
+                    'picture' => $picture,
                 ],
                 'token' => $token
             ],
@@ -72,6 +76,9 @@ class AuthController extends Controller
         //Get PersonalAccessToken model
         /** @var User $user */
         $user = $request->user();
+        $info = $user->getInfoAccordingToRole();
+
+        $picture = $info ? $info->picture : $user->email_avatar;
 
         // The token is valid and not expired
         return response()->json([
@@ -80,6 +87,7 @@ class AuthController extends Controller
                 'username' => $user->username,
                 'email' => $user->email,
                 'role' => $user->getRoleName(),
+                'picture' => $picture,
             ]
         ], 200);
     }
