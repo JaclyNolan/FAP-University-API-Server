@@ -20,7 +20,6 @@ return new class extends Migration
             $table->string('staff_id')->nullable();
             $table->string('instructor_id')->nullable();
             $table->string('username')->unique('UQ__Users__F3DBC572605E7EBC');
-            $table->string('password');
             $table->string('email')->unique('UQ__Users__AB6E6164A7275E04');
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();

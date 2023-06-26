@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class StudentsTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class StudentsTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Students')->delete();
-        
-        \DB::table('Students')->insert(array (
-            0 => 
+
+        DB::table('Students')->delete();
+
+        DB::table('Students')->insert(array (
+            0 =>
             array (
                 'student_id' => 'BA001',
                 'major_id' => '2',
@@ -36,7 +37,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'student_id' => 'BA002',
                 'major_id' => '2',
@@ -53,7 +54,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'student_id' => 'BA003',
                 'major_id' => '2',
@@ -70,7 +71,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'student_id' => 'BA004',
                 'major_id' => '2',
@@ -87,7 +88,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'student_id' => 'BA005',
                 'major_id' => '2',
@@ -104,7 +105,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'student_id' => 'BA006',
                 'major_id' => '2',
@@ -121,7 +122,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'student_id' => 'BA007',
                 'major_id' => '2',
@@ -138,7 +139,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'student_id' => 'BA008',
                 'major_id' => '2',
@@ -155,7 +156,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'student_id' => 'BA009',
                 'major_id' => '2',
@@ -172,7 +173,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'student_id' => 'BA010',
                 'major_id' => '2',
@@ -189,7 +190,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'student_id' => 'BA011',
                 'major_id' => '2',
@@ -206,7 +207,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'student_id' => 'BA012',
                 'major_id' => '2',
@@ -223,7 +224,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            12 => 
+            12 =>
             array (
                 'student_id' => 'CS001',
                 'major_id' => '1',
@@ -240,7 +241,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            13 => 
+            13 =>
             array (
                 'student_id' => 'CS002',
                 'major_id' => '1',
@@ -257,7 +258,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            14 => 
+            14 =>
             array (
                 'student_id' => 'CS003',
                 'major_id' => '1',
@@ -274,7 +275,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            15 => 
+            15 =>
             array (
                 'student_id' => 'CS004',
                 'major_id' => '1',
@@ -291,7 +292,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            16 => 
+            16 =>
             array (
                 'student_id' => 'CS005',
                 'major_id' => '1',
@@ -308,7 +309,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            17 => 
+            17 =>
             array (
                 'student_id' => 'CS006',
                 'major_id' => '1',
@@ -325,7 +326,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            18 => 
+            18 =>
             array (
                 'student_id' => 'CS007',
                 'major_id' => '1',
@@ -342,7 +343,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            19 => 
+            19 =>
             array (
                 'student_id' => 'CS008',
                 'major_id' => '1',
@@ -359,7 +360,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            20 => 
+            20 =>
             array (
                 'student_id' => 'CS009',
                 'major_id' => '1',
@@ -376,7 +377,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            21 => 
+            21 =>
             array (
                 'student_id' => 'CS010',
                 'major_id' => '1',
@@ -393,7 +394,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            22 => 
+            22 =>
             array (
                 'student_id' => 'CS011',
                 'major_id' => '1',
@@ -410,7 +411,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            23 => 
+            23 =>
             array (
                 'student_id' => 'CS012',
                 'major_id' => '1',
@@ -427,7 +428,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            24 => 
+            24 =>
             array (
                 'student_id' => 'ME001',
                 'major_id' => '3',
@@ -444,7 +445,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            25 => 
+            25 =>
             array (
                 'student_id' => 'ME002',
                 'major_id' => '3',
@@ -461,7 +462,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            26 => 
+            26 =>
             array (
                 'student_id' => 'ME003',
                 'major_id' => '3',
@@ -478,7 +479,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            27 => 
+            27 =>
             array (
                 'student_id' => 'ME004',
                 'major_id' => '3',
@@ -495,7 +496,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            28 => 
+            28 =>
             array (
                 'student_id' => 'ME005',
                 'major_id' => '3',
@@ -512,7 +513,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            29 => 
+            29 =>
             array (
                 'student_id' => 'ME006',
                 'major_id' => '3',
@@ -529,7 +530,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            30 => 
+            30 =>
             array (
                 'student_id' => 'ME007',
                 'major_id' => '3',
@@ -546,7 +547,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            31 => 
+            31 =>
             array (
                 'student_id' => 'ME008',
                 'major_id' => '3',
@@ -563,7 +564,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            32 => 
+            32 =>
             array (
                 'student_id' => 'ME009',
                 'major_id' => '3',
@@ -580,7 +581,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            33 => 
+            33 =>
             array (
                 'student_id' => 'ME010',
                 'major_id' => '3',
@@ -597,7 +598,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            34 => 
+            34 =>
             array (
                 'student_id' => 'ME011',
                 'major_id' => '3',
@@ -614,7 +615,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            35 => 
+            35 =>
             array (
                 'student_id' => 'ME012',
                 'major_id' => '3',
@@ -631,7 +632,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            36 => 
+            36 =>
             array (
                 'student_id' => 'P001',
                 'major_id' => '4',
@@ -648,7 +649,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            37 => 
+            37 =>
             array (
                 'student_id' => 'P002',
                 'major_id' => '4',
@@ -665,7 +666,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            38 => 
+            38 =>
             array (
                 'student_id' => 'P003',
                 'major_id' => '4',
@@ -682,7 +683,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            39 => 
+            39 =>
             array (
                 'student_id' => 'P004',
                 'major_id' => '4',
@@ -699,7 +700,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            40 => 
+            40 =>
             array (
                 'student_id' => 'P005',
                 'major_id' => '4',
@@ -716,7 +717,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            41 => 
+            41 =>
             array (
                 'student_id' => 'P006',
                 'major_id' => '4',
@@ -733,7 +734,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            42 => 
+            42 =>
             array (
                 'student_id' => 'P007',
                 'major_id' => '4',
@@ -750,7 +751,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            43 => 
+            43 =>
             array (
                 'student_id' => 'P008',
                 'major_id' => '4',
@@ -767,7 +768,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            44 => 
+            44 =>
             array (
                 'student_id' => 'P009',
                 'major_id' => '4',
@@ -784,7 +785,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            45 => 
+            45 =>
             array (
                 'student_id' => 'P010',
                 'major_id' => '4',
@@ -801,7 +802,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            46 => 
+            46 =>
             array (
                 'student_id' => 'P011',
                 'major_id' => '4',
@@ -818,7 +819,7 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            47 => 
+            47 =>
             array (
                 'student_id' => 'P012',
                 'major_id' => '4',
@@ -836,7 +837,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

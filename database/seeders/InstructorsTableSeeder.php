@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class InstructorsTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class InstructorsTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Instructors')->delete();
-        
-        \DB::table('Instructors')->insert(array (
-            0 => 
+
+        DB::table('Instructors')->delete();
+
+        DB::table('Instructors')->insert(array (
+            0 =>
             array (
                 'instructor_id' => 'INS001',
                 'major_id' => '1',
@@ -34,7 +35,7 @@ class InstructorsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'instructor_id' => 'INS002',
                 'major_id' => '1',
@@ -49,7 +50,7 @@ class InstructorsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'instructor_id' => 'INS003',
                 'major_id' => '2',
@@ -64,7 +65,7 @@ class InstructorsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'instructor_id' => 'INS004',
                 'major_id' => '2',
@@ -79,7 +80,7 @@ class InstructorsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'instructor_id' => 'INS005',
                 'major_id' => '3',
@@ -94,7 +95,7 @@ class InstructorsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'instructor_id' => 'INS006',
                 'major_id' => '3',
@@ -109,7 +110,7 @@ class InstructorsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'instructor_id' => 'INS007',
                 'major_id' => '4',
@@ -124,7 +125,7 @@ class InstructorsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'instructor_id' => 'INS008',
                 'major_id' => '4',
@@ -140,7 +141,7 @@ class InstructorsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

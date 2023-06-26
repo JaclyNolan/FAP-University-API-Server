@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ClassSchedulesTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class ClassSchedulesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Class_schedules')->delete();
-        
-        \DB::table('Class_schedules')->insert(array (
-            0 => 
+
+        DB::table('Class_schedules')->delete();
+
+        DB::table('Class_schedules')->insert(array (
+            0 =>
             array (
                 'class_schedule_id' => '1',
                 'class_course_id' => '1',
@@ -30,7 +31,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'class_schedule_id' => '2',
                 'class_course_id' => '1',
@@ -41,7 +42,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'class_schedule_id' => '3',
                 'class_course_id' => '2',
@@ -52,7 +53,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'class_schedule_id' => '4',
                 'class_course_id' => '2',
@@ -63,7 +64,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'class_schedule_id' => '5',
                 'class_course_id' => '3',
@@ -74,7 +75,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'class_schedule_id' => '6',
                 'class_course_id' => '3',
@@ -85,7 +86,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'class_schedule_id' => '7',
                 'class_course_id' => '4',
@@ -96,7 +97,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'class_schedule_id' => '8',
                 'class_course_id' => '4',
@@ -107,7 +108,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'class_schedule_id' => '9',
                 'class_course_id' => '5',
@@ -118,7 +119,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'update_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'class_schedule_id' => '10',
                 'class_course_id' => '5',
@@ -130,7 +131,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'update_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

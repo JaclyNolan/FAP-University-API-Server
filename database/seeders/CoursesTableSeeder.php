@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class CoursesTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class CoursesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Courses')->delete();
-        
-        \DB::table('Courses')->insert(array (
-            0 => 
+
+        DB::table('Courses')->delete();
+
+        DB::table('Courses')->insert(array (
+            0 =>
             array (
                 'course_id' => '1',
                 'major_id' => '1',
@@ -29,7 +30,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'course_id' => '2',
                 'major_id' => '1',
@@ -39,7 +40,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'course_id' => '3',
                 'major_id' => '1',
@@ -49,7 +50,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'course_id' => '4',
                 'major_id' => '2',
@@ -59,7 +60,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'course_id' => '5',
                 'major_id' => '2',
@@ -69,7 +70,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'course_id' => '6',
                 'major_id' => '2',
@@ -79,7 +80,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'course_id' => '7',
                 'major_id' => '3',
@@ -89,7 +90,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'course_id' => '8',
                 'major_id' => '3',
@@ -99,7 +100,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'course_id' => '9',
                 'major_id' => '3',
@@ -109,7 +110,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'course_id' => '10',
                 'major_id' => '4',
@@ -119,7 +120,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'course_id' => '11',
                 'major_id' => '4',
@@ -129,7 +130,7 @@ class CoursesTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'course_id' => '12',
                 'major_id' => '4',
@@ -140,7 +141,7 @@ class CoursesTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }

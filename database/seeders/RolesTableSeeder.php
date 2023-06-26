@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RolesTableSeeder extends Seeder
 {
@@ -14,33 +15,33 @@ class RolesTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Roles')->delete();
-        
-        \DB::table('Roles')->insert(array (
-            0 => 
+
+        DB::table('Roles')->delete();
+
+        DB::table('Roles')->insert(array (
+            0 =>
             array (
                 'role_id' => '1',
                 'role_name' => 'Admin',
             ),
-            1 => 
+            1 =>
             array (
                 'role_id' => '3',
                 'role_name' => 'Instructor',
             ),
-            2 => 
+            2 =>
             array (
                 'role_id' => '2',
                 'role_name' => 'Staff',
             ),
-            3 => 
+            3 =>
             array (
                 'role_id' => '4',
                 'role_name' => 'Student',
             ),
         ));
-        
-        
+
+
     }
 }

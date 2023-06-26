@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ClassEnrollmentsTableSeeder extends Seeder
 {
@@ -14,12 +15,12 @@ class ClassEnrollmentsTableSeeder extends Seeder
      */
     public function run()
     {
-        
 
-        \DB::table('Class_enrollments')->delete();
-        
-        \DB::table('Class_enrollments')->insert(array (
-            0 => 
+
+        DB::table('Class_enrollments')->delete();
+
+        DB::table('Class_enrollments')->insert(array (
+            0 =>
             array (
                 'class_enrollment_id' => '1',
                 'class_course_id' => '1',
@@ -28,7 +29,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            1 => 
+            1 =>
             array (
                 'class_enrollment_id' => '2',
                 'class_course_id' => '1',
@@ -37,7 +38,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            2 => 
+            2 =>
             array (
                 'class_enrollment_id' => '3',
                 'class_course_id' => '1',
@@ -46,7 +47,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            3 => 
+            3 =>
             array (
                 'class_enrollment_id' => '4',
                 'class_course_id' => '1',
@@ -55,7 +56,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 => 
+            4 =>
             array (
                 'class_enrollment_id' => '5',
                 'class_course_id' => '1',
@@ -64,7 +65,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            5 => 
+            5 =>
             array (
                 'class_enrollment_id' => '6',
                 'class_course_id' => '2',
@@ -73,7 +74,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            6 => 
+            6 =>
             array (
                 'class_enrollment_id' => '7',
                 'class_course_id' => '2',
@@ -82,7 +83,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            7 => 
+            7 =>
             array (
                 'class_enrollment_id' => '8',
                 'class_course_id' => '2',
@@ -91,7 +92,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            8 => 
+            8 =>
             array (
                 'class_enrollment_id' => '9',
                 'class_course_id' => '2',
@@ -100,7 +101,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            9 => 
+            9 =>
             array (
                 'class_enrollment_id' => '10',
                 'class_course_id' => '2',
@@ -109,7 +110,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            10 => 
+            10 =>
             array (
                 'class_enrollment_id' => '11',
                 'class_course_id' => '3',
@@ -118,7 +119,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            11 => 
+            11 =>
             array (
                 'class_enrollment_id' => '12',
                 'class_course_id' => '3',
@@ -127,7 +128,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            12 => 
+            12 =>
             array (
                 'class_enrollment_id' => '13',
                 'class_course_id' => '3',
@@ -136,7 +137,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            13 => 
+            13 =>
             array (
                 'class_enrollment_id' => '14',
                 'class_course_id' => '3',
@@ -145,7 +146,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            14 => 
+            14 =>
             array (
                 'class_enrollment_id' => '15',
                 'class_course_id' => '3',
@@ -154,7 +155,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            15 => 
+            15 =>
             array (
                 'class_enrollment_id' => '16',
                 'class_course_id' => '4',
@@ -163,7 +164,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            16 => 
+            16 =>
             array (
                 'class_enrollment_id' => '17',
                 'class_course_id' => '4',
@@ -172,7 +173,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            17 => 
+            17 =>
             array (
                 'class_enrollment_id' => '18',
                 'class_course_id' => '4',
@@ -181,7 +182,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            18 => 
+            18 =>
             array (
                 'class_enrollment_id' => '19',
                 'class_course_id' => '4',
@@ -191,7 +192,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
         ));
-        
-        
+
+
     }
 }
