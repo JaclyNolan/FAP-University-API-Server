@@ -26,7 +26,7 @@ class UserController extends Controller
         try {
             $query = User::select(
                 $this->user->getTable() . '.user_id AS id',
-                User::raw('COALESCE(students.image, staffs.image, instructors.image) AS image'),
+                User::raw('COALESCE(' . (new Student)->getTable() . '.image, ' . (new Staff)->getTable() . '.image, ' . (new Instructor)->getTable() . '.image) AS image'),
                 $this->user->getTable() . '.username',
                 $this->user->getTable() . '.email',
                 (new Role)->getTable() . '.role_name',
@@ -37,7 +37,7 @@ class UserController extends Controller
                 ->leftJoin((new Instructor)->getTable(), $this->user->getTable() . '.instructor_id', '=', (new Instructor)->getTable() . '.instructor_id')
                 ->join((new Role)->getTable(), $this->user->getTable() . '.role_id', '=', (new Role)->getTable() . '.role_id')
                 ->whereNull($this->user->getTable() . '.deleted_at')
-                ->orderBy($this->user->getTable() . '.username');
+                ->orderBy($this->user->getTable() . '.user_id');
 
             // Áp dụng bộ lọc nếu có
             if ($request->has('role_id')) {
