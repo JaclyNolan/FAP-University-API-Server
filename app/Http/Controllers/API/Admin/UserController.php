@@ -89,6 +89,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        $this->user::beginTransaction();
         try {
             $this->user->role_id = $request->input('role_id');
             $this->user->student_id = $request->input('student_id');
@@ -98,12 +99,14 @@ class UserController extends Controller
             $this->user->email = $request->input('email');
             $this->user->created_at = date('Y-m-d H:i:s');
             $this->user->save();
+            $this->user::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'User added Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->user::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add user',
@@ -139,6 +142,7 @@ class UserController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->user::beginTransaction();
         try {
             $user = $this->user::find($id);
             if (!$user) {
@@ -156,12 +160,14 @@ class UserController extends Controller
             $user->email = $request->input('email');
             $user->updated_at = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
             $user->update();
+            $this->user::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'User Update Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->user::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -172,6 +178,7 @@ class UserController extends Controller
 
     public function delete($id)
     {
+        $this->user::beginTransaction();
         try {
             $user = $this->user::find($id);
             if (!$user) {
@@ -183,12 +190,14 @@ class UserController extends Controller
             }
             $user->deleted_at = date('Y-m-d H:i:s');
             $user->update();
+            $this->user::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'User Delete Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->user::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

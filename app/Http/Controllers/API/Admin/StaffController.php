@@ -98,6 +98,7 @@ class StaffController extends Controller
 
     public function store(Request $request)
     {
+        $this->staff::beginTransaction();
         try {
             $this->staff->staff_id = $request->input('staff_id');
             $this->staff->full_name = $request->input('full_name');
@@ -110,12 +111,14 @@ class StaffController extends Controller
             $this->staff->date_of_birth = $request->input('date_of_birth');
             $this->staff->created_at = date('Y-m-d H:i:s');
             $this->staff->save();
+            $this->staff::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Staff added Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->staff::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add staff',
@@ -166,6 +169,7 @@ class StaffController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->staff::beginTransaction();
         try {
             $staff = $this->staff::find($id);
             if (!$staff) {
@@ -185,12 +189,14 @@ class StaffController extends Controller
             $staff->department = $request->input('department');
             $staff->updated_at = date('Y-m-d H:i:s');
             $staff->update();
+            $this->staff::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Staff Update Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->staff::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -201,6 +207,7 @@ class StaffController extends Controller
 
     public function delete($id)
     {
+        $this->staff::beginTransaction();
         try {
             $staff = $this->staff::find($id);
             if (!$staff) {
@@ -212,11 +219,14 @@ class StaffController extends Controller
             }
             $staff->deleted_at = date('Y-m-d H:i:s');
             $staff->update();
+            $this->staff::commit();
+
             return response()->json([
                 'status' => 200,
                 'message' => 'Staff Delete Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->staff::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

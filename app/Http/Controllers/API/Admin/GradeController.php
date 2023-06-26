@@ -139,6 +139,7 @@ class GradeController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->grade::beginTransaction();
         try {
             $grade = $this->grade::find($id);
 
@@ -155,12 +156,14 @@ class GradeController extends Controller
 
             $grade->updated_at = date('Y-m-d H:i:s');
             $grade->update();
+            $this->grade::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Grade Update Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->grade::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
