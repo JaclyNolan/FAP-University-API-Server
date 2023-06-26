@@ -42,6 +42,7 @@ class AuthController extends Controller
 
         $picture = $info ? $info->picture : $payload['picture'];
         $user->email_avatar = $picture;
+        $user->save();
 
         // Email exist in the database return userdata
         /** @var User $user */
