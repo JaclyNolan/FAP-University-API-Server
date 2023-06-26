@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('Class_courses', function (Blueprint $table) {
             $table->increments('class_course_id');
-            $table->integer('class_id');
-            $table->integer('course_id');
+            $table->unsignedInteger('class_id');
+            $table->unsignedInteger('course_id');
             $table->string('instructor_id');
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();

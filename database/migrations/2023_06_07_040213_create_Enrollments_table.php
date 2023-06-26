@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('Enrollments', function (Blueprint $table) {
             $table->increments('enrollment_id');
             $table->string('student_id');
-            $table->integer('course_id');
+            $table->unsignedInteger('course_id');
             $table->integer('status');
             $table->dateTime('created_at');
         });

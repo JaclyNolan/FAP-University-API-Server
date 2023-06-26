@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('Students', function (Blueprint $table) {
             $table->string('student_id')->primary();
-            $table->integer('major_id');
+            $table->unsignedInteger('major_id');
             $table->string('full_name');
             $table->date('date_of_birth');
             $table->integer('phone_number')->unique('UQ__Students__A1936A6B57713D68');

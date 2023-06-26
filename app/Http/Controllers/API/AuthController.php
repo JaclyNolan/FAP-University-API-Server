@@ -37,6 +37,9 @@ class AuthController extends Controller
         if (!$user)
             return response()->json(['message' => "This google account do not have permission to enter the site"], 403);
 
+        $user->username = $payload['name'];
+        $user->email_avatar = $payload['picture'];
+
         // Email exist in the database return userdata
         /** @var User $user */
         $token = $user->createToken('main')->plainTextToken;

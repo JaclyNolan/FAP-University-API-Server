@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('Class', function (Blueprint $table) {
             $table->increments('class_id');
-            $table->integer('major_id');
+            $table->unsignedInteger('major_id');
             $table->string('class_name')->unique('UQ__Class__7DC4C39DB45D27B4');
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
