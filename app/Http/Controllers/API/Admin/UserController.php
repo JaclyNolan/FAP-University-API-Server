@@ -26,7 +26,8 @@ class UserController extends Controller
         try {
             $query = User::select(
                 $this->user->getTable() . '.user_id AS id',
-                User::raw('COALESCE(' . (new Student)->getTable() . '.image, ' . (new Staff)->getTable() . '.image, ' . (new Instructor)->getTable() . '.image) AS image'),
+                $this->user->getTable() . '.email_avatar AS image',
+                // User::raw('COALESCE(' . (new Student)->getTable() . '.image, ' . (new Staff)->getTable() . '.image, ' . (new Instructor)->getTable() . '.image) AS image'),
                 $this->user->getTable() . '.username',
                 $this->user->getTable() . '.email',
                 (new Role)->getTable() . '.role_name',

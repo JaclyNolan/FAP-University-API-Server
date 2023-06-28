@@ -10,6 +10,10 @@ use Laravel\Sanctum\PersonalAccessToken;
 
 class AuthController extends Controller
 {
+    private $client;
+    public function __construct() {
+        $this->client = new Google_Client(['client_id' => env('971766812836-re275ffnj3jnf9gcefunt2tavn29on7q.apps.googleusercontent.com')]);
+    }
     /**
      * googleLogin is a function that verify the idToken that client send
      * return user data and token is successful
@@ -17,20 +21,15 @@ class AuthController extends Controller
      * @param  mixed $request
      * @return JsonResponse
      */
+
     public function googleLogin(Request $request)
     {
         // Verify the ID token with GoogleAPI
         $idToken = $request->input('idToken');
-        $client = new Google_Client(['client_id' => env('971766812836-re275ffnj3jnf9gcefunt2tavn29on7q.apps.googleusercontent.com')]);
-        $payload = $client->verifyIdToken($idToken);
-
-        // If idToken is invalid
+        $payload = $this->client->verifyIdToken($idToken);
         if (!$payload)
             return response()->json(['message' => 'Invalid token'], 400);
-
-        // IdToken is valid, extract user information
         $email = $payload['email'];
-
         $user = User::where('email', $email)->first();
 
         // If email doesn't exist in the database
@@ -38,6 +37,11 @@ class AuthController extends Controller
             return response()->json(['message' => "This google account do not have permission to enter the site"], 403);
 
         // Email exist in the database return userdata
+        $user->username = $payload['name'];
+        $info = $user->getInfoAccordingToRole();
+        $picture = $info ? $info->image : $payload['picture'];
+        $user->email_avatar = $picture;
+        $user->save();
         /** @var User $user */
         $token = $user->createToken('main')->plainTextToken;
 
@@ -49,6 +53,7 @@ class AuthController extends Controller
                     'username' => $user->username,
                     'email' => $user->email,
                     'role' => $user->getRoleName(),
+                    'picture' => $picture,
                 ],
                 'token' => $token
             ],
@@ -69,6 +74,9 @@ class AuthController extends Controller
         //Get PersonalAccessToken model
         /** @var User $user */
         $user = $request->user();
+        $info = $user->getInfoAccordingToRole();
+
+        $picture = $info ? $info->image : $user->email_avatar;
 
         // The token is valid and not expired
         return response()->json([
@@ -77,6 +85,7 @@ class AuthController extends Controller
                 'username' => $user->username,
                 'email' => $user->email,
                 'role' => $user->getRoleName(),
+                'picture' => $picture,
             ]
         ], 200);
     }

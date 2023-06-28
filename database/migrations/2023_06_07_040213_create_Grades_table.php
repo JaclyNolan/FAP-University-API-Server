@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('Grades', function (Blueprint $table) {
             $table->increments('grade_id');
-            $table->integer('class_enrollment_id');
+            $table->unsignedInteger('class_enrollment_id');
             $table->integer('score')->nullable();
             $table->integer('status');
             $table->dateTime('created_at');

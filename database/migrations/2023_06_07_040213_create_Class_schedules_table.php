@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('Class_schedules', function (Blueprint $table) {
             $table->increments('class_schedule_id');
-            $table->integer('class_course_id');
+            $table->unsignedInteger('class_course_id');
             $table->date('day');
             $table->integer('slot');
             $table->integer('room');

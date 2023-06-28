@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('Courses', function (Blueprint $table) {
             $table->increments('course_id');
-            $table->integer('major_id');
+            $table->unsignedInteger('major_id');
             $table->string('course_name')->unique('UQ__Courses__B5B2A66A98F0C663');
             $table->integer('credits');
             $table->dateTime('created_at');

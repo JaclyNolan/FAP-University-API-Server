@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('Instructors', function (Blueprint $table) {
             $table->string('instructor_id')->primary();
-            $table->integer('major_id');
+            $table->unsignedInteger('major_id');
             $table->string('full_name');
             $table->date('date_of_birth');
             $table->integer('phone_number')->unique('UQ__Instruct__A1936A6B256394FF');

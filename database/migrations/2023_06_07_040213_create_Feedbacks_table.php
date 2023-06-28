@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('Feedbacks', function (Blueprint $table) {
             $table->increments('feedback_id');
-            $table->integer('class_enrollment_id');
+            $table->unsignedInteger('class_enrollment_id');
             $table->string('feedback_content');
             $table->dateTime('created_at');
         });

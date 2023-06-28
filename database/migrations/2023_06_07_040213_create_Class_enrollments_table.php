@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('Class_enrollments', function (Blueprint $table) {
             $table->increments('class_enrollment_id');
-            $table->integer('class_course_id');
+            $table->unsignedInteger('class_course_id');
             $table->string('student_id');
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
