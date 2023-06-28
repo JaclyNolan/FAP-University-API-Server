@@ -24,7 +24,8 @@ class UserController extends Controller
     {
         $query = User::select(
             $this->user->getTable() . '.user_id AS id',
-            User::raw('COALESCE(students.image, staffs.image, instructors.image) AS image'),
+            $this->user->getTable() . '.email_avatar AS image',
+            // User::raw('COALESCE(Students.image, Staffs.image, Instructors.image) AS image'),
             $this->user->getTable() . '.username',
             $this->user->getTable() . '.email',
             (new Role)->getTable() . '.role_name',
@@ -35,7 +36,7 @@ class UserController extends Controller
             ->leftJoin((new Instructor)->getTable(), $this->user->getTable() . '.instructor_id', '=', (new Instructor)->getTable() . '.instructor_id')
             ->join((new Role)->getTable(), $this->user->getTable() . '.role_id', '=', (new Role)->getTable() . '.role_id')
             ->whereNull($this->user->getTable() . '.deleted_at')
-            ->orderBy($this->user->getTable() . '.username');
+            ->orderBy($this->user->getTable() . '.user_id');
 
         // Áp dụng bộ lọc nếu có
         if ($request->has('role_id')) {
@@ -69,7 +70,7 @@ class UserController extends Controller
         $this->user->instructor_id = $request->input('instructor_id');
         $this->user->username = $request->input('username');
         $this->user->email = $request->input('email');
-        $this->user->created_at = date('Y-m-d H:i:s'); 
+        $this->user->created_at = date('Y-m-d H:i:s');
         $this->user->save();
 
         return response()->json([
