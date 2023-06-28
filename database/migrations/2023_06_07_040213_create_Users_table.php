@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('student_id')->nullable();
             $table->string('staff_id')->nullable();
             $table->string('instructor_id')->nullable();
-            $table->string('username')->unique('UQ__Users__F3DBC572605E7EBC');
+            $table->string('username');
             $table->string('email')->unique('UQ__Users__AB6E6164A7275E04');
             $table->string('email_avatar')->default("https://i.stack.imgur.com/l60Hf.png");
             $table->dateTime('created_at');
