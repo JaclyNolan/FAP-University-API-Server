@@ -75,7 +75,7 @@ class UsersTableSeeder extends Seeder
             4 =>
             array (
                 'user_id' => '5',
-                'role_id' => '3',
+                'role_id' => '4',
                 'student_id' => 'CS001',
                 'staff_id' => NULL,
                 'instructor_id' => NULL,
@@ -88,7 +88,7 @@ class UsersTableSeeder extends Seeder
             5 =>
             array (
                 'user_id' => '6',
-                'role_id' => '3',
+                'role_id' => '4',
                 'student_id' => 'BA001',
                 'staff_id' => NULL,
                 'instructor_id' => NULL,
@@ -101,7 +101,7 @@ class UsersTableSeeder extends Seeder
             6 =>
             array (
                 'user_id' => '7',
-                'role_id' => '3',
+                'role_id' => '4',
                 'student_id' => 'ME002',
                 'staff_id' => NULL,
                 'instructor_id' => NULL,
@@ -114,7 +114,7 @@ class UsersTableSeeder extends Seeder
             7 =>
             array (
                 'user_id' => '8',
-                'role_id' => '3',
+                'role_id' => '4',
                 'student_id' => 'P003',
                 'staff_id' => NULL,
                 'instructor_id' => NULL,
@@ -127,7 +127,7 @@ class UsersTableSeeder extends Seeder
             8 =>
             array (
                 'user_id' => '9',
-                'role_id' => '4',
+                'role_id' => '3',
                 'student_id' => NULL,
                 'staff_id' => NULL,
                 'instructor_id' => 'INS001',
@@ -140,7 +140,7 @@ class UsersTableSeeder extends Seeder
             9 =>
             array (
                 'user_id' => '10',
-                'role_id' => '4',
+                'role_id' => '3',
                 'student_id' => NULL,
                 'staff_id' => NULL,
                 'instructor_id' => 'INS002',
@@ -153,7 +153,7 @@ class UsersTableSeeder extends Seeder
             10 =>
             array (
                 'user_id' => '11',
-                'role_id' => '4',
+                'role_id' => '3',
                 'student_id' => NULL,
                 'staff_id' => NULL,
                 'instructor_id' => 'INS003',
@@ -166,7 +166,7 @@ class UsersTableSeeder extends Seeder
             11 =>
             array (
                 'user_id' => '12',
-                'role_id' => '4',
+                'role_id' => '3',
                 'student_id' => NULL,
                 'staff_id' => NULL,
                 'instructor_id' => 'INS004',
