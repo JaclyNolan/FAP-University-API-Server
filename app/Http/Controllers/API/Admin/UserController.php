@@ -154,7 +154,6 @@ class UserController extends Controller
             $user->staff_id = $request->input('staff_id');
             $user->instructor_id = $request->input('instructor_id');
             $user->username = $request->input('username');
-            $user->email = $request->input('email');
             $user->updated_at = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
             $user->update();
 
