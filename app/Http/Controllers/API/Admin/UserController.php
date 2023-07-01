@@ -30,6 +30,9 @@ class UserController extends Controller
                 // User::raw('COALESCE(' . (new Student)->getTable() . '.image, ' . (new Staff)->getTable() . '.image, ' . (new Instructor)->getTable() . '.image) AS image'),
                 $this->user->getTable() . '.username',
                 $this->user->getTable() . '.email',
+                (new Student)->getTable() . '.student_id',
+                (new Instructor)->getTable() . '.instructor_id',
+                (new Staff)->getTable() . '.staff_id',
                 (new Role)->getTable() . '.role_name',
                 (new Role)->getTable() . '.role_id'
             )
