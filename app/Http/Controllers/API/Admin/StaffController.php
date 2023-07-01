@@ -132,6 +132,7 @@ class StaffController extends Controller
                 $this->staff->getTable() . '.image',
                 $this->staff->getTable() . '.full_name',
                 (new User)->getTable() . '.email',
+                (new User)->getTable() . '.username',
                 $this->staff->getTable() . '.phone_number',
                 $this->staff->getTable() . '.gender',
                 $this->staff->getTable() . '.date_of_birth AS Dob',

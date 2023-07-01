@@ -143,6 +143,7 @@ class StudentController extends Controller
                 $this->student->getTable() . '.academic_year',
                 $this->student->getTable() . '.date_of_birth AS Dob',
                 (new User)->getTable() . '.email',
+                (new User)->getTable() . '.username',
                 $this->student->getTable() . '.phone_number AS phone',
                 $this->student->getTable() . '.address',
                 $this->student->getTable() . '.gpa',
