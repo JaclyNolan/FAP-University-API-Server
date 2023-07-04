@@ -30,7 +30,9 @@ class StudentController extends Controller
                 (new User)->getTable() . '.email',
                 $this->student->getTable() . '.phone_number AS phone',
                 $this->student->getTable() . '.address',
-                (new Major)->getTable() . '.major_name'
+                (new Major)->getTable() . '.major_id',
+                (new Major)->getTable() . '.major_name',
+                $this->student->getTable() . '.status',
             )
                 ->leftJoin((new User)->getTable(), $this->student->getTable() . '.student_id', '=', (new User)->getTable() . '.student_id')
                 ->join((new Major)->getTable(), $this->student->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
@@ -43,6 +45,11 @@ class StudentController extends Controller
                 $query->where($this->student->getTable() . '.gender', $gender);
             }
 
+            if ($request->has('major')) {
+                $major = $request->input('major');
+                $query->where((new Major)->getTable() . '.major_id', $major);
+            }
+
             if ($request->has('academic_year')) {
                 $academicYear = $request->input('academic_year');
                 $query->where($this->student->getTable() . '.academic_year', $academicYear);
@@ -50,11 +57,7 @@ class StudentController extends Controller
 
             if ($request->has('status')) {
                 $status = $request->input('status');
-                if ($status == 'active') {
-                    $query->whereNull((new User)->getTable() . '.deleted_at');
-                } elseif ($status == 'inactive') {
-                    $query->whereNotNull((new User)->getTable() . '.deleted_at');
-                }
+                $query->where($this->student->getTable() . '.status', $status);
             }
 
             // Áp dụng tìm kiếm từ khóa
