@@ -86,18 +86,21 @@ class CourseController extends Controller
 
     public function store(Request $request)
     {
+        $this->course::beginTransaction();
         try {
             $this->course->course_name = $request->input('course_name');
             $this->course->major_id = $request->input('major_id');
             $this->course->credits = $request->input('credits');
             $this->course->created_at = date('Y-m-d H:i:s');
             $this->course->save();
+            $this->course::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Course added successfully!',
             ]);
         } catch (QueryException $e) {
+            $this->course::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add course',
@@ -145,6 +148,7 @@ class CourseController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->course::beginTransaction();
         try {
             $course = $this->course::find($id);
 
@@ -161,12 +165,14 @@ class CourseController extends Controller
             $course->credits = $request->input('credits');
             $course->updated_at = date('Y-m-d H:i:s');
             $course->update();
+            $this->course::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Course Update Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->course::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -176,6 +182,7 @@ class CourseController extends Controller
     }
     public function delete($id)
     {
+        $this->course::beginTransaction();
         try {
             $course = $this->course::find($id);
 
@@ -189,12 +196,14 @@ class CourseController extends Controller
 
             $course->deleted_at = date('Y-m-d H:i:s');
             $course->update();
+            $this->course::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Course Delete Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->course::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

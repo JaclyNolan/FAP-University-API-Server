@@ -158,6 +158,7 @@ class AttendanceController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->attendance::beginTransaction();
         try {
             $attendance = $this->attendance::find($id);
 
@@ -172,12 +173,14 @@ class AttendanceController extends Controller
 
             $attendance->updated_at = date('Y-m-d H:i:s');
             $attendance->update();
+            $this->attendance::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Attendance Update Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->attendance::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
