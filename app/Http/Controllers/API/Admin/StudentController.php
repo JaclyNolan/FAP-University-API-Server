@@ -108,7 +108,6 @@ class StudentController extends Controller
 
     public function store(Request $request)
     {
-        $this->student::beginTransaction();
         try {
             $this->student->student_id = $request->input('student_id');
             $this->student->full_name = $request->input('full_name');
@@ -123,14 +122,12 @@ class StudentController extends Controller
 
             $this->student->created_at = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
             $this->student->save();
-            $this->student::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Student added Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->student::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add student',
@@ -185,7 +182,6 @@ class StudentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->student::beginTransaction();
         try {
             $student = $this->student::find($id);
             if (!$student) {
@@ -206,14 +202,12 @@ class StudentController extends Controller
             $student->image = $request->input('image');
             $student->updated_at = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
             $student->update();
-            $this->student::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Student Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->student::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -224,7 +218,6 @@ class StudentController extends Controller
 
     public function delete($id)
     {
-        $this->student::beginTransaction();
         try {
             $student = $this->student::find($id);
             if (!$student) {
@@ -236,14 +229,12 @@ class StudentController extends Controller
             }
             $student->deleted_at = date('Y-m-d H:i:s');
             $student->update();
-            $this->student::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Student Delete Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->student::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

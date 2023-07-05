@@ -81,7 +81,6 @@ class NewsController extends Controller
     }
     public function store(Request $request)
     {
-        $this->newsContent::beginTransaction();
         try {
             $this->newsContent->title = $request->input('title');
             $this->newsContent->content = $request->input('content');
@@ -89,14 +88,12 @@ class NewsController extends Controller
             $this->newsContent->status = $request->input('status');
             $this->newsContent->created_at = date('Y-m-d H:i:s');
             $this->newsContent->save();
-            $this->newsContent::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'News Contents added Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->newsContent::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add news contents',
@@ -142,7 +139,6 @@ class NewsController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->newsContent::beginTransaction();
         try {
             $newsContent = $this->newsContent::find($id);
             if (!$newsContent) {
@@ -158,14 +154,12 @@ class NewsController extends Controller
             $newsContent->status = $request->input('status');
             $newsContent->updated_at = date('Y-m-d H:i:s');
             $newsContent->update();
-            $this->newsContent::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'News Content Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->newsContent::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -176,7 +170,6 @@ class NewsController extends Controller
 
     public function delete($id)
     {
-        $this->newsContent::beginTransaction();
         try {
             $newsContent = $this->newsContent::find($id);
             if (!$newsContent) {
@@ -188,14 +181,12 @@ class NewsController extends Controller
             }
             $newsContent->deleted_at = date('Y-m-d H:i:s');
             $newsContent->update();
-            $this->newsContent::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'News Content Delete Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->newsContent::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

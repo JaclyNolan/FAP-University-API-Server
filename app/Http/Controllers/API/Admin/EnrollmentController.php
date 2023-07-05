@@ -138,7 +138,6 @@ class EnrollmentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->enrollment::beginTransaction();
         try {
             $enrollment = $this->enrollment::find($id);
 
@@ -153,14 +152,12 @@ class EnrollmentController extends Controller
 
             $enrollment->updated_at = date('Y-m-d H:i:s');
             $enrollment->update();
-            $this->enrollment::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Enrollment Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->enrollment::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

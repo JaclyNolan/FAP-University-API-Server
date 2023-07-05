@@ -108,7 +108,6 @@ class ClassScheduleController extends Controller
 
     public function store(Request $request)
     {
-        $this->classSchedule::beginTransaction();
         try {
             $this->classSchedule->class_course_id = $request->input('class_course_id');
             $this->classSchedule->day = $request->input('day');
@@ -117,14 +116,12 @@ class ClassScheduleController extends Controller
             $this->classSchedule->status = $request->input('status');
             $this->classSchedule->created_at = date('Y-m-d H:i:s');
             $this->classSchedule->save();
-            $this->classSchedule::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Schedule added successfully!',
             ]);
         } catch (QueryException $e) {
-            $this->classSchedule::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add class',
@@ -174,7 +171,6 @@ class ClassScheduleController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->classSchedule::beginTransaction();
         try {
             $classSchedule = $this->classSchedule::find($id);
 
@@ -193,14 +189,12 @@ class ClassScheduleController extends Controller
 
             $classSchedule->updated_at = date('Y-m-d H:i:s');
             $classSchedule->update();
-            $this->classSchedule::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Schedule Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->classSchedule::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -211,7 +205,6 @@ class ClassScheduleController extends Controller
 
     public function delete($id)
     {
-        $this->classSchedule::beginTransaction();
         try {
             $classSchedule = $this->classSchedule::find($id);
 
@@ -224,14 +217,12 @@ class ClassScheduleController extends Controller
 
             $classSchedule->deleted_at = date('Y-m-d H:i:s');
             $classSchedule->update();
-            $this->classSchedule::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Schedule Delete Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->classSchedule::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
