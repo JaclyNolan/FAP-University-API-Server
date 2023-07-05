@@ -49,26 +49,26 @@ class ClassEnrollmentController extends Controller
                 ->whereNull($this->classEnrollment->getTable() . '.deleted_at')
                 ->orderBy($this->classEnrollment->getTable() . '.class_enrollment_id');
 
-                if ($request->has('instructor')) {
-                    $instructor = $request->input('instructor');
-                    $query->where((new Instructor)->getTable() . '.instructor_id', $instructor);
+                if ($request->has('student_id')) {
+                    $student = $request->input('student_id');
+                    $query->where((new Student)->getTable() . '.student_id', $student);
                 }
-                
-                if ($request->has('major')) {
-                    $major = $request->input('major');
+
+                if ($request->has('major_id')) {
+                    $major = $request->input('major_id');
                     $query->where((new Major)->getTable() . '.major_id', $major);
                 }
-                
-                if ($request->has('course')) {
-                    $course = $request->input('course');
+
+                if ($request->has('course_id')) {
+                    $course = $request->input('course_id');
                     $query->where((new Course)->getTable() . '.course_id', $course);
                 }
-                
-                if ($request->has('class')) {
-                    $class = $request->input('class');
+
+                if ($request->has('class_id')) {
+                    $class = $request->input('class_id');
                     $query->where((new ClassModel)->getTable() . '.class_id', $class);
                 }
-                
+
                 if ($request->has('keyword')) {
                     $keyword = $request->input('keyword');
                     $query->where(function ($q) use ($keyword) {
@@ -116,7 +116,7 @@ class ClassEnrollmentController extends Controller
         try {
             $this->classEnrollment->class_course_id = $request->input('class_course_id');
             $this->classEnrollment->student_id = $request->input('student_id');
-            
+
             $this->classEnrollment->created_at = date('Y-m-d H:i:s');
             $this->classEnrollment->save();
 
