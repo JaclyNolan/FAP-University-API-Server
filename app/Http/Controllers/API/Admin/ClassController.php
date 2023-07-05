@@ -56,14 +56,14 @@ class ClassController extends Controller
                 return response()->json([
                     'status' => 200,
                     'message' => 'No records found.',
-                    'class' => [],
+                    'classes' => [],
                     'total_pages' => $class->lastPage(),
                 ]);
             }
             return response()->json([
                 'status' => 200,
                 'message' => 'Success',
-                'class' => $class->items(),
+                'classes' => $class->items(),
                 'total_pages' => $class->lastPage(),
             ]);
         } catch (QueryException $e) {
