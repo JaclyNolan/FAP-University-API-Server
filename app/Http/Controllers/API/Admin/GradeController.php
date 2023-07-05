@@ -56,8 +56,10 @@ class GradeController extends Controller
                     $query->where(function ($q) use ($keyword) {
                         $q->where(function ($innerQuery) use ($keyword) {
                             $innerQuery->where((new Student)->getTable() . '.full_name', 'LIKE', "%$keyword%")
-                                ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "$keyword")
-                                ->orWhere($this->grade->getTable() . '.status', 'LIKE', "%$keyword%");
+                            ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "$keyword")
+                            ->orWhere((new Student)->getTable() . '.student_name', 'LIKE', "%$keyword%")
+                                ->orWhere($this->grade->getTable() . '.grade_id', 'LIKE', "$keyword");
+
                         });
                     });
                 }
