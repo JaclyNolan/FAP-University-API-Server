@@ -55,11 +55,6 @@ class ClassScheduleController extends Controller
                     $query->where($this->classSchedule->getTable() . '.slot', $slot);
                 }
                 
-                if ($request->has('room')) {
-                    $room = $request->input('room');
-                    $query->where($this->classSchedule->getTable() . '.room', $room);
-                }
-                
                 if ($request->has('status')) {
                     $status = $request->input('status');
                     $query->where($this->classSchedule->getTable() . '.status', $status);
@@ -68,9 +63,10 @@ class ClassScheduleController extends Controller
                 if ($request->has('keyword')) {
                     $keyword = $request->input('keyword');
                     $query->where(function ($q) use ($keyword) {
-                        $q->where($this->classSchedule->getTable() . '.class_schedule_id', 'LIKE', "%$keyword%")
+                        $q->where($this->classSchedule->getTable() . '.class_schedule_id', 'LIKE', "$keyword")
                             ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
-                            ->orWhere((new ClassCourse)->getTable() . '.class_course_id', 'LIKE', "$keyword");
+                            ->orWhere((new ClassCourse)->getTable() . '.class_course_id', 'LIKE', "$keyword")
+                            ->orWhere($this->classSchedule->getTable() . '.room', 'LIKE', "$keyword");
                     });
                 }
 
