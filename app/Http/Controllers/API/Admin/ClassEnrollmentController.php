@@ -113,18 +113,21 @@ class ClassEnrollmentController extends Controller
 
     public function store(Request $request)
     {
+        $this->classEnrollment::beginTransaction();
         try {
             $this->classEnrollment->class_course_id = $request->input('class_course_id');
             $this->classEnrollment->student_id = $request->input('student_id');
 
             $this->classEnrollment->created_at = date('Y-m-d H:i:s');
             $this->classEnrollment->save();
+            $this->classEnrollment::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Enrollment added successfully!',
             ]);
         } catch (QueryException $e) {
+            $this->classEnrollment::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add class',
@@ -185,6 +188,7 @@ class ClassEnrollmentController extends Controller
 
     public function update(Request $request, $id)
     {
+        $this->classEnrollment::beginTransaction();
         try {
             $classEnrollment = $this->classEnrollment::find($id);
 
@@ -201,12 +205,14 @@ class ClassEnrollmentController extends Controller
 
             $classEnrollment->updated_at = date('Y-m-d H:i:s');
             $classEnrollment->update();
+            $this->classEnrollment::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Enrollment Update Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->classEnrollment::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -217,6 +223,7 @@ class ClassEnrollmentController extends Controller
 
     public function delete($id)
     {
+        $this->classEnrollment::beginTransaction();
         try {
             $classEnrollment = $this->classEnrollment::find($id);
 
@@ -229,12 +236,14 @@ class ClassEnrollmentController extends Controller
 
             $classEnrollment->deleted_at = date('Y-m-d H:i:s');
             $classEnrollment->update();
+            $this->classEnrollment::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Enrollment Delete Successfully!',
             ]);
         } catch (\Exception $e) {
+            $this->classEnrollment::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
