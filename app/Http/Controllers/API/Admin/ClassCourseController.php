@@ -41,32 +41,34 @@ class ClassCourseController extends Controller
                 ->whereNull($this->classCourse->getTable() . '.deleted_at')
                 ->orderBy($this->classCourse->getTable() . '.class_course_id');
 
-            if ($request->has('major')) {
-                $major = $request->input('major');
+            if ($request->has('major_id')) {
+                $major = $request->input('major_id');
                 $query->where((new Major)->getTable() . '.major_id', $major);
             }
 
-            if ($request->has('course')) {
-                $course = $request->input('course');
+            if ($request->has('course_id')) {
+                $course = $request->input('course_id');
                 $query->where((new Course)->getTable() . '.course_id', $course);
             }
 
-            if ($request->has('class')) {
-                $class = $request->input('class');
+            if ($request->has('class_id')) {
+                $class = $request->input('class_id');
                 $query->where((new ClassModel)->getTable() . '.class_id', $class);
             }
 
-            if ($request->has('instructor')) {
-                $instructor = $request->input('instructor');
-                $query->where((new Instructor)->getTable() . '.instructor_id', $instructor);
+            if ($request->has('instructor_id')) {
+                $instructor = $request->input('instructor_id');
+                $query->where($this->classCourse->getTable() . '.instructor_id', $instructor);
             }
 
             if ($request->has('keyword')) {
                 $keyword = $request->input('keyword');
                 $query->where(function ($q) use ($keyword) {
-                    $q->where($this->classCourse->getTable() . '.class_course_id', 'LIKE', "$keyword");
-                    $q->where((new Instructor)->getTable() . '.instructor_id', 'LIKE', "$keyword");
-                    $q->where((new Instructor)->getTable() . '.instructor_name', 'LIKE', "%$keyword%");
+                    $q->where($this->classCourse->getTable() . '.class_course_id', 'LIKE', "%$keyword%")
+                        ->orWhere((new Instructor)->getTable() . '.full_name', 'LIKE', "%$keyword%")
+                        ->orWhere((new Course)->getTable() . '.course_name', 'LIKE', "%$keyword%")
+                        ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
+                        ->orWhere((new Major)->getTable() . '.major_name', 'LIKE', "%$keyword%");
                 });
             }
 
