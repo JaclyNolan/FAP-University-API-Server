@@ -58,13 +58,15 @@ class ClassCourseController extends Controller
 
             if ($request->has('instructor')) {
                 $instructor = $request->input('instructor');
-                $query->where($this->classCourse->getTable() . '.instructor_id', $instructor);
+                $query->where((new Instructor)->getTable() . '.instructor_id', $instructor);
             }
 
             if ($request->has('keyword')) {
                 $keyword = $request->input('keyword');
                 $query->where(function ($q) use ($keyword) {
                     $q->where($this->classCourse->getTable() . '.class_course_id', 'LIKE', "$keyword");
+                    $q->where((new Instructor)->getTable() . '.instructor_id', 'LIKE', "$keyword");
+                    $q->where((new Instructor)->getTable() . '.instructor_name', 'LIKE', "%$keyword%");
                 });
             }
 
