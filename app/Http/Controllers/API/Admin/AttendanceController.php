@@ -27,6 +27,7 @@ class AttendanceController extends Controller
         try {
             $query = Attendance::select(
                 $this->attendance->getTable() . '.attendance_id AS id',
+                (new Student)->getTable() . '.student_id',
                 (new Student)->getTable() . '.full_name AS student_name',
                 (new ClassModel)->getTable() . '.class_name',
                 (new Course)->getTable() . '.course_name',
@@ -58,11 +59,6 @@ class AttendanceController extends Controller
                     $query->where((new ClassSchedule)->getTable() . '.slot', $slot);
                 }
                 
-                if ($request->has('room')) {
-                    $room = $request->input('room');
-                    $query->where((new ClassSchedule)->getTable() . '.room', $room);
-                }
-                
                 if ($request->has('status')) {
                     $status = $request->input('status');
                     $query->where($this->attendance->getTable() . '.attendance_status', $status);
@@ -75,7 +71,8 @@ class AttendanceController extends Controller
                             $innerQuery->where($this->attendance->getTable() . '.attendance_id', 'LIKE', "$keyword")
                                 ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "$keyword")
                                 ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
-                                ->orWhere((new Course)->getTable() . '.course_name', 'LIKE', "%$keyword%");
+                                ->orWhere((new Course)->getTable() . '.course_name', 'LIKE', "%$keyword%")
+                                ->orWhere((new ClassSchedule)->getTable() . '.room', 'LIKE', "$keyword");
                         });
                     });
                 }
