@@ -207,7 +207,7 @@ class ClassCourseController extends Controller
 
         return response()->json([
             'classCourses' => $classCourses,
-        ]);
+        ], 200);
     }
 
     public function showForInstructor(Request $request, $id)
@@ -231,7 +231,7 @@ class ClassCourseController extends Controller
         ])->first();
         return response()->json([
             'classCourse' => $classCourse,
-        ]);
+        ], 200);
     }
 
     public function showStudentsForInstructor(Request $request, $id)
@@ -257,7 +257,7 @@ class ClassCourseController extends Controller
 
         return response()->json([
             'classEnrollments' => $classEnrollments,
-        ]);
+        ], 200);
     }
 
 

@@ -169,7 +169,7 @@ class ClassEnrollmentController extends Controller
         $query->select($columnsToSelect);
         return response()->json([
             'classEnrollment' => $this->buildSingleClassEnrollment($query, $id)->first(),
-        ]);
+        ], 200);
     }
 
 

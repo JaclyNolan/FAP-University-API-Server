@@ -179,7 +179,7 @@ class ClassScheduleController extends Controller
 
         return response()->json([
             'classSchedules' => $classSchedule,
-        ]);
+        ], 200);
     }
 
     public function store(Request $request)
