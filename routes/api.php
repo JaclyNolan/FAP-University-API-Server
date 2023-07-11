@@ -135,23 +135,38 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::get('/edit-feedback/{id}', [FeedbackController::class, 'edit']);
     });
 
-    // Attendance 
+    // Attendance
     Route::group(['prefix' => 'attendances'], function () {
         Route::get('/', [AttendanceController::class, 'index']);
         Route::get('/edit-attendance/{id}', [AttendanceController::class, 'edit']);
         Route::put('/update-attendance/{id}', [AttendanceController::class, 'update']);
     });
-});
 
-// Enrollments 
-Route::group(['prefix' => 'enrollments'], function () {
-    Route::get('/', [EnrollmentController::class, 'index']);
-    Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
-    Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
+    // Enrollments
+    Route::group(['prefix' => 'enrollments'], function () {
+        Route::get('/', [EnrollmentController::class, 'index']);
+        Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
+        Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
+    });
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
     // User with instructor role can access these routes
+    // Class
+    Route::group(['prefix' => 'instructor'], function () {
+        Route::group(['prefix' => '/classCourse'], function () {
+            Route::get('/', [ClassCourseController::class, 'indexForInstructor']);
+            Route::get('/{id}', [ClassCourseController::class, 'showForInstructor']);
+            Route::get('/{id}/students', [ClassCourseController::class, 'showStudentsForInstructor']);
+        });
+        Route::group(['prefix' => '/classEnrollment'], function () {
+            Route::get('/{id}', [ClassEnrollmentController::class, 'showForInstructor']);
+        });
+        Route::group(['prefix' => '/detail'], function () {
+            Route::get('/', [InstructorController::class, 'detail']);
+        });
+
+    });
 });
 
 Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {

@@ -39,8 +39,9 @@ class AuthController extends Controller
         // Email exist in the database return userdata
         $user->username = $payload['name'];
         $info = $user->getInfoAccordingToRole();
-        $picture = $info ? $info->image : $payload['picture'];
-        $user->email_avatar = $picture;
+        // $picture = $info ? $info->image : $payload['picture'];
+        $picture = $payload['picture'];
+        $user->email_avatar = $payload['picture'];
         $user->save();
         /** @var User $user */
         $token = $user->createToken('main')->plainTextToken;
@@ -74,9 +75,8 @@ class AuthController extends Controller
         //Get PersonalAccessToken model
         /** @var User $user */
         $user = $request->user();
-        $info = $user->getInfoAccordingToRole();
 
-        $picture = $info ? $info->image : $user->email_avatar;
+        $picture = $user->email_avatar;
 
         // The token is valid and not expired
         return response()->json([

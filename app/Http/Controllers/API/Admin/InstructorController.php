@@ -229,4 +229,29 @@ class InstructorController extends Controller
             ], 500);
         }
     }
+
+    public function detail(Request $request) {
+        try {
+            $instructor = $request->user()->instructor;
+
+            if (!$instructor) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Instructor not found',
+                    'error' => 'The requested instructor does not exist.',
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 200,
+                'instructor' => $instructor,
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server Error',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
 }

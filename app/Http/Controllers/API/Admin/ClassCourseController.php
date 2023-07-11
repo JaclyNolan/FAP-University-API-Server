@@ -6,11 +6,14 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\ClassCourse;
+use App\Models\ClassEnrollment;
 use App\Models\Instructor;
 use App\Models\Course;
 use App\Models\ClassModel;
 use App\Models\Major;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClassCourseController extends Controller
 {
@@ -23,6 +26,7 @@ class ClassCourseController extends Controller
     public function index(Request $request)
     {
         try {
+            $user = $request->user();
             $query = ClassCourse::select(
                 $this->classCourse->getTable() . '.class_course_id AS id',
                 (new Instructor)->getTable() . '.instructor_id',
@@ -127,9 +131,140 @@ class ClassCourseController extends Controller
         }
     }
 
-    public function edit($id)
+    public function buildMultipleClassCourse(Builder $query, Request $request)
+    {
+        $class_id = $request->input('class_id');
+        $course_id = $request->input('course_id');
+        $major_id = $request->input('major_id');
+        $instructor_id = $request->input('instructor_id');
+        $keyword = $request->input('keyword');
+
+        if ($class_id) {
+            $query->whereHas('class', function ($q) use ($class_id) {
+                $q->where('class_id', $class_id);
+            });
+        }
+        if ($course_id) {
+            $query->whereHas('course', function ($q) use ($course_id) {
+                $q->where('course_id', $course_id);
+            });
+        }
+        if ($major_id) {
+            $query->whereHas('class.major', function ($q) use ($major_id) {
+                $q->where('major_id', $major_id);
+            });
+        }
+        if ($instructor_id) {
+            $query->whereHas('instructor', function ($q) use ($instructor_id) {
+                $q->where('instructor_id', $instructor_id);
+            });
+        }
+
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('class_course_id', 'LIKE', "%{$keyword}%")
+                    ->orWhereHas('course', function ($q) use ($keyword) {
+                        $q->where('course_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orWhereHas('class', function ($q) use ($keyword) {
+                        $q->where('class_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orWhereHas('class.major', function ($q) use ($keyword) {
+                        $q->where('major_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orWhereHas('instructor', function ($q) use ($keyword) {
+                        $q->where('full_name', 'LIKE', "%{$keyword}%");
+                    });
+            });
+        }
+        return $query;
+    }
+
+    public function buildSingleClassCourse(Builder $query, $id)
+    {
+        $query->where('class_course_id', $id);
+        return $query;
+    }
+
+    public function indexForInstructor(Request $request)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        $query->where('instructor_id', $user->instructor_id);
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassCourse)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+        $query->select($columnsToSelect);
+        //Apply filter and search
+        $query = $this->buildMultipleClassCourse($query, $request);
+        $classCourses = $query->with([
+            'class:class_id,major_id,class_name',
+            'course:course_id,course_name',
+            'class.major:major_id,major_name',
+        ])->get();
+
+        return response()->json([
+            'classCourses' => $classCourses,
+        ]);
+    }
+
+    public function showForInstructor(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassCourse)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+        // Select the desired columns
+        $query->select($columnsToSelect);
+        $query->where('class_course_id', $id);
+        $query = $this->buildSingleClassCourse($query, $id);
+
+        $classCourse = $query->with([
+            'class:class_id,class_name',
+            'course:course_id,course_name',
+        ])->first();
+        return response()->json([
+            'classCourse' => $classCourse,
+        ]);
+    }
+
+    public function showStudentsForInstructor(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassEnrollment::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassEnrollment)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+        // Select the desired columns
+        $query->select($columnsToSelect);
+        $query->where('class_course_id', $id);
+        $query->whereHas('classCourse', function (Builder $q) use ($user) {
+            $q->where('instructor_id', $user->instructor_id);
+        });
+        $classEnrollments = $query->with(
+            'student:student_id,image,full_name,gender',
+            'student.user:student_id,email',
+        )->get();
+
+        return response()->json([
+            'classEnrollments' => $classEnrollments,
+        ]);
+    }
+
+
+    public function edit(Request $request, $id)
     {
         try {
+            $user = $request->user();
             $classCourse = ClassCourse::select(
                 $this->classCourse->getTable() . '.class_course_id AS id',
                 (new Instructor)->getTable() . '.instructor_id',
@@ -148,6 +283,10 @@ class ClassCourseController extends Controller
                 ->whereNull($this->classCourse->getTable() . '.deleted_at')
                 ->where($this->classCourse->getTable() . '.class_course_id', $id)
                 ->first();
+
+            if ($user->role_id == 3 && $classCourse) {
+                $classCourse->where($this->classCourse->getTable() . '.instructor_id', $user->instructor_id);
+            }
 
             if (!$classCourse) {
                 return response()->json([
