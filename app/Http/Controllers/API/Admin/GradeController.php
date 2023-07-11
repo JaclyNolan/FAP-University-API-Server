@@ -56,8 +56,10 @@ class GradeController extends Controller
                     $query->where(function ($q) use ($keyword) {
                         $q->where(function ($innerQuery) use ($keyword) {
                             $innerQuery->where((new Student)->getTable() . '.full_name', 'LIKE', "%$keyword%")
-                                ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "$keyword")
-                                ->orWhere($this->grade->getTable() . '.status', 'LIKE', "%$keyword%");
+                            ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "$keyword")
+                            ->orWhere((new Student)->getTable() . '.student_name', 'LIKE', "%$keyword%")
+                                ->orWhere($this->grade->getTable() . '.grade_id', 'LIKE', "$keyword");
+
                         });
                     });
                 }
@@ -139,7 +141,6 @@ class GradeController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->grade::beginTransaction();
         try {
             $grade = $this->grade::find($id);
 
@@ -156,14 +157,12 @@ class GradeController extends Controller
 
             $grade->updated_at = date('Y-m-d H:i:s');
             $grade->update();
-            $this->grade::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Grade Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->grade::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

@@ -55,11 +55,6 @@ class ClassScheduleController extends Controller
                     $query->where($this->classSchedule->getTable() . '.slot', $slot);
                 }
                 
-                if ($request->has('room')) {
-                    $room = $request->input('room');
-                    $query->where($this->classSchedule->getTable() . '.room', $room);
-                }
-                
                 if ($request->has('status')) {
                     $status = $request->input('status');
                     $query->where($this->classSchedule->getTable() . '.status', $status);
@@ -68,9 +63,10 @@ class ClassScheduleController extends Controller
                 if ($request->has('keyword')) {
                     $keyword = $request->input('keyword');
                     $query->where(function ($q) use ($keyword) {
-                        $q->where($this->classSchedule->getTable() . '.class_schedule_id', 'LIKE', "%$keyword%")
+                        $q->where($this->classSchedule->getTable() . '.class_schedule_id', 'LIKE', "$keyword")
                             ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
-                            ->orWhere((new ClassCourse)->getTable() . '.class_course_id', 'LIKE', "$keyword");
+                            ->orWhere((new ClassCourse)->getTable() . '.class_course_id', 'LIKE', "$keyword")
+                            ->orWhere($this->classSchedule->getTable() . '.room', 'LIKE', "$keyword");
                     });
                 }
 
@@ -108,7 +104,6 @@ class ClassScheduleController extends Controller
 
     public function store(Request $request)
     {
-        $this->classSchedule::beginTransaction();
         try {
             $this->classSchedule->class_course_id = $request->input('class_course_id');
             $this->classSchedule->day = $request->input('day');
@@ -117,14 +112,12 @@ class ClassScheduleController extends Controller
             $this->classSchedule->status = $request->input('status');
             $this->classSchedule->created_at = date('Y-m-d H:i:s');
             $this->classSchedule->save();
-            $this->classSchedule::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Schedule added successfully!',
             ]);
         } catch (QueryException $e) {
-            $this->classSchedule::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add class',
@@ -174,7 +167,6 @@ class ClassScheduleController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->classSchedule::beginTransaction();
         try {
             $classSchedule = $this->classSchedule::find($id);
 
@@ -193,14 +185,12 @@ class ClassScheduleController extends Controller
 
             $classSchedule->updated_at = date('Y-m-d H:i:s');
             $classSchedule->update();
-            $this->classSchedule::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Schedule Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->classSchedule::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -211,7 +201,6 @@ class ClassScheduleController extends Controller
 
     public function delete($id)
     {
-        $this->classSchedule::beginTransaction();
         try {
             $classSchedule = $this->classSchedule::find($id);
 
@@ -224,14 +213,12 @@ class ClassScheduleController extends Controller
 
             $classSchedule->deleted_at = date('Y-m-d H:i:s');
             $classSchedule->update();
-            $this->classSchedule::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Schedule Delete Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->classSchedule::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

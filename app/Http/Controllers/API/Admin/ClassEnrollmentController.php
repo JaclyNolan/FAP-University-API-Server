@@ -10,9 +10,10 @@ use App\Models\Major;
 use App\Models\ClassModel;
 use App\Models\Student;
 use App\Models\ClassCourse;
-
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ClassEnrollmentController extends Controller
 {
@@ -22,9 +23,16 @@ class ClassEnrollmentController extends Controller
         $this->classEnrollment = new ClassEnrollment;
     }
 
+    public function buildSingleClassEnrollment(Builder $query, $id)
+    {
+        $classEnrollment = $query->where('class_enrollment_id', $id);
+        return $classEnrollment;
+    }
+
     public function index(Request $request)
     {
         try {
+            $user = $request->user();
             $query = ClassEnrollment::select(
                 $this->classEnrollment->getTable() . '.class_enrollment_id AS id',
                 (new ClassCourse)->getTable() . '.class_course_id',
@@ -38,6 +46,8 @@ class ClassEnrollmentController extends Controller
                 (new Major)->getTable() . '.major_name',
                 (new Student)->getTable() . '.student_id',
                 (new Student)->getTable() . '.full_name AS student_name',
+                (new Student)->getTable() . '.image AS student_image',
+                (new Student)->getTable() . '.gender AS student_gender',
                 $this->classEnrollment->getTable() . '.created_at',
             )
                 ->join((new ClassCourse)->getTable(), $this->classEnrollment->getTable() . '.class_course_id', '=', (new ClassCourse)->getTable() . '.class_course_id')
@@ -49,35 +59,44 @@ class ClassEnrollmentController extends Controller
                 ->whereNull($this->classEnrollment->getTable() . '.deleted_at')
                 ->orderBy($this->classEnrollment->getTable() . '.class_enrollment_id');
 
-                if ($request->has('student_id')) {
-                    $student = $request->input('student_id');
-                    $query->where((new Student)->getTable() . '.student_id', $student);
-                }
+            if ($user->role_id == 3) {
+                $query->where((new Instructor)->getTable() . '.instructor_id', $user->instructor_id);
+            }
 
-                if ($request->has('major_id')) {
-                    $major = $request->input('major_id');
-                    $query->where((new Major)->getTable() . '.major_id', $major);
-                }
+            if ($request->has('student_id')) {
+                $student = $request->input('student_id');
+                $query->where((new Student)->getTable() . '.student_id', $student);
+            }
 
-                if ($request->has('course_id')) {
-                    $course = $request->input('course_id');
-                    $query->where((new Course)->getTable() . '.course_id', $course);
-                }
+            if ($request->has('major_id')) {
+                $major = $request->input('major_id');
+                $query->where((new Major)->getTable() . '.major_id', $major);
+            }
 
-                if ($request->has('class_id')) {
-                    $class = $request->input('class_id');
-                    $query->where((new ClassModel)->getTable() . '.class_id', $class);
-                }
+            if ($request->has('course_id')) {
+                $course = $request->input('course_id');
+                $query->where((new Course)->getTable() . '.course_id', $course);
+            }
 
-                if ($request->has('keyword')) {
-                    $keyword = $request->input('keyword');
-                    $query->where(function ($q) use ($keyword) {
-                        $q->where((new ClassEnrollment)->getTable() . '.class_enrollment_id', 'LIKE', "%$keyword%")
-                            ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
-                            ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "$keyword")
-                            ->orWhere((new Student)->getTable() . '.full_name', 'LIKE', "%$keyword%");
-                    });
-                }
+            if ($request->has('class_id')) {
+                $class = $request->input('class_id');
+                $query->where((new ClassModel)->getTable() . '.class_id', $class);
+            }
+
+            if ($request->has('class_course_id')) {
+                $classCourse = $request->input('class_course_id');
+                $query->where((new ClassCourse)->getTable() . '.class_course_id', $classCourse);
+            }
+
+            if ($request->has('keyword')) {
+                $keyword = $request->input('keyword');
+                $query->where(function ($q) use ($keyword) {
+                    $q->where((new ClassEnrollment)->getTable() . '.class_enrollment_id', 'LIKE', "%$keyword%")
+                        ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
+                        ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "$keyword")
+                        ->orWhere((new Student)->getTable() . '.full_name', 'LIKE', "%$keyword%");
+                });
+            }
 
             $classEnrollments = $query->paginate(10); // Số bản ghi trên mỗi trang
             // Kiểm tra xem trang hiện tại có lớn hơn tổng số trang không
@@ -113,21 +132,18 @@ class ClassEnrollmentController extends Controller
 
     public function store(Request $request)
     {
-        $this->classEnrollment::beginTransaction();
         try {
             $this->classEnrollment->class_course_id = $request->input('class_course_id');
             $this->classEnrollment->student_id = $request->input('student_id');
 
             $this->classEnrollment->created_at = date('Y-m-d H:i:s');
             $this->classEnrollment->save();
-            $this->classEnrollment::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Enrollment added successfully!',
             ]);
         } catch (QueryException $e) {
-            $this->classEnrollment::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add class',
@@ -135,6 +151,27 @@ class ClassEnrollmentController extends Controller
             ], 500);
         }
     }
+
+    public function showForInstructor(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassEnrollment::query();
+        $query->whereHas('classCourse', function ($q) use ($user) {
+            $q->where('instructor_id', $user->instructor_id);
+        });
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassEnrollment)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+        // Select the desired columns
+        $query->select($columnsToSelect);
+        return response()->json([
+            'classEnrollment' => $this->buildSingleClassEnrollment($query, $id)->first(),
+        ]);
+    }
+
 
     public function edit($id)
     {
@@ -188,7 +225,6 @@ class ClassEnrollmentController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->classEnrollment::beginTransaction();
         try {
             $classEnrollment = $this->classEnrollment::find($id);
 
@@ -205,14 +241,12 @@ class ClassEnrollmentController extends Controller
 
             $classEnrollment->updated_at = date('Y-m-d H:i:s');
             $classEnrollment->update();
-            $this->classEnrollment::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Enrollment Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->classEnrollment::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -223,7 +257,6 @@ class ClassEnrollmentController extends Controller
 
     public function delete($id)
     {
-        $this->classEnrollment::beginTransaction();
         try {
             $classEnrollment = $this->classEnrollment::find($id);
 
@@ -236,14 +269,12 @@ class ClassEnrollmentController extends Controller
 
             $classEnrollment->deleted_at = date('Y-m-d H:i:s');
             $classEnrollment->update();
-            $this->classEnrollment::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Enrollment Delete Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->classEnrollment::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

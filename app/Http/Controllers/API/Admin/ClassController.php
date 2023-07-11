@@ -77,20 +77,17 @@ class ClassController extends Controller
 
     public function store(Request $request)
     {
-        $this->class::beginTransaction();
         try {
             $this->class->class_name = $request->input('class_name');
             $this->class->major_id = $request->input('major_id');
             $this->class->created_at = date('Y-m-d H:i:s');
             $this->class->save();
-            $this->class::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class added successfully!',
             ]);
         } catch (QueryException $e) {
-            $this->class::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add class',
@@ -136,7 +133,6 @@ class ClassController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->class::beginTransaction();
         try {
             $class = $this->class::find($id);
 
@@ -152,14 +148,12 @@ class ClassController extends Controller
             $class->major_id = $request->input('major_id');
             $class->updated_at = date('Y-m-d H:i:s');
             $class->update();
-            $this->class::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->class::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -170,7 +164,6 @@ class ClassController extends Controller
 
     public function delete($id)
     {
-        $this->class::beginTransaction();
         try {
             $class = $this->class::find($id);
 
@@ -184,14 +177,12 @@ class ClassController extends Controller
 
             $class->deleted_at = date('Y-m-d H:i:s');
             $class->update();
-            $this->class::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Class Delete Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->class::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

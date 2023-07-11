@@ -21,17 +21,17 @@ class ClassCourse extends Model
 
     public function class()
     {
-        return $this->belongsTo(ClassModel::class);
+        return $this->belongsTo(ClassModel::class, 'class_id', 'class_id');
     }
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id', 'course_id');
     }
 
     public function instructor()
     {
-        return $this->belongsTo(Instructor::class);
+        return $this->belongsTo(Instructor::class, 'instructor_id', 'instructor_id');
     }
 
     public function classEnrollments()

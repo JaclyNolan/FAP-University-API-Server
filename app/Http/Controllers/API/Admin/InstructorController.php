@@ -101,7 +101,6 @@ class InstructorController extends Controller
 
     public function store(Request $request)
     {
-        $this->instructor::beginTransaction();
         try {
             $this->instructor->instructor_id = $request->input('instructor_id');
             $this->instructor->major_id = $request->input('major_id');
@@ -114,14 +113,12 @@ class InstructorController extends Controller
             $this->instructor->position = $request->input('position');
             $this->instructor->created_at = date('Y-m-d H:i:s');
             $this->instructor->save();
-            $this->instructor::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Instructor added Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->instructor::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Failed to add instructor',
@@ -175,7 +172,6 @@ class InstructorController extends Controller
 
     public function update(Request $request, $id)
     {
-        $this->instructor::beginTransaction();
         try {
             $instructor = $this->instructor::find($id);
             if (!$instructor) {
@@ -194,14 +190,12 @@ class InstructorController extends Controller
             $instructor->image = $request->input('image');
             $instructor->updated_at = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
             $instructor->update();
-            $this->instructor::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Instructor Update Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->instructor::rollBack();
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',
@@ -212,7 +206,6 @@ class InstructorController extends Controller
 
     public function delete($id)
     {
-        $this->instructor::beginTransaction();
         try {
             $instructor = $this->instructor::find($id);
             if (!$instructor) {
@@ -223,14 +216,37 @@ class InstructorController extends Controller
             }
             $instructor->deleted_at = date('Y-m-d H:i:s');
             $instructor->update();
-            $this->instructor::commit();
 
             return response()->json([
                 'status' => 200,
                 'message' => 'Instructor Delete Successfully!',
             ]);
         } catch (\Exception $e) {
-            $this->instructor::rollBack();
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server Error',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function detail(Request $request) {
+        try {
+            $instructor = $request->user()->instructor;
+
+            if (!$instructor) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Instructor not found',
+                    'error' => 'The requested instructor does not exist.',
+                ], 404);
+            }
+
+            return response()->json([
+                'status' => 200,
+                'instructor' => $instructor,
+            ]);
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,
                 'message' => 'Server Error',

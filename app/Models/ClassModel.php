@@ -20,7 +20,7 @@ class ClassModel extends Model
 
     public function major()
     {
-        return $this->belongsTo(Major::class);
+        return $this->belongsTo(Major::class, 'major_id', 'major_id');
     }
 
     public function classCourses()
