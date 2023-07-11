@@ -162,6 +162,9 @@ Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
         Route::group(['prefix' => '/classEnrollment'], function () {
             Route::get('/{id}', [ClassEnrollmentController::class, 'showForInstructor']);
         });
+        Route::group(['prefix' => '/classSchedule'], function () {
+            Route::get('/', [ClassScheduleController::class, 'indexForInstructor']);
+        });
         Route::group(['prefix' => '/detail'], function () {
             Route::get('/', [InstructorController::class, 'detail']);
         });

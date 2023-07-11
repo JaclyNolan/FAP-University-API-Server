@@ -7,8 +7,11 @@ use App\Models\ClassSchedule;
 use App\Models\ClassModel;
 use App\Models\Course;
 use App\Models\ClassCourse;
+use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class ClassScheduleController extends Controller
 {
@@ -40,35 +43,35 @@ class ClassScheduleController extends Controller
                 ->whereNull($this->classSchedule->getTable() . '.deleted_at')
                 ->orderBy($this->classSchedule->getTable() . '.class_schedule_id');
 
-                if ($request->has('class')) {
-                    $class = $request->input('class');
-                    $query->where((new ClassModel)->getTable() . '.class_id', $class);
-                }
-                
-                if ($request->has('course')) {
-                    $course = $request->input('course');
-                    $query->where((new Course)->getTable() . '.course_id', $course);
-                }
-                
-                if ($request->has('slot')) {
-                    $slot = $request->input('slot');
-                    $query->where($this->classSchedule->getTable() . '.slot', $slot);
-                }
-                
-                if ($request->has('status')) {
-                    $status = $request->input('status');
-                    $query->where($this->classSchedule->getTable() . '.status', $status);
-                }
-                
-                if ($request->has('keyword')) {
-                    $keyword = $request->input('keyword');
-                    $query->where(function ($q) use ($keyword) {
-                        $q->where($this->classSchedule->getTable() . '.class_schedule_id', 'LIKE', "$keyword")
-                            ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
-                            ->orWhere((new ClassCourse)->getTable() . '.class_course_id', 'LIKE', "$keyword")
-                            ->orWhere($this->classSchedule->getTable() . '.room', 'LIKE', "$keyword");
-                    });
-                }
+            if ($request->has('class')) {
+                $class = $request->input('class');
+                $query->where((new ClassModel)->getTable() . '.class_id', $class);
+            }
+
+            if ($request->has('course')) {
+                $course = $request->input('course');
+                $query->where((new Course)->getTable() . '.course_id', $course);
+            }
+
+            if ($request->has('slot')) {
+                $slot = $request->input('slot');
+                $query->where($this->classSchedule->getTable() . '.slot', $slot);
+            }
+
+            if ($request->has('status')) {
+                $status = $request->input('status');
+                $query->where($this->classSchedule->getTable() . '.status', $status);
+            }
+
+            if ($request->has('keyword')) {
+                $keyword = $request->input('keyword');
+                $query->where(function ($q) use ($keyword) {
+                    $q->where($this->classSchedule->getTable() . '.class_schedule_id', 'LIKE', "$keyword")
+                        ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
+                        ->orWhere((new ClassCourse)->getTable() . '.class_course_id', 'LIKE', "$keyword")
+                        ->orWhere($this->classSchedule->getTable() . '.room', 'LIKE', "$keyword");
+                });
+            }
 
             $classSchedules = $query->paginate(10); // Số bản ghi trên mỗi trang
             // Kiểm tra xem trang hiện tại có lớn hơn tổng số trang không
@@ -100,6 +103,83 @@ class ClassScheduleController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function buildMultipleClassSchedule(Request $request, Builder $query)
+    {
+        $class_id = $request->input('class_id');
+        $course_id = $request->input('course_id');
+        $day = $request->input('day');
+        $slot = $request->input('slot');
+        $status = $request->input('status');
+        $keyword = $request->input('keyword');
+        $startDate = $request->input('start_date');
+        $endDate = $request->input('end_date');
+
+        if ($startDate) {
+            $startDate = Carbon::createFromFormat('d/m/Y', $startDate);
+            $query->whereDate('day', '>=', $startDate);
+        }
+        if ($endDate) {
+            $endDate = Carbon::createFromFormat('d/m/Y', $endDate);
+            $query->whereDate('day', '<=', $endDate);
+        }
+        if ($class_id) {
+            $query->whereHas('classCourse.class', function ($q) use ($class_id) {
+                $q->where('class_id', $class_id);
+            });
+        }
+        if ($course_id) {
+            $query->whereHas('classCourse.course', function ($q) use ($course_id) {
+                $q->where('course_id', $course_id);
+            });
+        }
+        if ($day) {
+            $query->where('day', $day);
+        }
+        if ($slot) {
+            $query->where('slot', $slot);
+        }
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('day', 'LIKE', "%{$keyword}%")
+                    ->orWhereHas('classCourse.course', function ($q) use ($keyword) {
+                        $q->where('course_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orWhereHas('classCourse.class', function ($q) use ($keyword) {
+                        $q->where('class_name', 'LIKE', "%{$keyword}%");
+                    });
+            });
+        }
+        return $query;
+    }
+
+    public function indexForInstructor(Request $request)
+    {
+        $user = $request->user();
+        $query = ClassSchedule::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassSchedule)->getTable());
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+        $query->select($columnsToSelect);
+        $query->whereHas('classCourse', function ($q) use ($user) {
+            $q->where('instructor_id', $user->instructor_id);
+        });
+        $query = $this->buildMultipleClassSchedule($request, $query);
+        $classSchedule = $query->with([
+            'classCourse:class_course_id,class_id,course_id',
+            'classCourse.class:class_id,class_name',
+            'classCourse.course:course_id,course_name',
+        ])->get();
+
+        return response()->json([
+            'classSchedules' => $classSchedule,
+        ]);
     }
 
     public function store(Request $request)
