@@ -23,11 +23,11 @@ class ClassSchedule extends Model
 
     public function classCourse()
     {
-        return $this->belongsTo(ClassCourse::class);
+        return $this->belongsTo(ClassCourse::class, 'class_course_id', 'class_course_id');
     }
 
     public function attendances()
     {
-        return $this->hasMany(Attendance::class);
+        return $this->hasMany(Attendance::class, 'class_schedule_id');
     }
 }

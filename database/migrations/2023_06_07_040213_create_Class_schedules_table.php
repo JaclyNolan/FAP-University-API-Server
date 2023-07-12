@@ -21,7 +21,7 @@ return new class extends Migration
             $table->integer('room');
             $table->integer('status');
             $table->dateTime('created_at');
-            $table->dateTime('update_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
         });
     }
 

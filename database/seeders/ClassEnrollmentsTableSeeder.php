@@ -56,15 +56,6 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-            4 =>
-            array (
-                'class_enrollment_id' => '5',
-                'class_course_id' => '1',
-                'student_id' => 'CS004',
-                'created_at' => '2023-06-07 10:02:33.907',
-                'updated_at' => NULL,
-                'deleted_at' => NULL,
-            ),
             5 =>
             array (
                 'class_enrollment_id' => '6',

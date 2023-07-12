@@ -158,12 +158,19 @@ Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
             Route::get('/', [ClassCourseController::class, 'indexForInstructor']);
             Route::get('/{id}', [ClassCourseController::class, 'showForInstructor']);
             Route::get('/{id}/students', [ClassCourseController::class, 'showStudentsForInstructor']);
+            Route::get('/{id}/classSchedules', [ClassCourseController::class, 'showClassSchedulesForInstructor']);
         });
         Route::group(['prefix' => '/classEnrollment'], function () {
             Route::get('/{id}', [ClassEnrollmentController::class, 'showForInstructor']);
         });
+        Route::group(['prefix' => '/classSchedule'], function () {
+            Route::get('/', [ClassScheduleController::class, 'indexForInstructor']);
+            Route::get('/{id}/classCourse', [ClassScheduleController::class, 'showClassCourseForInstructor']);
+            Route::get('/{id}/attendances', [ClassScheduleController::class, 'showAttendancesForInstructor']);
+            Route::put('/{id}/attendances', [ClassScheduleController::class, 'updateAttendancesForInstructor']);
+        });
         Route::group(['prefix' => '/detail'], function () {
-            Route::get('/', [InstructorController::class, 'detail']);
+            Route::get('/', [InstructorController::class, 'showForInstructor']);
         });
 
     });

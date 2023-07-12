@@ -9,6 +9,7 @@ use App\Models\Instructor;
 use App\Models\User;
 use App\Models\Major;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Schema;
 
 class InstructorController extends Controller
 {
@@ -230,9 +231,15 @@ class InstructorController extends Controller
         }
     }
 
-    public function detail(Request $request) {
+    public function showForInstructor(Request $request)
+    {
         try {
-            $instructor = $request->user()->instructor;
+            // Get the table columns
+            $tableColumns = Schema::getColumnListing((new Instructor)->getTable());
+            // Exclude the timestamp columns
+            $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+            $user = $request->user();
+            $instructor = Instructor::select($columnsToSelect)->where('instructor_id', $user->instructor_id)->first();
 
             if (!$instructor) {
                 return response()->json([
@@ -243,9 +250,8 @@ class InstructorController extends Controller
             }
 
             return response()->json([
-                'status' => 200,
                 'instructor' => $instructor,
-            ]);
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,

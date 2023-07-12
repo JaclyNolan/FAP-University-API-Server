@@ -29,7 +29,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '101',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             1 =>
             array (
@@ -40,7 +40,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '102',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             2 =>
             array (
@@ -51,7 +51,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '103',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             3 =>
             array (
@@ -62,7 +62,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '104',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             4 =>
             array (
@@ -73,7 +73,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '105',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             5 =>
             array (
@@ -84,7 +84,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '106',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             6 =>
             array (
@@ -95,7 +95,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '107',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             7 =>
             array (
@@ -106,7 +106,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '108',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             8 =>
             array (
@@ -117,7 +117,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '109',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
             9 =>
             array (
@@ -128,7 +128,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'room' => '110',
                 'status' => '1',
                 'created_at' => '2023-06-07 10:02:33.923',
-                'update_at' => NULL,
+                'updated_at' => NULL,
             ),
         ));
 

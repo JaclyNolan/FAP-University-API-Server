@@ -36,10 +36,10 @@ class UsersTableSeeder extends Seeder
             1 =>
             array (
                 'user_id' => '2',
-                'role_id' => '2',
+                'role_id' => '3',
                 'student_id' => NULL,
-                'staff_id' => 'ST002',
-                'instructor_id' => NULL,
+                'staff_id' => NULL,
+                'instructor_id' => 'INS001',
                 'username' => 'Nguyen Minh Anh (BTEC HN)',
                 'email' => 'anhnmbh00203@fpt.edu.vn',
                 'created_at' => '2023-06-07 10:02:33.883',
