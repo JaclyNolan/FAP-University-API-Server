@@ -11,7 +11,7 @@ class UpdateAttendancesForInstructorRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class UpdateAttendancesForInstructorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'data' => 'required|array',
+            'data.*.attendance_id' => 'required|integer',
+            'data.*.attendance_status' => 'required|boolean',
+            'data.*.attendance_comment' => 'present|string',
+            // 'data.*.*' => 'sometimes|prohibited',
         ];
     }
 }

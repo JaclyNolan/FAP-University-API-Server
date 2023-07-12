@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateAttendancesForInstructorRequest;
 use App\Models\Attendance;
 use App\Models\ClassSchedule;
 use App\Models\ClassModel;
@@ -226,7 +227,7 @@ class ClassScheduleController extends Controller
             $q->where('instructor_id', $user->instructor_id);
         });
         $query->where('class_schedule_id', $id);
-        $query->select('class_schedule_id','class_course_id');
+        $query->select('class_schedule_id', 'class_course_id');
         $classSchedule = $query->with([
             'classCourse:class_course_id,class_id,course_id',
             'classCourse.class:class_id,class_name',
@@ -245,18 +246,16 @@ class ClassScheduleController extends Controller
         ], 200);
     }
 
-    public function updateAttendancesForInstructor(Request $request, $id)
+    public function updateAttendancesForInstructor(UpdateAttendancesForInstructorRequest $request, $id)
     {
         $user = $request->user();
-        /**
-         * data: [
-         *  {
-         *      "attendance_id": 1,
-         *      "attendance_status": "1",
-         *      "attendance_comment": "",
-         *  },...
-        * ]
-         */
+        //  "data": [
+        //   {
+        //       "attendance_id": 1,
+        //       "attendance_status": "1",
+        //       "attendance_comment": "",
+        //   },...
+        //  ]
         $data = $request->input('data');
         $query = ClassSchedule::query();
         $query->whereHas('classCourse', function ($q) use ($user) {
@@ -282,6 +281,8 @@ class ClassScheduleController extends Controller
             if ($matchingAttendanceModel) {
                 $matchingAttendanceModel->attendance_status = $attendance['attendance_status'];
                 $matchingAttendanceModel->attendance_comment = $attendance['attendance_comment'];
+                $matchingAttendanceModel->attendance_time = Carbon::now();
+                $matchingAttendanceModel->updated_at = Carbon::now();
                 $matchingAttendanceModel->save();
             } else {
                 DB::rollBack();
@@ -291,6 +292,7 @@ class ClassScheduleController extends Controller
             }
         }
         DB::commit();
+        return response()->json('', 204);
     }
 
     public function store(Request $request)
