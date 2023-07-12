@@ -15,6 +15,7 @@ use App\Http\Controllers\API\Admin\GradeController;
 use App\Http\Controllers\API\Admin\FeedbackController;
 use App\Http\Controllers\API\Admin\AttendanceController;
 use App\Http\Controllers\API\Admin\EnrollmentController;
+use App\Http\Controllers\File\FileController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -141,13 +142,19 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::get('/edit-attendance/{id}', [AttendanceController::class, 'edit']);
         Route::put('/update-attendance/{id}', [AttendanceController::class, 'update']);
     });
-});
 
-// Enrollments 
-Route::group(['prefix' => 'enrollments'], function () {
-    Route::get('/', [EnrollmentController::class, 'index']);
-    Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
-    Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
+    // file
+    Route::group(['prefix' => 'files'], function () {
+        Route::post('/save-file', [FileController::class, 'store']);
+        Route::get('/get-file/{filename}', [FileController::class, 'getFile']);
+    });
+
+    // Enrollments 
+    Route::group(['prefix' => 'enrollments'], function () {
+        Route::get('/', [EnrollmentController::class, 'index']);
+        Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
+        Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
+    });
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
