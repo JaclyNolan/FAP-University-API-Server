@@ -169,6 +169,9 @@ Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
             Route::get('/{id}/attendances', [ClassScheduleController::class, 'showAttendancesForInstructor']);
             Route::put('/{id}/attendances', [ClassScheduleController::class, 'updateAttendancesForInstructor']);
         });
+        Route::group(['prefix' => '/feedback'], function () {
+            Route::get('/', [FeedbackController::class, 'indexForInstructor']);
+        });
         Route::group(['prefix' => '/detail'], function () {
             Route::get('/', [InstructorController::class, 'showForInstructor']);
         });

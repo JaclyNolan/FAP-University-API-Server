@@ -18,6 +18,6 @@ class Feedback extends Model
 
     public function classEnrollment()
     {
-        return $this->belongsTo(ClassEnrollment::class);
+        return $this->belongsTo(ClassEnrollment::class, 'class_enrollment_id', 'class_enrollment_id');
     }
 }
