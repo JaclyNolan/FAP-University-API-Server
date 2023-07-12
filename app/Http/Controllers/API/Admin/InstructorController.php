@@ -236,7 +236,6 @@ class InstructorController extends Controller
         try {
             // Get the table columns
             $tableColumns = Schema::getColumnListing((new Instructor)->getTable());
-
             // Exclude the timestamp columns
             $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
             $user = $request->user();

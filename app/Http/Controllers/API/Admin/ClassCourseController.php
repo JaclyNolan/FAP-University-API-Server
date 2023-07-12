@@ -180,7 +180,7 @@ class ClassCourseController extends Controller
         return $query;
     }
 
-    public function buildSingleClassCourse(Builder $query, $id)
+    private function buildSingleClassCourse(Builder $query, $id)
     {
         $query->where('class_course_id', $id);
         return $query;
@@ -237,29 +237,50 @@ class ClassCourseController extends Controller
     public function showStudentsForInstructor(Request $request, $id)
     {
         $user = $request->user();
-        $query = ClassEnrollment::query();
+        $query = ClassCourse::query();
         // Get the table columns
-        $tableColumns = Schema::getColumnListing((new ClassEnrollment)->getTable());
+        $tableColumns = Schema::getColumnListing((new ClassCourse)->getTable());
 
         // Exclude the timestamp columns
         $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
 
         // Select the desired columns
         $query->select($columnsToSelect);
-        $query->where('class_course_id', $id);
-        $query->whereHas('classCourse', function (Builder $q) use ($user) {
-            $q->where('instructor_id', $user->instructor_id);
-        });
-        $classEnrollments = $query->with(
-            'student:student_id,image,full_name,gender',
-            'student.user:student_id,email',
-        )->get();
+        $query = $this->buildSingleClassCourse($query, $id);
+        $query->where('instructor_id', $user->instructor_id);
+        $classCourse = $query->with(
+            'classEnrollments:class_course_id,class_enrollment_id,student_id',
+            'classEnrollments.student:student_id,image,full_name,gender',
+            'classEnrollments.student.user:student_id,email',
+        )->first();
 
         return response()->json([
-            'classEnrollments' => $classEnrollments,
+            'classCourse' => $classCourse,
         ], 200);
     }
 
+    public function showClassSchedulesForInstructor(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassCourse)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+        // Select the desired columns
+        $query->select($columnsToSelect);
+        $query = $this->buildSingleClassCourse($query, $id);
+        $query->where('instructor_id', $user->instructor_id);
+        $classCourse = $query->with(
+            'classSchedules:class_schedule_id,class_course_id,day,slot,room,status'
+        )->first();
+
+        return response()->json([
+            'classCourse' => $classCourse,
+        ], 200);
+    }
 
     public function edit(Request $request, $id)
     {

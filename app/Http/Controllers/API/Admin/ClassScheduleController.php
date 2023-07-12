@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Models\Attendance;
 use App\Models\ClassSchedule;
 use App\Models\ClassModel;
 use App\Models\Course;
 use App\Models\ClassCourse;
 use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 class ClassScheduleController extends Controller
@@ -105,7 +108,7 @@ class ClassScheduleController extends Controller
         }
     }
 
-    public function buildMultipleClassSchedule(Request $request, Builder $query)
+    private function buildMultipleClassSchedule(Request $request, Builder $query)
     {
         $class_id = $request->input('class_id');
         $course_id = $request->input('course_id');
@@ -158,6 +161,12 @@ class ClassScheduleController extends Controller
         return $query;
     }
 
+    private function buildSingleClassSchedule(Builder $query, $id)
+    {
+        $query->where('class_schedule_id', $id);
+        return $query;
+    }
+
     public function indexForInstructor(Request $request)
     {
         $user = $request->user();
@@ -180,6 +189,108 @@ class ClassScheduleController extends Controller
         return response()->json([
             'classSchedules' => $classSchedule,
         ], 200);
+    }
+
+    public function showAttendancesForInstructor(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassSchedule::query();
+        $query->whereHas('classCourse', function ($q) use ($user) {
+            $q->where('instructor_id', $user->instructor_id);
+        });
+        $query->where('class_schedule_id', $id);
+        $query->select('class_schedule_id');
+        $classSchedule = $query->with([
+            'attendances:attendance_id,class_schedule_id,class_enrollment_id,attendance_status,attendance_comment',
+            'attendances.classEnrollment:class_enrollment_id,student_id',
+            'attendances.classEnrollment.student:student_id,full_name,image',
+        ])->first();
+
+        if (!$classSchedule) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Data not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'classSchedule' => $classSchedule,
+        ], 200);
+    }
+
+    public function showClassCourseForInstructor(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassSchedule::query();
+        $query->whereHas('classCourse', function ($q) use ($user) {
+            $q->where('instructor_id', $user->instructor_id);
+        });
+        $query->where('class_schedule_id', $id);
+        $query->select('class_schedule_id','class_course_id');
+        $classSchedule = $query->with([
+            'classCourse:class_course_id,class_id,course_id',
+            'classCourse.class:class_id,class_name',
+            'classCourse.course:course_id,course_name',
+        ])->first();
+
+        if (!$classSchedule) {
+            return response()->json([
+                'status' => 404,
+                'message' => 'Data not found',
+            ], 404);
+        }
+
+        return response()->json([
+            'classSchedule' => $classSchedule,
+        ], 200);
+    }
+
+    public function updateAttendancesForInstructor(Request $request, $id)
+    {
+        $user = $request->user();
+        /**
+         * data: [
+         *  {
+         *      "attendance_id": 1,
+         *      "attendance_status": "1",
+         *      "attendance_comment": "",
+         *  },...
+        * ]
+         */
+        $data = $request->input('data');
+        $query = ClassSchedule::query();
+        $query->whereHas('classCourse', function ($q) use ($user) {
+            $q->where('instructor_id', $user->instructor_id);
+        });
+        $query->where('class_schedule_id', $id);
+        $query->select('class_schedule_id');
+        $classSchedule = $query->with([
+            'attendances',
+        ])->first();
+
+        if (!$classSchedule) return response()->json([
+            'message' => "Invalid id"
+        ], 400);
+
+        /** @var Collection $attendances */
+        $attendances = $classSchedule->attendances;
+
+        DB::beginTransaction();
+        foreach ($data as $attendance) {
+            /** @var Attendance $matchingAttendanceModel */
+            $matchingAttendanceModel = $attendances->find($attendance['attendance_id']);
+            if ($matchingAttendanceModel) {
+                $matchingAttendanceModel->attendance_status = $attendance['attendance_status'];
+                $matchingAttendanceModel->attendance_comment = $attendance['attendance_comment'];
+                $matchingAttendanceModel->save();
+            } else {
+                DB::rollBack();
+                return response()->json([
+                    'message' => "Bad Request"
+                ], 400);
+            }
+        }
+        DB::commit();
     }
 
     public function store(Request $request)

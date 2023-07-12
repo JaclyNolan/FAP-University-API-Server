@@ -28,6 +28,6 @@ class ClassSchedule extends Model
 
     public function attendances()
     {
-        return $this->hasMany(Attendance::class, 'attendance_id');
+        return $this->hasMany(Attendance::class, 'class_schedule_id');
     }
 }
