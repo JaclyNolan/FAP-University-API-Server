@@ -25,7 +25,7 @@ class UpdateAttendancesForInstructorRequest extends FormRequest
             'data' => 'required|array',
             'data.*.attendance_id' => 'required|integer',
             'data.*.attendance_status' => 'required|boolean',
-            'data.*.attendance_comment' => 'present|string',
+            'data.*.attendance_comment' => 'present|nullable|string',
             // 'data.*.*' => 'sometimes|prohibited',
         ];
     }

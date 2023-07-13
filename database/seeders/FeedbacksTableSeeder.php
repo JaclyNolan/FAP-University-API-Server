@@ -48,13 +48,13 @@ class FeedbacksTableSeeder extends Seeder
                 'feedback_content' => 'Sample feedback 4',
                 'created_at' => '2023-06-07 10:02:33.917',
             ),
-            4 =>
-            array (
-                'feedback_id' => '5',
-                'class_enrollment_id' => '5',
-                'feedback_content' => 'Sample feedback 5',
-                'created_at' => '2023-06-07 10:02:33.917',
-            ),
+            // 4 =>
+            // array (
+            //     'feedback_id' => '5',
+            //     'class_enrollment_id' => '5',
+            //     'feedback_content' => 'Sample feedback 5',
+            //     'created_at' => '2023-06-07 10:02:33.917',
+            // ),
             5 =>
             array (
                 'feedback_id' => '6',

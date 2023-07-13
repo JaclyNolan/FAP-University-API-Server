@@ -200,7 +200,7 @@ class ClassScheduleController extends Controller
             $q->where('instructor_id', $user->instructor_id);
         });
         $query->where('class_schedule_id', $id);
-        $query->select('class_schedule_id');
+        $query->select('class_schedule_id','submit_time');
         $classSchedule = $query->with([
             'attendances:attendance_id,class_schedule_id,class_enrollment_id,attendance_status,attendance_comment',
             'attendances.classEnrollment:class_enrollment_id,student_id',
@@ -263,6 +263,7 @@ class ClassScheduleController extends Controller
         });
         $query->where('class_schedule_id', $id);
         $query->select('class_schedule_id');
+        /** @var ClassSchedule $classSchedule */
         $classSchedule = $query->with([
             'attendances',
         ])->first();
@@ -280,8 +281,7 @@ class ClassScheduleController extends Controller
             $matchingAttendanceModel = $attendances->find($attendance['attendance_id']);
             if ($matchingAttendanceModel) {
                 $matchingAttendanceModel->attendance_status = $attendance['attendance_status'];
-                $matchingAttendanceModel->attendance_comment = $attendance['attendance_comment'];
-                $matchingAttendanceModel->attendance_time = Carbon::now();
+                $matchingAttendanceModel->attendance_comment = $attendance['attendance_comment'] ? $attendance['attendance_comment'] : "";
                 $matchingAttendanceModel->updated_at = Carbon::now();
                 $matchingAttendanceModel->save();
             } else {
@@ -291,6 +291,8 @@ class ClassScheduleController extends Controller
                 ], 400);
             }
         }
+        $classSchedule->submit_time = Carbon::now();
+        $classSchedule->save();
         DB::commit();
         return response()->json('', 204);
     }

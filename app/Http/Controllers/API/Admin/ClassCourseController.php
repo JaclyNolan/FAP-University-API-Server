@@ -273,9 +273,12 @@ class ClassCourseController extends Controller
         $query->select($columnsToSelect);
         $query = $this->buildSingleClassCourse($query, $id);
         $query->where('instructor_id', $user->instructor_id);
-        $classCourse = $query->with(
-            'classSchedules:class_schedule_id,class_course_id,day,slot,room,status'
-        )->first();
+        $classCourse = $query->with([
+            'classSchedules' => function ($query) {
+                $query->select('class_schedule_id', 'class_course_id', 'day', 'slot', 'room', 'status', 'submit_time')
+                    ->orderBy('day', 'desc');
+            }
+        ])->first();
 
         return response()->json([
             'classCourse' => $classCourse,
