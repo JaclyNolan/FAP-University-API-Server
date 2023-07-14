@@ -8,8 +8,10 @@ use App\Models\Student;
 use App\Models\User;
 use App\Models\Major;
 use App\Models\Course;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class EnrollmentController extends Controller
 {
@@ -96,6 +98,48 @@ class EnrollmentController extends Controller
         }
     }
 
+    public function buildMultipleEnrollments(Request $request, Builder $query)
+    {
+        $course_id = $request->input('course_id');
+        $status = $request->input('status');
+        $keyword = $request->input('keyword');
+
+        if ($course_id) {
+            $query->whereHas('course', function($q) use ($course_id){
+                $q->where('course_id', $course_id);
+            });
+        }
+        if ($status) {
+            $query->where('status', $status);
+        }
+
+        if ($keyword) {
+            $query->whereHas('course', function($q) use ($keyword){
+                $q->where('course_name', 'LIKE', "%{$keyword}%");
+            });
+        }
+
+        return $query;
+    }
+
+    // public function indexForStudent(Request $request)
+    // {
+    //     $user = $request->user();
+    //     $query = Enrollment::query();
+    //     // Get the table columns
+    //     $tableColumns = Schema::getColumnListing((new Enrollment)->getTable());
+    //     // Exclude the timestamp columns
+    //     $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+    //     $query->select($columnsToSelect);
+    //     // Belongs to student
+    //     $query->where('student_id', $user->student_id);
+    //     $query = $this->buildMultipleEnrollments($request, $query);
+    //     $enrollments = $query->with([
+    //         'course:course_id,course_name,credits,description,tuition_fee'
+    //     ])->get();
+
+
+    // }
     public function edit($id)
     {
         try {

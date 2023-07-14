@@ -185,6 +185,9 @@ Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
         Route::group(['prefix' => '/classSchedule'], function () {
             Route::get('/', [ClassScheduleController::class, 'indexForStudent']);
         });
+        Route::group(['prefix' => '/course'], function () {
+            Route::get('/', [CourseController::class, 'indexForStudent']);
+        });
         Route::get('/detail', [StudentController::class, 'showForStudent']);
     });
 });
