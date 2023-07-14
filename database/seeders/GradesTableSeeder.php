@@ -56,15 +56,15 @@ class GradesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.913',
                 'updated_at' => NULL,
             ),
-            4 =>
-            array (
-                'grade_id' => '5',
-                'class_enrollment_id' => '5',
-                'score' => '82',
-                'status' => '1',
-                'created_at' => '2023-06-07 10:02:33.913',
-                'updated_at' => NULL,
-            ),
+            // 4 =>
+            // array (
+            //     'grade_id' => '5',
+            //     'class_enrollment_id' => '5',
+            //     'score' => '82',
+            //     'status' => '1',
+            //     'created_at' => '2023-06-07 10:02:33.913',
+            //     'updated_at' => NULL,
+            // ),
             5 =>
             array (
                 'grade_id' => '6',

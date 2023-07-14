@@ -11,8 +11,10 @@ use App\Models\ClassEnrollment;
 use App\Models\ClassModel;
 use App\Models\ClassCourse;
 use App\Models\Major;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class FeedbackController extends Controller
 {
@@ -46,41 +48,41 @@ class FeedbackController extends Controller
                 ->join((new Instructor)->getTable(), (new ClassCourse)->getTable() . '.instructor_id', '=', (new Instructor)->getTable() . '.instructor_id')
                 ->join((new Major)->getTable(), (new Course)->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
                 ->orderBy($this->feedback->getTable() . '.feedback_id');
-            
 
-                if ($request->has('major')) {
-                    $major = $request->input('major');
-                    $query->where((new Major)->getTable() . '.major_id', $major);
-                }
-                
-                if ($request->has('course')) {
-                    $course = $request->input('course');
-                    $query->where((new Course)->getTable() . '.course_id', $course);
-                }
-                
-                if ($request->has('class')) {
-                    $class = $request->input('class');
-                    $query->where((new ClassModel)->getTable() . '.class_id', $class);
-                }
-                
-                if ($request->has('instructor')) {
-                    $instructor = $request->input('instructor');
-                    $query->where((new Instructor)->getTable() . '.instructor_id', $instructor);
-                }
-                
-                if ($request->has('keyword')) {
-                    $keyword = $request->input('keyword');
-                    $query->where(function ($q) use ($keyword) {
-                        $q->where(function ($innerQuery) use ($keyword) {
-                            $innerQuery->where($this->feedback->getTable() . '.feedback_id', 'LIKE', "%$keyword%")
-                                ->orWhere((new Instructor)->getTable() . '.full_name', 'LIKE', "%$keyword%")
-                                ->orWhere((new Course)->getTable() . '.course_name', 'LIKE', "%$keyword%")
-                                ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
-                                ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "%$keyword%");
-                        });
+
+            if ($request->has('major')) {
+                $major = $request->input('major');
+                $query->where((new Major)->getTable() . '.major_id', $major);
+            }
+
+            if ($request->has('course')) {
+                $course = $request->input('course');
+                $query->where((new Course)->getTable() . '.course_id', $course);
+            }
+
+            if ($request->has('class')) {
+                $class = $request->input('class');
+                $query->where((new ClassModel)->getTable() . '.class_id', $class);
+            }
+
+            if ($request->has('instructor')) {
+                $instructor = $request->input('instructor');
+                $query->where((new Instructor)->getTable() . '.instructor_id', $instructor);
+            }
+
+            if ($request->has('keyword')) {
+                $keyword = $request->input('keyword');
+                $query->where(function ($q) use ($keyword) {
+                    $q->where(function ($innerQuery) use ($keyword) {
+                        $innerQuery->where($this->feedback->getTable() . '.feedback_id', 'LIKE', "%$keyword%")
+                            ->orWhere((new Instructor)->getTable() . '.full_name', 'LIKE', "%$keyword%")
+                            ->orWhere((new Course)->getTable() . '.course_name', 'LIKE', "%$keyword%")
+                            ->orWhere((new ClassModel)->getTable() . '.class_name', 'LIKE', "%$keyword%")
+                            ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "%$keyword%");
                     });
-                }
-                
+                });
+            }
+
 
             $feedbacks = $query->paginate(10); // Số bản ghi trên mỗi trang
             // Kiểm tra xem trang hiện tại có lớn hơn tổng số trang không
@@ -112,6 +114,35 @@ class FeedbackController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function indexForInstructor(Request $request)
+    {
+        $classCourseId = $request->input('class_course_id');
+        $user = $request->user();
+        $query = Feedback::query();
+        //Belong to instructor
+        $query->whereHas('classEnrollment.classCourse', function ($q) use ($user) {
+            $q->where('instructor_id', $user->instructor_id);
+        });
+        //Filter
+        if ($classCourseId) {
+            $query->whereHas('classEnrollment.classCourse', function ($q) use ($classCourseId) {
+                $q->where('class_course_id', $classCourseId);
+            });
+        }
+
+        $feedbacks = $query->with([
+            'classEnrollment:class_enrollment_id,class_course_id,student_id',
+            'classEnrollment.student:student_id,full_name',
+            'classEnrollment.classCourse:class_course_id,class_id,course_id',
+            'classEnrollment.classCourse.class:class_id,class_name',
+            'classEnrollment.classCourse.course:course_id,course_name',
+        ])->orderByDesc('created_at')->get();
+
+        return response()->json([
+            'feedbacks' => $feedbacks,
+        ], 200);
     }
 
     public function edit($id)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\UpdateAttendancesForInstructorRequest;
 use App\Models\Attendance;
 use App\Models\ClassSchedule;
 use App\Models\ClassModel;
@@ -176,18 +177,65 @@ class ClassScheduleController extends Controller
         // Exclude the timestamp columns
         $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
         $query->select($columnsToSelect);
+        // Belong to instructor
         $query->whereHas('classCourse', function ($q) use ($user) {
             $q->where('instructor_id', $user->instructor_id);
         });
         $query = $this->buildMultipleClassSchedule($request, $query);
-        $classSchedule = $query->with([
+        $classSchedules = $query->with([
             'classCourse:class_course_id,class_id,course_id',
             'classCourse.class:class_id,class_name',
             'classCourse.course:course_id,course_name',
         ])->get();
 
         return response()->json([
-            'classSchedules' => $classSchedule,
+            'classSchedules' => $classSchedules,
+        ], 200);
+    }
+
+    public function indexForStudent(Request $request)
+    {
+        $user = $request->user();
+        $query = ClassSchedule::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassSchedule)->getTable());
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+        $query->select($columnsToSelect);
+        // Belongs to student
+        $query->whereHas('attendances.classEnrollment', function ($q) use ($user) {
+            $q->where('student_id', $user->student_id);
+        });
+        $query = $this->buildMultipleClassSchedule($request, $query);
+        $classSchedules = $query->with([
+            'classCourse:class_course_id,class_id,course_id',
+            'classCourse.class:class_id,class_name',
+            'classCourse.course:course_id,course_name',
+            'attendances' => function ($q) use ($user) {
+                $q->select('class_schedule_id', 'class_enrollment_id', 'attendance_status')
+                    ->whereHas('classEnrollment', function ($q) use ($user) {
+                        $q->where('student_id', $user->student_id);
+                    });
+            },
+        ])->get();
+
+        // $classSchedules->makeHidden([
+        //     'class_course_id',
+        // ]);
+
+        // $classSchedules->each(function ($classSchedule) {
+        //     $classSchedule->attendances->each(function ($attendance) {
+        //         $attendance->makeHidden([
+        //             'class_schedule_id',
+        //             'class_enrollment_id',
+        //             'class_enrollment.class_enrollment_id',
+        //             'class_enrollment.student.student_id',
+        //         ]);
+        //     });
+        // });
+
+        return response()->json([
+            'classSchedules' => $classSchedules,
         ], 200);
     }
 
@@ -199,7 +247,7 @@ class ClassScheduleController extends Controller
             $q->where('instructor_id', $user->instructor_id);
         });
         $query->where('class_schedule_id', $id);
-        $query->select('class_schedule_id');
+        $query->select('class_schedule_id', 'submit_time');
         $classSchedule = $query->with([
             'attendances:attendance_id,class_schedule_id,class_enrollment_id,attendance_status,attendance_comment',
             'attendances.classEnrollment:class_enrollment_id,student_id',
@@ -226,7 +274,7 @@ class ClassScheduleController extends Controller
             $q->where('instructor_id', $user->instructor_id);
         });
         $query->where('class_schedule_id', $id);
-        $query->select('class_schedule_id','class_course_id');
+        $query->select('class_schedule_id', 'class_course_id');
         $classSchedule = $query->with([
             'classCourse:class_course_id,class_id,course_id',
             'classCourse.class:class_id,class_name',
@@ -245,18 +293,16 @@ class ClassScheduleController extends Controller
         ], 200);
     }
 
-    public function updateAttendancesForInstructor(Request $request, $id)
+    public function updateAttendancesForInstructor(UpdateAttendancesForInstructorRequest $request, $id)
     {
         $user = $request->user();
-        /**
-         * data: [
-         *  {
-         *      "attendance_id": 1,
-         *      "attendance_status": "1",
-         *      "attendance_comment": "",
-         *  },...
-        * ]
-         */
+        //  "data": [
+        //   {
+        //       "attendance_id": 1,
+        //       "attendance_status": "1",
+        //       "attendance_comment": "",
+        //   },...
+        //  ]
         $data = $request->input('data');
         $query = ClassSchedule::query();
         $query->whereHas('classCourse', function ($q) use ($user) {
@@ -264,6 +310,7 @@ class ClassScheduleController extends Controller
         });
         $query->where('class_schedule_id', $id);
         $query->select('class_schedule_id');
+        /** @var ClassSchedule $classSchedule */
         $classSchedule = $query->with([
             'attendances',
         ])->first();
@@ -281,7 +328,8 @@ class ClassScheduleController extends Controller
             $matchingAttendanceModel = $attendances->find($attendance['attendance_id']);
             if ($matchingAttendanceModel) {
                 $matchingAttendanceModel->attendance_status = $attendance['attendance_status'];
-                $matchingAttendanceModel->attendance_comment = $attendance['attendance_comment'];
+                $matchingAttendanceModel->attendance_comment = $attendance['attendance_comment'] ? $attendance['attendance_comment'] : "";
+                $matchingAttendanceModel->updated_at = Carbon::now();
                 $matchingAttendanceModel->save();
             } else {
                 DB::rollBack();
@@ -290,7 +338,10 @@ class ClassScheduleController extends Controller
                 ], 400);
             }
         }
+        $classSchedule->submit_time = Carbon::now();
+        $classSchedule->save();
         DB::commit();
+        return response()->json('', 204);
     }
 
     public function store(Request $request)

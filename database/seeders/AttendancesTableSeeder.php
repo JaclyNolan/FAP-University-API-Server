@@ -26,7 +26,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '1',
                 'class_enrollment_id' => '1',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-18',
+                //'attendance_time' => '2023-05-18',
                 'updated_at' => NULL,
             ),
             1 =>
@@ -35,7 +35,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '1',
                 'class_enrollment_id' => '2',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-18',
+                //'attendance_time' => '2023-05-18',
                 'updated_at' => NULL,
             ),
             2 =>
@@ -44,7 +44,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '1',
                 'class_enrollment_id' => '3',
                 'attendance_status' => '0',
-                'attendance_time' => '2023-05-18',
+                //'attendance_time' => '2023-05-18',
                 'updated_at' => NULL,
             ),
             3 =>
@@ -53,25 +53,25 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '2',
                 'class_enrollment_id' => '4',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-19',
+                //'attendance_time' => '2023-05-19',
                 'updated_at' => NULL,
             ),
-            4 =>
-            array (
-                'attendance_id' => '5',
-                'class_schedule_id' => '2',
-                'class_enrollment_id' => '5',
-                'attendance_status' => '0',
-                'attendance_time' => '2023-05-19',
-                'updated_at' => NULL,
-            ),
+            // 4 =>
+            // array (
+            //     'attendance_id' => '5',
+            //     'class_schedule_id' => '2',
+            //     'class_enrollment_id' => '5',
+            //     'attendance_status' => '0',
+            //     //'attendance_time' => '2023-05-19',
+            //     'updated_at' => NULL,
+            // ),
             5 =>
             array (
                 'attendance_id' => '6',
                 'class_schedule_id' => '2',
                 'class_enrollment_id' => '6',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-19',
+                //'attendance_time' => '2023-05-19',
                 'updated_at' => NULL,
             ),
             6 =>
@@ -80,7 +80,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '3',
                 'class_enrollment_id' => '7',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-20',
+                //'attendance_time' => '2023-05-20',
                 'updated_at' => NULL,
             ),
             7 =>
@@ -89,7 +89,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '3',
                 'class_enrollment_id' => '8',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-20',
+                //'attendance_time' => '2023-05-20',
                 'updated_at' => NULL,
             ),
             8 =>
@@ -98,7 +98,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '3',
                 'class_enrollment_id' => '9',
                 'attendance_status' => '0',
-                'attendance_time' => '2023-05-20',
+                //'attendance_time' => '2023-05-20',
                 'updated_at' => NULL,
             ),
             9 =>
@@ -107,7 +107,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '4',
                 'class_enrollment_id' => '10',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-21',
+                //'attendance_time' => '2023-05-21',
                 'updated_at' => NULL,
             ),
             10 =>
@@ -116,7 +116,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '4',
                 'class_enrollment_id' => '11',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-21',
+                //'attendance_time' => '2023-05-21',
                 'updated_at' => NULL,
             ),
             11 =>
@@ -125,7 +125,7 @@ class AttendancesTableSeeder extends Seeder
                 'class_schedule_id' => '4',
                 'class_enrollment_id' => '12',
                 'attendance_status' => '1',
-                'attendance_time' => '2023-05-21',
+                //'attendance_time' => '2023-05-21',
                 'updated_at' => NULL,
             ),
         ));
