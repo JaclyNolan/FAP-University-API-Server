@@ -181,6 +181,12 @@ Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
     // User with student role can access these routes
+    Route::group(['prefix' => 'student'], function () {
+        Route::group(['prefix' => '/classSchedule'], function () {
+            Route::get('/', [ClassScheduleController::class, 'indexForStudent']);
+        });
+        Route::get('/detail', [StudentController::class, 'showForStudent']);
+    });
 });
 
 Route::middleware('auth:sanctum')->group(function () {
