@@ -12,7 +12,7 @@ class FileController extends Controller
     {
         $file = $request->file('file');
         $imageName = time() . '.' . $file->extension();
-        $imagePath = public_path('files/students');
+        $imagePath = public_path('files/');
 
         $file->move($imagePath, $imageName);
 
@@ -25,7 +25,7 @@ class FileController extends Controller
 
     public function getFile($filename)
     {
-        $imagePath = public_path('files/students/' . $filename);
+        $imagePath = public_path('files/' . $filename);
 
         if (file_exists($imagePath)) {
             // Trả về file ảnh
