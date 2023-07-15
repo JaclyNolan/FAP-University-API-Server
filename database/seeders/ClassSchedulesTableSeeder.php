@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClassSchedule;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -19,9 +20,9 @@ class ClassSchedulesTableSeeder extends Seeder
 
         DB::table('Class_schedules')->delete();
 
-        DB::table('Class_schedules')->insert(array (
+        $classSchedules = [
             0 =>
-            array (
+            array(
                 'class_schedule_id' => '1',
                 'class_course_id' => '1',
                 'day' => '2023-05-18',
@@ -32,7 +33,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             1 =>
-            array (
+            array(
                 'class_schedule_id' => '2',
                 'class_course_id' => '1',
                 'day' => '2023-05-19',
@@ -43,7 +44,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             2 =>
-            array (
+            array(
                 'class_schedule_id' => '3',
                 'class_course_id' => '2',
                 'day' => '2023-05-20',
@@ -54,7 +55,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             3 =>
-            array (
+            array(
                 'class_schedule_id' => '4',
                 'class_course_id' => '2',
                 'day' => '2023-05-21',
@@ -65,7 +66,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             4 =>
-            array (
+            array(
                 'class_schedule_id' => '5',
                 'class_course_id' => '3',
                 'day' => '2023-05-22',
@@ -76,7 +77,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             5 =>
-            array (
+            array(
                 'class_schedule_id' => '6',
                 'class_course_id' => '3',
                 'day' => '2023-05-23',
@@ -87,7 +88,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             6 =>
-            array (
+            array(
                 'class_schedule_id' => '7',
                 'class_course_id' => '4',
                 'day' => '2023-05-24',
@@ -98,7 +99,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             7 =>
-            array (
+            array(
                 'class_schedule_id' => '8',
                 'class_course_id' => '4',
                 'day' => '2023-05-25',
@@ -109,7 +110,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             8 =>
-            array (
+            array(
                 'class_schedule_id' => '9',
                 'class_course_id' => '5',
                 'day' => '2023-05-26',
@@ -120,7 +121,7 @@ class ClassSchedulesTableSeeder extends Seeder
                 'updated_at' => NULL,
             ),
             9 =>
-            array (
+            array(
                 'class_schedule_id' => '10',
                 'class_course_id' => '5',
                 'day' => '2023-05-27',
@@ -130,8 +131,10 @@ class ClassSchedulesTableSeeder extends Seeder
                 'created_at' => '2023-06-07 10:02:33.923',
                 'updated_at' => NULL,
             ),
-        ));
+        ];
 
-
+        foreach ($classSchedules as $classSchedule) {
+            ClassSchedule::create($classSchedule);
+        }
     }
 }

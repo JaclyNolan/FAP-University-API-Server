@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use App\Events\ClassEnrollmentCreated;
+use App\Events\ClassScheduleCreated;
 use App\Events\StudentCreated;
+use App\Listeners\GenerateAttendancesForClassSchedule;
 use App\Listeners\GenerateEnrollmentsForStudent;
 use App\Listeners\GenerateGradesForClassEnrollment;
 use Illuminate\Auth\Events\Registered;
@@ -27,6 +29,9 @@ class EventServiceProvider extends ServiceProvider
         ],
         ClassEnrollmentCreated::class => [
             GenerateGradesForClassEnrollment::class,
+        ],
+        ClassScheduleCreated::class => [
+            GenerateAttendancesForClassSchedule::class,
         ],
     ];
 

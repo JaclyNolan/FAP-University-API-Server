@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-
+use App\Events\ClassScheduleCreated;
 use Illuminate\Database\Eloquent\Model;
 
 class ClassSchedule extends Model
@@ -20,6 +20,12 @@ class ClassSchedule extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    protected static function booted() {
+        static::created(function($classSchedule) {
+            event(new ClassScheduleCreated($classSchedule));
+        });
+    }
 
     public function classCourse()
     {

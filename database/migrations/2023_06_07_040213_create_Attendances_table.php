@@ -20,6 +20,7 @@ return new class extends Migration
             $table->boolean('attendance_status')->nullable()->default(false);
             $table->dateTime('attendance_time')->nullable();
             $table->string('attendance_comment')->default('');
+            $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
         });
     }
