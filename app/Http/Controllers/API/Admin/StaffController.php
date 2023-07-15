@@ -140,7 +140,7 @@ class StaffController extends Controller
                 $this->staff->getTable() . '.department',
                 $this->staff->getTable() . '.position'
             )
-                ->join((new User)->getTable(), (new User)->getTable() . '.staff_id', '=', $this->staff->getTable() . '.staff_id')
+                ->leftjoin((new User)->getTable(), (new User)->getTable() . '.staff_id', '=', $this->staff->getTable() . '.staff_id')
                 ->where($this->staff->getTable() . '.staff_id', $id)
                 ->first();
 
