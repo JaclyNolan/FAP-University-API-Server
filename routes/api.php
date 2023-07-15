@@ -143,11 +143,7 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-attendance/{id}', [AttendanceController::class, 'update']);
     });
 
-    // file
-    Route::group(['prefix' => 'files'], function () {
-        Route::post('/save-file', [FileController::class, 'store']);
-        Route::get('/get-file/{filename}', [FileController::class, 'getFile']);
-    });
+    
 
     // Enrollments 
     Route::group(['prefix' => 'enrollments'], function () {
@@ -155,6 +151,12 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
         Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
     });
+});
+
+// file
+Route::group(['prefix' => 'files'], function () {
+    Route::post('/save-file', [FileController::class, 'store']);
+    Route::get('/get-file/{filename}', [FileController::class, 'getFile']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
