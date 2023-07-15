@@ -840,8 +840,7 @@ class StudentsTableSeeder extends Seeder
         ];
 
         foreach ($students as $studentData) {
-            $studentModel = Student::create($studentData);
-            // Event::dispatch(new StudentCreated($studentModel));
+            Student::create($studentData);
         }
     }
 }

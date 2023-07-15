@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\ClassEnrollmentCreated;
 use Illuminate\Database\Eloquent\Model;
 
 class ClassEnrollment extends Model
@@ -16,6 +17,13 @@ class ClassEnrollment extends Model
         'updated_at',
         'deleted_at',
     ];
+
+    protected static function booted()
+    {
+        static::created(function($classEnrollment){
+            event(new ClassEnrollmentCreated($classEnrollment));
+        });
+    }
 
     public function classCourse()
     {

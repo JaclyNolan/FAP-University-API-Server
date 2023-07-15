@@ -35,6 +35,16 @@ class Enrollment extends Model
         };
     }
 
+    protected static function booted()
+    {
+        static::creating(function($enrollment) {
+            $enrollment->status_name = $enrollment->findStatus($enrollment->status);
+        });
+        static::updating(function($enrollment) {
+            $enrollment->status_name = $enrollment->findStatus($enrollment->status);
+        });
+    }
+
     public function student()
     {
         return $this->belongsTo(Student::class, 'student_id', 'student_id');

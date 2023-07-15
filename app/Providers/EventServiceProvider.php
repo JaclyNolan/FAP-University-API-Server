@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Events\ClassEnrollmentCreated;
 use App\Events\StudentCreated;
 use App\Listeners\GenerateEnrollmentsForStudent;
+use App\Listeners\GenerateGradesForClassEnrollment;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
@@ -22,6 +24,9 @@ class EventServiceProvider extends ServiceProvider
         // ],
         StudentCreated::class => [
             GenerateEnrollmentsForStudent::class,
+        ],
+        ClassEnrollmentCreated::class => [
+            GenerateGradesForClassEnrollment::class,
         ],
     ];
 
