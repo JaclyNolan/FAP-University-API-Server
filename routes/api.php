@@ -185,9 +185,14 @@ Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
         Route::group(['prefix' => '/classSchedule'], function () {
             Route::get('/', [ClassScheduleController::class, 'indexForStudent']);
         });
-        Route::group(['prefix' => '/course'], function () {
-            Route::get('/', [CourseController::class, 'indexForStudent']);
+        Route::group(['prefix' => '/enrollment'], function () {
+            Route::get('/', [EnrollmentController::class, 'indexForStudent']);
+            Route::get('/{id}', [EnrollmentController::class, 'showForStudent']);
+            Route::post('/{id}', [EnrollmentController::class, 'registerEnrollment']);
         });
+        // Route::group(['prefix' => '/course'], function () {
+        //     Route::get('/', [CourseController::class, 'indexForStudent']);
+        // });
         Route::get('/detail', [StudentController::class, 'showForStudent']);
     });
 });
@@ -195,6 +200,7 @@ Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
 Route::middleware('auth:sanctum')->group(function () {
     Route::delete('/logout', [AuthController::class, 'logout']);
     Route::get('/check-token', [AuthController::class, 'checkToken']);
+    Route::get('enrollment/status', [EnrollmentController::class, 'showStatus']);
 });
 
 Route::post('/google-login', [AuthController::class, 'googleLogin']);

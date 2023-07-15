@@ -100,13 +100,13 @@ class EnrollmentController extends Controller
 
     public function buildMultipleEnrollments(Request $request, Builder $query)
     {
-        $course_id = $request->input('course_id');
-        $status = $request->input('status');
+        $major = $request->input('major_id');
+        $status = $request->input('enrollment_status');
         $keyword = $request->input('keyword');
 
-        if ($course_id) {
-            $query->whereHas('course', function($q) use ($course_id){
-                $q->where('course_id', $course_id);
+        if ($major) {
+            $query->whereHas('course.major', function ($q) use ($major) {
+                $q->where('major_id', $major);
             });
         }
         if ($status) {
@@ -114,7 +114,7 @@ class EnrollmentController extends Controller
         }
 
         if ($keyword) {
-            $query->whereHas('course', function($q) use ($keyword){
+            $query->whereHas('course', function ($q) use ($keyword) {
                 $q->where('course_name', 'LIKE', "%{$keyword}%");
             });
         }
@@ -122,24 +122,72 @@ class EnrollmentController extends Controller
         return $query;
     }
 
-    // public function indexForStudent(Request $request)
-    // {
-    //     $user = $request->user();
-    //     $query = Enrollment::query();
-    //     // Get the table columns
-    //     $tableColumns = Schema::getColumnListing((new Enrollment)->getTable());
-    //     // Exclude the timestamp columns
-    //     $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
-    //     $query->select($columnsToSelect);
-    //     // Belongs to student
-    //     $query->where('student_id', $user->student_id);
-    //     $query = $this->buildMultipleEnrollments($request, $query);
-    //     $enrollments = $query->with([
-    //         'course:course_id,course_name,credits,description,tuition_fee'
-    //     ])->get();
+    public function indexForStudent(Request $request)
+    {
+        $user = $request->user();
+        $query = Enrollment::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new Enrollment)->getTable());
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+        $query->select($columnsToSelect);
+        // Belongs to student
+        $query->where('student_id', $user->student_id);
+        $query = $this->buildMultipleEnrollments($request, $query);
+        $enrollments = $query->with([
+            'course:course_id,course_name,credits,description,tuition_fee'
+        ])->get();
 
+        return response()->json([
+            'enrollments' => $enrollments,
+        ], 200);
+    }
 
-    // }
+    public function showForStudent(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = Enrollment::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new Enrollment)->getTable());
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+        $query->select($columnsToSelect);
+        // Belongs to student
+        $query->where('student_id', $user->student_id);
+        $query->where('enrollment_id', $id);
+        $enrollment = $query->with([
+            'course:course_id,course_name,credits,description,tuition_fee'
+        ])->first();
+
+        return response()->json([
+            'enrollment' => $enrollment,
+        ], 200);
+    }
+
+    public function registerEnrollment(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = Enrollment::query();
+        // Belongs to student
+        $query->where('student_id', $user->student_id);
+        $enrollment = $query->where('enrollment_id', $id)->first();
+
+        if (!$enrollment) return abort(404);
+        if ($enrollment->status != 1) return abort(404);
+
+        $enrollment->status = 2;
+        $enrollment->save();
+
+        return response()->json('', 204);
+    }
+
+    public function showStatus(Request $request)
+    {
+        return response()->json([
+            'enrollmentStatus' => (new Enrollment)->STATUS_NAME,
+        ], 200);
+    }
+
     public function edit($id)
     {
         try {
