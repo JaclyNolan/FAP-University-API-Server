@@ -2,8 +2,11 @@
 
 namespace Database\Seeders;
 
+use App\Events\StudentCreated;
+use App\Models\Student;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Event;
 
 class StudentsTableSeeder extends Seeder
 {
@@ -15,13 +18,11 @@ class StudentsTableSeeder extends Seeder
      */
     public function run()
     {
-
-
         DB::table('Students')->delete();
 
-        DB::table('Students')->insert(array (
+        $students = [
             0 =>
-            array (
+            array(
                 'student_id' => 'BA001',
                 'major_id' => '2',
                 'full_name' => 'Michael Johnson',
@@ -38,7 +39,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             1 =>
-            array (
+            array(
                 'student_id' => 'BA002',
                 'major_id' => '2',
                 'full_name' => 'Emily Davis',
@@ -55,7 +56,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             2 =>
-            array (
+            array(
                 'student_id' => 'BA003',
                 'major_id' => '2',
                 'full_name' => 'Daniel Brown',
@@ -72,7 +73,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             3 =>
-            array (
+            array(
                 'student_id' => 'BA004',
                 'major_id' => '2',
                 'full_name' => 'Sophia Wilson',
@@ -89,7 +90,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             4 =>
-            array (
+            array(
                 'student_id' => 'BA005',
                 'major_id' => '2',
                 'full_name' => 'Ethan Anderson',
@@ -106,7 +107,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             5 =>
-            array (
+            array(
                 'student_id' => 'BA006',
                 'major_id' => '2',
                 'full_name' => 'Olivia Hernandez',
@@ -123,7 +124,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             6 =>
-            array (
+            array(
                 'student_id' => 'BA007',
                 'major_id' => '2',
                 'full_name' => 'Liam Thompson',
@@ -140,7 +141,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             7 =>
-            array (
+            array(
                 'student_id' => 'BA008',
                 'major_id' => '2',
                 'full_name' => 'Ava Wilson',
@@ -157,7 +158,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             8 =>
-            array (
+            array(
                 'student_id' => 'BA009',
                 'major_id' => '2',
                 'full_name' => 'Noah Johnson',
@@ -174,7 +175,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             9 =>
-            array (
+            array(
                 'student_id' => 'BA010',
                 'major_id' => '2',
                 'full_name' => 'Emma Davis',
@@ -191,7 +192,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             10 =>
-            array (
+            array(
                 'student_id' => 'BA011',
                 'major_id' => '2',
                 'full_name' => 'William Thompson',
@@ -208,7 +209,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             11 =>
-            array (
+            array(
                 'student_id' => 'BA012',
                 'major_id' => '2',
                 'full_name' => 'Olivia Hernandez',
@@ -225,7 +226,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             12 =>
-            array (
+            array(
                 'student_id' => 'CS001',
                 'major_id' => '1',
                 'full_name' => 'John Doe',
@@ -242,7 +243,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             13 =>
-            array (
+            array(
                 'student_id' => 'CS002',
                 'major_id' => '1',
                 'full_name' => 'Jane Smith',
@@ -259,7 +260,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             14 =>
-            array (
+            array(
                 'student_id' => 'CS003',
                 'major_id' => '1',
                 'full_name' => 'Michael Johnson',
@@ -276,7 +277,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             15 =>
-            array (
+            array(
                 'student_id' => 'CS004',
                 'major_id' => '1',
                 'full_name' => 'Emily Davis',
@@ -293,7 +294,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             16 =>
-            array (
+            array(
                 'student_id' => 'CS005',
                 'major_id' => '1',
                 'full_name' => 'Daniel Brown',
@@ -310,7 +311,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             17 =>
-            array (
+            array(
                 'student_id' => 'CS006',
                 'major_id' => '1',
                 'full_name' => 'Sophia Wilson',
@@ -327,7 +328,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             18 =>
-            array (
+            array(
                 'student_id' => 'CS007',
                 'major_id' => '1',
                 'full_name' => 'Ethan Anderson',
@@ -344,7 +345,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             19 =>
-            array (
+            array(
                 'student_id' => 'CS008',
                 'major_id' => '1',
                 'full_name' => 'Olivia Hernandez',
@@ -361,7 +362,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             20 =>
-            array (
+            array(
                 'student_id' => 'CS009',
                 'major_id' => '1',
                 'full_name' => 'Liam Thompson',
@@ -378,7 +379,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             21 =>
-            array (
+            array(
                 'student_id' => 'CS010',
                 'major_id' => '1',
                 'full_name' => 'Ava Wilson',
@@ -395,7 +396,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             22 =>
-            array (
+            array(
                 'student_id' => 'CS011',
                 'major_id' => '1',
                 'full_name' => 'Noah Johnson',
@@ -412,7 +413,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             23 =>
-            array (
+            array(
                 'student_id' => 'CS012',
                 'major_id' => '1',
                 'full_name' => 'Emma Davis',
@@ -429,7 +430,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             24 =>
-            array (
+            array(
                 'student_id' => 'ME001',
                 'major_id' => '3',
                 'full_name' => 'Robert Anderson',
@@ -446,7 +447,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             25 =>
-            array (
+            array(
                 'student_id' => 'ME002',
                 'major_id' => '3',
                 'full_name' => 'Sophia Wilson',
@@ -463,7 +464,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             26 =>
-            array (
+            array(
                 'student_id' => 'ME003',
                 'major_id' => '3',
                 'full_name' => 'Daniel Thompson',
@@ -480,7 +481,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             27 =>
-            array (
+            array(
                 'student_id' => 'ME004',
                 'major_id' => '3',
                 'full_name' => 'Olivia Davis',
@@ -497,7 +498,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             28 =>
-            array (
+            array(
                 'student_id' => 'ME005',
                 'major_id' => '3',
                 'full_name' => 'William Johnson',
@@ -514,7 +515,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             29 =>
-            array (
+            array(
                 'student_id' => 'ME006',
                 'major_id' => '3',
                 'full_name' => 'Emma Anderson',
@@ -531,7 +532,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             30 =>
-            array (
+            array(
                 'student_id' => 'ME007',
                 'major_id' => '3',
                 'full_name' => 'Liam Hernandez',
@@ -548,7 +549,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             31 =>
-            array (
+            array(
                 'student_id' => 'ME008',
                 'major_id' => '3',
                 'full_name' => 'Ava Thompson',
@@ -565,7 +566,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             32 =>
-            array (
+            array(
                 'student_id' => 'ME009',
                 'major_id' => '3',
                 'full_name' => 'Noah Davis',
@@ -582,7 +583,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             33 =>
-            array (
+            array(
                 'student_id' => 'ME010',
                 'major_id' => '3',
                 'full_name' => 'Sophia Johnson',
@@ -599,7 +600,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             34 =>
-            array (
+            array(
                 'student_id' => 'ME011',
                 'major_id' => '3',
                 'full_name' => 'Michael Anderson',
@@ -616,7 +617,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             35 =>
-            array (
+            array(
                 'student_id' => 'ME012',
                 'major_id' => '3',
                 'full_name' => 'Oliver Hernandez',
@@ -633,7 +634,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             36 =>
-            array (
+            array(
                 'student_id' => 'P001',
                 'major_id' => '4',
                 'full_name' => 'William Thompson',
@@ -650,7 +651,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             37 =>
-            array (
+            array(
                 'student_id' => 'P002',
                 'major_id' => '4',
                 'full_name' => 'Olivia Hernandez',
@@ -667,7 +668,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             38 =>
-            array (
+            array(
                 'student_id' => 'P003',
                 'major_id' => '4',
                 'full_name' => 'Emma Davis',
@@ -684,7 +685,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             39 =>
-            array (
+            array(
                 'student_id' => 'P004',
                 'major_id' => '4',
                 'full_name' => 'Liam Anderson',
@@ -701,7 +702,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             40 =>
-            array (
+            array(
                 'student_id' => 'P005',
                 'major_id' => '4',
                 'full_name' => 'Sophia Hernandez',
@@ -718,7 +719,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             41 =>
-            array (
+            array(
                 'student_id' => 'P006',
                 'major_id' => '4',
                 'full_name' => 'Oliver Thompson',
@@ -735,7 +736,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             42 =>
-            array (
+            array(
                 'student_id' => 'P007',
                 'major_id' => '4',
                 'full_name' => 'Ava Davis',
@@ -752,7 +753,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             43 =>
-            array (
+            array(
                 'student_id' => 'P008',
                 'major_id' => '4',
                 'full_name' => 'Noah Anderson',
@@ -769,7 +770,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             44 =>
-            array (
+            array(
                 'student_id' => 'P009',
                 'major_id' => '4',
                 'full_name' => 'Mia Hernandez',
@@ -786,7 +787,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             45 =>
-            array (
+            array(
                 'student_id' => 'P010',
                 'major_id' => '4',
                 'full_name' => 'Ethan Thompson',
@@ -803,7 +804,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             46 =>
-            array (
+            array(
                 'student_id' => 'P011',
                 'major_id' => '4',
                 'full_name' => 'Isabella Davis',
@@ -820,7 +821,7 @@ class StudentsTableSeeder extends Seeder
                 'deleted_at' => NULL,
             ),
             47 =>
-            array (
+            array(
                 'student_id' => 'P012',
                 'major_id' => '4',
                 'full_name' => 'James Anderson',
@@ -836,8 +837,11 @@ class StudentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-        ));
+        ];
 
-
+        foreach ($students as $studentData) {
+            $studentModel = Student::create($studentData);
+            // Event::dispatch(new StudentCreated($studentModel));
+        }
     }
 }

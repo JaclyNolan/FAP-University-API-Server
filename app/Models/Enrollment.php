@@ -14,9 +14,26 @@ class Enrollment extends Model
         'student_id',
         'course_id',
         'status',
+        'status_name',
         'created_at',
         'updated_at',
     ];
+
+    public function findStatus($number)
+    {
+        switch ($number) {
+            case 1:
+                return "Not Register";
+            case 2:
+                return "In Progress";
+            case 3:
+                return "Reserved";
+            case 4:
+                return "Failed";
+            default:
+                return "Passed";
+        };
+    }
 
     public function student()
     {

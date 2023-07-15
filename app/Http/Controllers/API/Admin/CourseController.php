@@ -115,21 +115,15 @@ class CourseController extends Controller
         $query->where('major_id', $user->student->major_id);
         $query = $this->buildMultipleCourses($request, $query);
         //Filter enrollmentStatus
-        if ($enrollmentStatus != null) {
-            if ($enrollmentStatus == "0") {
-                $query->whereDoesntHave('enrollments', function ($q) use ($user) {
-                    $q->where('student_id', $user->student_id);
-                });
-            } else {
-                $query->whereHas('enrollments', function ($q) use ($user, $enrollmentStatus) {
-                    $q->where('student_id', $user->student_id)
-                        ->where('status', $enrollmentStatus);
-                });
-            }
+        if ($enrollmentStatus) {
+            $query->whereHas('enrollments', function ($q) use ($user, $enrollmentStatus) {
+                $q->where('student_id', $user->student_id)
+                    ->where('status', $enrollmentStatus);
+            });
         }
         $courses = $query->with([
             'enrollments' => function ($q) use ($user) {
-                $q->select('enrollment_id', 'student_id', 'course_id', 'status')
+                $q->select('enrollment_id', 'student_id', 'course_id', 'status', 'status_name')
                     ->where('student_id', $user->student_id);
             },
         ])->get();
