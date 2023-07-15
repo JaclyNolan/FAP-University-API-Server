@@ -17,7 +17,7 @@ return new class extends Migration
             $table->increments('grade_id');
             $table->unsignedInteger('class_enrollment_id');
             $table->integer('score')->nullable();
-            $table->integer('status');
+            $table->string('status');
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
         });

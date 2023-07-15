@@ -5,9 +5,10 @@ namespace App\Http\Controllers\API\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Course;
 use App\Models\Major;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Database\QueryException;
-
+use Illuminate\Support\Facades\Schema;
 
 class CourseController extends Controller
 {
@@ -82,6 +83,54 @@ class CourseController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function buildMultipleCourses(Request $request, Builder $query)
+    {
+        $credits = $request->input('status');
+        $keyword = $request->input('keyword');
+
+        if ($credits) {
+            $query->where('credits', $credits);
+        }
+
+        if ($keyword) {
+            $query->where('course_name', 'LIKE', "%{$keyword}%");
+        }
+
+        return $query;
+    }
+
+    public function indexForStudent(Request $request)
+    {
+        $enrollmentStatus = $request->input('enrollment_status');
+        $user = $request->user();
+        $query = Course::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new Course)->getTable());
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+        $query->select($columnsToSelect);
+        //Belong to the major that the student is in
+        $query->where('major_id', $user->student->major_id);
+        $query = $this->buildMultipleCourses($request, $query);
+        //Filter enrollmentStatus
+        if ($enrollmentStatus) {
+            $query->whereHas('enrollments', function ($q) use ($user, $enrollmentStatus) {
+                $q->where('student_id', $user->student_id)
+                    ->where('status', $enrollmentStatus);
+            });
+        }
+        $courses = $query->with([
+            'enrollments' => function ($q) use ($user) {
+                $q->select('enrollment_id', 'student_id', 'course_id', 'status', 'status_name')
+                    ->where('student_id', $user->student_id);
+            },
+        ])->get();
+
+        return response()->json([
+            'courses' => $courses,
+        ], 200);
     }
 
     public function store(Request $request)

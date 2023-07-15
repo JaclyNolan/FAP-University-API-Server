@@ -17,8 +17,10 @@ return new class extends Migration
             $table->increments('enrollment_id');
             $table->string('student_id');
             $table->unsignedInteger('course_id');
-            $table->integer('status');
+            $table->integer('status')->default(1);
+            $table->string('status_name')->default("Not Registered");
             $table->dateTime('created_at');
+            $table->dateTime('updated_at')->nullable();
         });
     }
 

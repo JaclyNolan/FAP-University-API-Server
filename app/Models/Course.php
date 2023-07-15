@@ -21,16 +21,16 @@ class Course extends Model
 
     public function major()
     {
-        return $this->belongsTo(Major::class);
+        return $this->belongsTo(Major::class, 'major_id', 'major_id');
     }
 
     public function enrollments()
     {
-        return $this->hasMany(Enrollment::class);
+        return $this->hasMany(Enrollment::class, 'course_id');
     }
 
     public function classCourses()
     {
-        return $this->hasMany(ClassCourse::class);
+        return $this->hasMany(ClassCourse::class, 'course_id');
     }
 }

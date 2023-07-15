@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\ClassEnrollment;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -19,7 +20,7 @@ class ClassEnrollmentsTableSeeder extends Seeder
 
         DB::table('Class_enrollments')->delete();
 
-        DB::table('Class_enrollments')->insert(array (
+        $classEnrollments = [
             0 =>
             array (
                 'class_enrollment_id' => '1',
@@ -182,8 +183,10 @@ class ClassEnrollmentsTableSeeder extends Seeder
                 'updated_at' => NULL,
                 'deleted_at' => NULL,
             ),
-        ));
+        ];
 
-
+        foreach ($classEnrollments as $classEnrollmentData) {
+            ClassEnrollment::create($classEnrollmentData);
+        }
     }
 }

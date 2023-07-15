@@ -14,17 +14,44 @@ class Enrollment extends Model
         'student_id',
         'course_id',
         'status',
+        'status_name',
         'created_at',
         'updated_at',
     ];
 
+    public function findStatus($number)
+    {
+        switch ($number) {
+            case 1:
+                return "Not Register";
+            case 2:
+                return "In Progress";
+            case 3:
+                return "Reserved";
+            case 4:
+                return "Failed";
+            default:
+                return "Passed";
+        };
+    }
+
+    protected static function booted()
+    {
+        static::creating(function($enrollment) {
+            $enrollment->status_name = $enrollment->findStatus($enrollment->status);
+        });
+        static::updating(function($enrollment) {
+            $enrollment->status_name = $enrollment->findStatus($enrollment->status);
+        });
+    }
+
     public function student()
     {
-        return $this->belongsTo(Student::class);
+        return $this->belongsTo(Student::class, 'student_id', 'student_id');
     }
 
     public function course()
     {
-        return $this->belongsTo(Course::class);
+        return $this->belongsTo(Course::class, 'course_id', 'course_id');
     }
 }

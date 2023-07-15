@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Events\StudentCreated;
 use Illuminate\Database\Eloquent\Model;
 
 class Student extends Model
@@ -9,6 +10,7 @@ class Student extends Model
 
     protected $table = 'Students';
     protected $primaryKey = 'student_id';
+    public $incrementing = false;
     protected $keyType = 'string';
     protected $fillable = [
         'major_id',
@@ -26,9 +28,16 @@ class Student extends Model
         'deleted_at',
     ];
 
+    protected static function booted()
+    {
+        static::created(function($student) {
+            event(new StudentCreated($student));
+        });
+    }
+
     public function major()
     {
-        return $this->belongsTo(Major::class);
+        return $this->belongsTo(Major::class, 'major_id', 'major_id');
     }
 
     public function user()
@@ -45,4 +54,5 @@ class Student extends Model
     {
         return $this->hasMany(ClassEnrollment::class, 'student_id', 'student_id');
     }
+
 }

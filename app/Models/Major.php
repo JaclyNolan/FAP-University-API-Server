@@ -15,21 +15,21 @@ class Major extends Model
 
     public function courses()
     {
-        return $this->hasMany(Course::class);
+        return $this->hasMany(Course::class, 'major_id');
     }
 
     public function students()
     {
-        return $this->hasMany(Student::class);
+        return $this->hasMany(Student::class, 'major_id');
     }
 
     public function instructors()
     {
-        return $this->hasMany(Instructor::class);
+        return $this->hasMany(Instructor::class, 'major_id');
     }
 
     public function classes()
     {
-        return $this->hasMany(ClassModel::class);
+        return $this->hasMany(ClassModel::class, 'major_id');
     }
 }

@@ -212,7 +212,7 @@ class ClassScheduleController extends Controller
             'classCourse.class:class_id,class_name',
             'classCourse.course:course_id,course_name',
             'attendances' => function ($q) use ($user) {
-                $q->select('class_schedule_id', 'class_enrollment_id', 'attendance_status')
+                $q->select('class_schedule_id', 'class_enrollment_id', 'attendance_status', 'attendance_time')
                     ->whereHas('classEnrollment', function ($q) use ($user) {
                         $q->where('student_id', $user->student_id);
                     });
@@ -249,7 +249,7 @@ class ClassScheduleController extends Controller
         $query->where('class_schedule_id', $id);
         $query->select('class_schedule_id', 'submit_time');
         $classSchedule = $query->with([
-            'attendances:attendance_id,class_schedule_id,class_enrollment_id,attendance_status,attendance_comment',
+            'attendances:attendance_id,class_schedule_id,class_enrollment_id,attendance_status,attendance_time,attendance_comment',
             'attendances.classEnrollment:class_enrollment_id,student_id',
             'attendances.classEnrollment.student:student_id,full_name,image',
         ])->first();
@@ -327,8 +327,14 @@ class ClassScheduleController extends Controller
             /** @var Attendance $matchingAttendanceModel */
             $matchingAttendanceModel = $attendances->find($attendance['attendance_id']);
             if ($matchingAttendanceModel) {
+                $previousStatus = $matchingAttendanceModel->attendance_status;
                 $matchingAttendanceModel->attendance_status = $attendance['attendance_status'];
                 $matchingAttendanceModel->attendance_comment = $attendance['attendance_comment'] ? $attendance['attendance_comment'] : "";
+                //When status move from false to true
+                if (!$previousStatus && $previousStatus != $matchingAttendanceModel->attendance_status)
+                    $matchingAttendanceModel->attendance_time = Carbon::now();
+                if (!$matchingAttendanceModel->attendance_status)
+                    $matchingAttendanceModel->attendance_time = null;
                 $matchingAttendanceModel->updated_at = Carbon::now();
                 $matchingAttendanceModel->save();
             } else {
