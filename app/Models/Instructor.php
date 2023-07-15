@@ -8,6 +8,8 @@ class Instructor extends Model
 {
     protected $table = 'Instructors';
     protected $primaryKey = 'instructor_id';
+    public $incrementing = false;
+    protected $keyType = 'string';
 
     protected $fillable = [
         'instructor_id',

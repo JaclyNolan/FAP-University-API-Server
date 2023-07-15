@@ -8,6 +8,7 @@ use App\Models\Student;
 use App\Models\User;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Schema;
 
 class StudentController extends Controller
 {
@@ -104,6 +105,26 @@ class StudentController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
+    }
+
+    public function showForStudent(Request $request)
+    {
+        $user = $request->user();
+        $query = Student::query();
+        //Belongs to student
+        $query->where('student_id', $user->student_id);
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new Student)->getTable());
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+        $query->select($columnsToSelect);
+        $student = $query->with([
+            'user:student_id,email',
+        ])->first();
+
+        return response()->json([
+            'student' => $student,
+        ], 200);
     }
 
     public function store(Request $request)

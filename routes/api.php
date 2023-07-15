@@ -136,35 +136,61 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::get('/edit-feedback/{id}', [FeedbackController::class, 'edit']);
     });
 
-    // Attendance 
+    // Attendance
     Route::group(['prefix' => 'attendances'], function () {
         Route::get('/', [AttendanceController::class, 'index']);
         Route::get('/edit-attendance/{id}', [AttendanceController::class, 'edit']);
         Route::put('/update-attendance/{id}', [AttendanceController::class, 'update']);
     });
-
-    
-
-    // Enrollments 
-    Route::group(['prefix' => 'enrollments'], function () {
-        Route::get('/', [EnrollmentController::class, 'index']);
-        Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
-        Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
-    });
 });
 
-// file
-Route::group(['prefix' => 'files'], function () {
-    Route::post('/save-file', [FileController::class, 'store']);
-    Route::get('/get-file/{filename}', [FileController::class, 'getFile']);
+// Enrollments 
+Route::group(['prefix' => 'enrollments'], function () {
+    Route::get('/', [EnrollmentController::class, 'index']);
+    Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
+    Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
     // User with instructor role can access these routes
+    // Class
+    Route::group(['prefix' => 'instructor'], function () {
+        Route::group(['prefix' => '/classCourse'], function () {
+            Route::get('/', [ClassCourseController::class, 'indexForInstructor']);
+            Route::get('/{id}', [ClassCourseController::class, 'showForInstructor']);
+            Route::get('/{id}/students', [ClassCourseController::class, 'showStudentsForInstructor']);
+            Route::get('/{id}/classSchedules', [ClassCourseController::class, 'showClassSchedulesForInstructor']);
+        });
+        Route::group(['prefix' => '/classEnrollment'], function () {
+            Route::get('/{id}', [ClassEnrollmentController::class, 'showForInstructor']);
+        });
+        Route::group(['prefix' => '/classSchedule'], function () {
+            Route::get('/', [ClassScheduleController::class, 'indexForInstructor']);
+            Route::get('/{id}/classCourse', [ClassScheduleController::class, 'showClassCourseForInstructor']);
+            Route::get('/{id}/attendances', [ClassScheduleController::class, 'showAttendancesForInstructor']);
+            Route::put('/{id}/attendances', [ClassScheduleController::class, 'updateAttendancesForInstructor']);
+        });
+        Route::group(['prefix' => '/feedback'], function () {
+            Route::get('/', [FeedbackController::class, 'indexForInstructor']);
+        });
+        Route::group(['prefix' => '/detail'], function () {
+            Route::get('/', [InstructorController::class, 'showForInstructor']);
+        });
+
+    });
 });
 
 Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
     // User with student role can access these routes
+    Route::group(['prefix' => 'student'], function () {
+        Route::group(['prefix' => '/classSchedule'], function () {
+            Route::get('/', [ClassScheduleController::class, 'indexForStudent']);
+        });
+        Route::group(['prefix' => '/course'], function () {
+            Route::get('/', [CourseController::class, 'indexForStudent']);
+        });
+        Route::get('/detail', [StudentController::class, 'showForStudent']);
+    });
 });
 
 Route::middleware('auth:sanctum')->group(function () {

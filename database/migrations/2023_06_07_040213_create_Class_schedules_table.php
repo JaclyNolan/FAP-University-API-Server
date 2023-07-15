@@ -20,8 +20,9 @@ return new class extends Migration
             $table->integer('slot');
             $table->integer('room');
             $table->integer('status');
+            $table->dateTime('submit_time')->nullable();
             $table->dateTime('created_at');
-            $table->dateTime('update_at')->nullable();
+            $table->dateTime('updated_at')->nullable();
         });
     }
 

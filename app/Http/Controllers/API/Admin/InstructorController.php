@@ -9,6 +9,7 @@ use App\Models\Instructor;
 use App\Models\User;
 use App\Models\Major;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\Schema;
 
 class InstructorController extends Controller
 {
@@ -221,6 +222,36 @@ class InstructorController extends Controller
                 'status' => 200,
                 'message' => 'Instructor Delete Successfully!',
             ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => 500,
+                'message' => 'Server Error',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function showForInstructor(Request $request)
+    {
+        try {
+            // Get the table columns
+            $tableColumns = Schema::getColumnListing((new Instructor)->getTable());
+            // Exclude the timestamp columns
+            $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+            $user = $request->user();
+            $instructor = Instructor::select($columnsToSelect)->where('instructor_id', $user->instructor_id)->first();
+
+            if (!$instructor) {
+                return response()->json([
+                    'status' => 404,
+                    'message' => 'Instructor not found',
+                    'error' => 'The requested instructor does not exist.',
+                ], 404);
+            }
+
+            return response()->json([
+                'instructor' => $instructor,
+            ], 200);
         } catch (\Exception $e) {
             return response()->json([
                 'status' => 500,

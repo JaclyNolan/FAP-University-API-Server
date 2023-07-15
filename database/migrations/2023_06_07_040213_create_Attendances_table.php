@@ -17,9 +17,11 @@ return new class extends Migration
             $table->increments('attendance_id');
             $table->unsignedInteger('class_schedule_id');
             $table->unsignedInteger('class_enrollment_id');
-            $table->integer('attendance_status');
-            $table->date('attendance_time');
-            $table->dateTime('update_at')->nullable();
+            $table->boolean('attendance_status')->nullable()->default(false);
+            $table->dateTime('attendance_time')->nullable();
+            $table->string('attendance_comment')->default('');
+            $table->dateTime('created_at');
+            $table->dateTime('updated_at')->nullable();
         });
     }
 
