@@ -190,6 +190,9 @@ Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
             Route::get('/{id}', [EnrollmentController::class, 'showForStudent']);
             Route::post('/{id}', [EnrollmentController::class, 'registerEnrollment']);
         });
+        Route::group(['prefix' => '/classEnrollment'], function () {
+            Route::get('/', [ClassEnrollmentController::class, 'indexForStudent']);
+        });
         // Route::group(['prefix' => '/course'], function () {
         //     Route::get('/', [CourseController::class, 'indexForStudent']);
         // });

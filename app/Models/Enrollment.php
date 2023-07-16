@@ -19,7 +19,7 @@ class Enrollment extends Model
         'updated_at',
     ];
 
-    public $STATUS_NAME = [
+    private $STATUS_NAME = [
         [
             'status' => 1,
             'name' => "Not Register"
@@ -49,6 +49,11 @@ class Enrollment extends Model
             'name' => "Passed"
         ],
     ];
+
+    public function getStatusName()
+    {
+        return $this->STATUS_NAME;
+    }
 
     public function findStatus($number)
     {

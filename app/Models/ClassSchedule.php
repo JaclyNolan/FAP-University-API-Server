@@ -21,7 +21,7 @@ class ClassSchedule extends Model
         'deleted_at',
     ];
 
-    public $SLOT_TIMES = [
+    private static $SLOT_TIMES = [
         [
             'slot' => 1,
             'start_time' => '7:15:00',
@@ -53,6 +53,17 @@ class ClassSchedule extends Model
             'end_time' => '20:25:00',
         ],
     ];
+
+    public static function getSlotTimes()
+    {
+        return ClassSchedule::$SLOT_TIMES;
+    }
+
+    public static function findSlotTime($slot)
+    {
+        foreach (ClassSchedule::getSlotTimes() as $slotTime)
+            if ($slotTime['slot'] == $slot) return $slotTime;
+    }
 
     protected static function booted()
     {

@@ -112,7 +112,7 @@ class ClassScheduleController extends Controller
     public function showSlotTimes(Request $request)
     {
         return response()->json([
-            'slotTimes' => $this->classSchedule->SLOT_TIMES,
+            'slotTimes' => ClassSchedule::getSlotTimes(),
         ], 200);
     }
 

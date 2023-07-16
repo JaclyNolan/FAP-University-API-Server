@@ -1,21 +1,38 @@
 <?php
 
-namespace App\Listeners;
+namespace App\Jobs;
 
-use App\Events\ClassScheduleCreated;
 use App\Models\Attendance;
+use App\Models\ClassSchedule;
 use Carbon\Carbon;
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldBeUnique;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
+use Illuminate\Queue\SerializesModels;
+use Illuminate\Support\Facades\Log;
 
-class GenerateAttendancesForClassSchedule
+class GenerateAttendancesForClassSchedule implements ShouldQueue
 {
+    use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
+
+    protected $classSchedule;
+
     /**
-     * Handle the event.
+     * Create a new job instance.
      */
-    public function handle(ClassScheduleCreated $event): void
+    public function __construct(ClassSchedule $classSchedule)
     {
-        $classSchedule = $event->classSchedule;
+        $this->classSchedule = $classSchedule;
+    }
+
+    /**
+     * Execute the job.
+     */
+    public function handle(): void
+    {
+        $classSchedule = $this->classSchedule;
         $classEnrollments = $classSchedule->classCourse->classEnrollments;
 
         foreach ($classEnrollments as $classEnrollmentData) {

@@ -184,7 +184,7 @@ class EnrollmentController extends Controller
     public function showStatus(Request $request)
     {
         return response()->json([
-            'enrollmentStatus' => (new Enrollment)->STATUS_NAME,
+            'enrollmentStatus' => $this->enrollment->getStatusName(),
         ], 200);
     }
 
