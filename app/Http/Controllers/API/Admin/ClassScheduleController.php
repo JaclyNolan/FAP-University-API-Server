@@ -109,6 +109,13 @@ class ClassScheduleController extends Controller
         }
     }
 
+    public function showSlotTimes(Request $request)
+    {
+        return response()->json([
+            'slotTimes' => $this->classSchedule->SLOT_TIMES,
+        ], 200);
+    }
+
     private function buildMultipleClassSchedule(Request $request, Builder $query)
     {
         $class_id = $request->input('class_id');
