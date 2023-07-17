@@ -254,7 +254,6 @@ class ClassScheduleController extends Controller
             $q->where('instructor_id', $user->instructor_id);
         });
         $query->where('class_schedule_id', $id);
-        $query->select('class_schedule_id', 'submit_time', 'status');
         $classSchedule = $query->with([
             'attendances:attendance_id,class_schedule_id,class_enrollment_id,attendance_status,attendance_time,attendance_comment',
             'attendances.classEnrollment:class_enrollment_id,student_id',

@@ -49,7 +49,7 @@ class HandleClassScheduleReached
             $event->classSchedule->status = 3;
             $event->classSchedule->save();
             $delayEnd = $now->diffInSeconds($classEndTime);
-            dump($delayEnd);
+            // dump($delayEnd);
             EndClassSchedule::dispatch($event->classSchedule)->delay($delayEnd);
             return;
         }
@@ -61,7 +61,7 @@ class HandleClassScheduleReached
             $event->classSchedule->save();
             $delayClose = $now->diffInSeconds($classTakeAttendanceTime);
             $delayEnd = $now->diffInSeconds($classEndTime);
-            dump($delayClose, $delayEnd);
+            // dump($delayClose, $delayEnd);
             CloseClassSchedule::dispatch($event->classSchedule)->delay($delayClose);
             EndClassSchedule::dispatch($event->classSchedule)->delay($delayEnd);
             return;
@@ -73,7 +73,7 @@ class HandleClassScheduleReached
         $delayOpen = $now->diffInSeconds($classStartTime);
         $delayClose = $now->diffInSeconds($classTakeAttendanceTime);
         $delayEnd = $now->diffInSeconds($classEndTime);
-        dump($delayOpen, $delayClose, $delayEnd);
+        // dump($delayOpen, $delayClose, $delayEnd);
         OpenClassSchedule::dispatch($event->classSchedule)->delay($delayOpen);
         CloseClassSchedule::dispatch($event->classSchedule)->delay($delayClose);
         EndClassSchedule::dispatch($event->classSchedule)->delay($delayEnd);

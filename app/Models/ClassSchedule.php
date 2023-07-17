@@ -83,7 +83,16 @@ class ClassSchedule extends Model
     {
         return ClassSchedule::$TIME_FOR_TAKE_ATTENDANCE;
     }
+    public static function getStatusName()
+    {
+        return ClassSchedule::$STATUS_NAME;
+    }
 
+    public static function findStatusName($status)
+    {
+        foreach (ClassSchedule::getStatusName() as $statusName)
+            if ($statusName['status'] == $status) return $statusName;
+    }
     public static function findSlotTime($slot)
     {
         foreach (ClassSchedule::getSlotTimes() as $slotTime)
