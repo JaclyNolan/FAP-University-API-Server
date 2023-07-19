@@ -10,6 +10,7 @@ class Feedback extends Model
     protected $table = 'Feedbacks';
     protected $primaryKey = 'feedback_id';
 
+    public $timestamps = false;
     protected $fillable = [
         'class_enrollment_id',
         'feedback_content',

@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('Majors', function (Blueprint $table) {
             $table->increments('major_id');
             $table->string('major_name')->unique('UQ__Majors__B2815F7A3A4F6592');
+            $table->string('short_name')->unique();
         });
     }
 

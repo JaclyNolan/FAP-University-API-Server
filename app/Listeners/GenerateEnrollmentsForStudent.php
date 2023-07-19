@@ -8,9 +8,8 @@ use Carbon\Carbon;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
-class GenerateEnrollmentsForStudent implements ShouldQueue
+class GenerateEnrollmentsForStudent
 {
-    use InteractsWithQueue;
     /**
      * Handle the event.
      */
