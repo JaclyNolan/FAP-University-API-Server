@@ -100,6 +100,20 @@ class InstructorController extends Controller
         }
     }
 
+    public function listForStudent(Request $request)
+    {
+        $user = $request->user();
+        $query = Instructor::query();
+        $query->select('instructor_id','full_name');
+        $query->whereHas('classCourses.classEnrollments', function ($q) use ($user) {
+            $q->where('student_id', $user->student_id);
+        });
+        $instructors = $query->get();
+        return response()->json([
+            'instructors' => $instructors,
+        ], 200);
+    }
+
     public function store(Request $request)
     {
         try {

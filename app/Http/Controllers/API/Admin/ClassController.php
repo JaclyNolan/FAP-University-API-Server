@@ -75,6 +75,20 @@ class ClassController extends Controller
         }
     }
 
+    public function listForStudent(Request $request)
+    {
+        $user = $request->user();
+        $query = ClassModel::query();
+        $query->select('class_id','class_name');
+        $query->whereHas('classCourses.classEnrollments', function ($q) use ($user) {
+            $q->where('student_id', $user->student_id);
+        });
+        $classes = $query->get();
+        return response()->json([
+            'classes' => $classes,
+        ], 200);
+    }
+
     public function store(Request $request)
     {
         try {

@@ -190,12 +190,21 @@ Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
             Route::get('/{id}', [EnrollmentController::class, 'showForStudent']);
             Route::post('/{id}', [EnrollmentController::class, 'registerEnrollment']);
         });
-        Route::group(['prefix' => '/classEnrollment'], function () {
-            Route::get('/', [ClassEnrollmentController::class, 'indexForStudent']);
+        Route::group(['prefix' => '/classCourse'],function () {
+            Route::get('/', [ClassCourseController::class, 'indexForStudent']);
+            Route::get('/{id}', [ClassCourseController::class, 'showForStudent']);
+            Route::get('/{id}/students', [ClassCourseController::class, 'showStudentsForStudent']);
+            Route::get('/{id}/classSchedules', [ClassCourseController::class, 'showClassSchedulesForStudent']);
         });
-        // Route::group(['prefix' => '/course'], function () {
-        //     Route::get('/', [CourseController::class, 'indexForStudent']);
-        // });
+        Route::group(['prefix' => '/course'],function () {
+            Route::get('/list', [CourseController::class, 'listForStudent']);
+        });
+        Route::group(['prefix' => '/class'],function () {
+            Route::get('/list', [ClassController::class, 'listForStudent']);
+        });
+        Route::group(['prefix' => '/instructor'],function () {
+            Route::get('/list', [InstructorController::class, 'listForStudent']);
+        });
         Route::get('/detail', [StudentController::class, 'showForStudent']);
     });
 });
