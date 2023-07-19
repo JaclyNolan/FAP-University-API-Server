@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('course_name')->unique('UQ__Courses__B5B2A66A98F0C663');
             $table->integer('credits');
             $table->string('tuition_fee');
+            $table->string('description');
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
             $table->dateTime('deleted_at')->nullable();

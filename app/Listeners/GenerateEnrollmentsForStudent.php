@@ -25,7 +25,7 @@ class GenerateEnrollmentsForStudent implements ShouldQueue
             Enrollment::create([
                 'student_id' => $student->student_id,
                 'course_id' => $course->course_id,
-                'status' => rand(1, 5),
+                'status' => rand(1, 7),
                 'created_at' => Carbon::now(),
                 'updated_at' => NULL,
             ]);

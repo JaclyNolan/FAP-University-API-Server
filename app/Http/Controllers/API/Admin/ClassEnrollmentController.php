@@ -28,6 +28,54 @@ class ClassEnrollmentController extends Controller
         $classEnrollment = $query->where('class_enrollment_id', $id);
         return $classEnrollment;
     }
+    public function buildMultipleClassEnrollment(Builder $query, Request $request)
+    {
+        $class_id = $request->input('class_id');
+        $course_id = $request->input('course_id');
+        $student_id = $request->input('student_id');
+        $instructor_id = $request->input('instructor_id');
+        $keyword = $request->input('keyword');
+
+        if ($class_id) {
+            $query->whereHas('classCourse.class', function ($q) use ($class_id) {
+                $q->where('class_id', $class_id);
+            });
+        }
+        if ($course_id) {
+            $query->whereHas('classCourse.course', function ($q) use ($course_id) {
+                $q->where('course_id', $course_id);
+            });
+        }
+        if ($student_id) {
+            $query->whereHas('student', function ($q) use ($student_id) {
+                $q->where('student_id', $student_id);
+            });
+        }
+        if ($instructor_id) {
+            $query->whereHas('instructor', function ($q) use ($instructor_id) {
+                $q->where('instructor_id', $instructor_id);
+            });
+        }
+
+        if ($keyword) {
+            $query->where(function ($q) use ($keyword) {
+                $q->where('class_enrollment_id', 'LIKE', "%{$keyword}%")
+                    ->orWhereHas('classCourse.course', function ($q) use ($keyword) {
+                        $q->where('course_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orWhereHas('classCourse.class', function ($q) use ($keyword) {
+                        $q->where('class_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orWhereHas('classCourse.instructor', function ($q) use ($keyword) {
+                        $q->where('full_name', 'LIKE', "%{$keyword}%");
+                    })
+                    ->orWhereHas('student', function ($q) use ($keyword) {
+                        $q->where('full_name', 'LIKE', "%{$keyword}%");
+                    });
+            });
+        }
+        return $query;
+    }
 
     public function index(Request $request)
     {
@@ -130,6 +178,31 @@ class ClassEnrollmentController extends Controller
         }
     }
 
+    // public function indexForStudent(Request $request)
+    // {
+    //     $user = $request->user();
+    //     $query = ClassEnrollment::query();
+    //     $query->where('student_id', $user->student_id);
+    //     // Get the table columns
+    //     $tableColumns = Schema::getColumnListing((new ClassEnrollment)->getTable());
+
+    //     // Exclude the timestamp columns
+    //     $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+    //     $query->select($columnsToSelect);
+    //     //Apply filter and search
+    //     $query = $this->buildMultipleClassEnrollment($query, $request);
+    //     $classEnrollments = $query->with([
+    //         'classCourse:class_course_id,class_id,course_id,instructor_id',
+    //         'classCourse.class:class_id,class_name',
+    //         'classCourse.course:course_id,course_name',
+    //         'classCourse.instructor:instructor_id,full_name',
+    //     ])->get();
+
+    //     return response()->json([
+    //         'classEnrollments' => $classEnrollments,
+    //     ], 200);
+    // }
+
     public function store(Request $request)
     {
         try {
@@ -172,6 +245,80 @@ class ClassEnrollmentController extends Controller
         ], 200);
     }
 
+    // public function showForStudent(Request $request, $id)
+    // {
+    //     $user = $request->user();
+    //     $query = ClassEnrollment::query();
+    //     $query->where('student_id', $user->student_id);
+    //     // Get the table columns
+    //     $tableColumns = Schema::getColumnListing((new ClassEnrollment)->getTable());
+
+    //     // Exclude the timestamp columns
+    //     $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+    //     // Select the desired columns
+    //     $query->select($columnsToSelect);
+    //     $classEnrollment = $this->buildSingleClassEnrollment($query, $id)->with([
+    //         'classCourse:class_course_id,class_id,course_id,instructor_id',
+    //         'classCourse.class:class_id,class_name',
+    //         'classCourse.course:course_id,course_name',
+    //         'classCourse.instructor:instructor_id,full_name',
+    //     ])->first();
+    //     if (!$classEnrollment) return abort(404);
+    //     return response()->json([
+    //         'classEnrollment' => $classEnrollment,
+    //     ], 200);
+    // }
+
+    // public function showStudentsForStudent(Request $request, $id)
+    // {
+    //     $user = $request->user();
+    //     $query = ClassEnrollment::query();
+    //     $query->where('student_id', $user->student_id);
+    //     // Get the table columns
+    //     $tableColumns = Schema::getColumnListing((new ClassEnrollment)->getTable());
+
+    //     // Exclude the timestamp columns
+    //     $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+    //     // Select the desired columns
+    //     $query->select($columnsToSelect);
+    //     $classEnrollment = $this->buildSingleClassEnrollment($query, $id)->with([
+    //         'classCourse:class_course_id',
+    //         'classCourse.classEnrollments:class_enrollment_id,class_course_id,student_id',
+    //         'classCourse.classEnrollments.student:student_id,full_name,image,gender,date_of_birth',
+    //     ])->first();
+    //     if (!$classEnrollment) return abort(404);
+    //     return response()->json([
+    //         'classEnrollment' => $classEnrollment,
+    //     ], 200);
+    // }
+    // public function showAttendancesForStudent(Request $request, $id)
+    // {
+    //     $user = $request->user();
+    //     $query = ClassEnrollment::query();
+    //     $query->where('student_id', $user->student_id);
+    //     // Get the table columns
+    //     $tableColumns = Schema::getColumnListing((new ClassEnrollment)->getTable());
+
+    //     // Exclude the timestamp columns
+    //     $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+    //     // Select the desired columns
+    //     $query->select($columnsToSelect);
+    //     $classEnrollment = $this->buildSingleClassEnrollment($query, $id)->with([
+    //         'classCourse:class_course_id',
+    //         'classCourse.classSchedules:class_schedule_id,class_course_id,day,slot,room,status',
+    //         'classCourse.classSchedules.attendances' => function ($q) use ($id) {
+    //             $q->select('attendance_id','class_schedule_id','class_enrollment_id','attendance_status','attendance_time')
+    //             ->where('class_enrollment_id', $id);
+    //         },
+    //     ])->first();
+    //     if (!$classEnrollment) return abort(404);
+    //     return response()->json([
+    //         'classEnrollment' => $classEnrollment,
+    //     ], 200);
+    // }
 
     public function edit($id)
     {
