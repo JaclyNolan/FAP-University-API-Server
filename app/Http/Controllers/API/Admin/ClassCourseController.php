@@ -399,6 +399,29 @@ class ClassCourseController extends Controller
         ], 200);
     }
 
+    public function showGradesForStudent(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        // Select the desired columns
+        $query->select('class_course_id');
+        $query = $this->buildSingleClassCourse($query, $id);
+        $query->whereHas('classEnrollments', function ($q) use ($user){
+            $q->where('student_id', $user->student_id);
+        });
+        $classCourse = $query->with([
+            'classEnrollments' => function ($q) use ($user) {
+                $q->select('class_enrollment_id', 'class_course_id', 'student_id')
+                ->where('student_id', $user->student_id);
+            },
+            'classEnrollments.grades:grade_id,class_enrollment_id,score,status',
+        ])->first();
+
+        return response()->json([
+            'classCourse' => $classCourse,
+        ], 200);
+    }
+
     public function edit(Request $request, $id)
     {
         try {

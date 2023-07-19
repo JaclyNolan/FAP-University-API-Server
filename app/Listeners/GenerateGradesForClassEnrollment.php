@@ -34,7 +34,7 @@ class GenerateGradesForClassEnrollment
                 $score = null;
         }
         Grade::create([
-            'class_enrollment_id' => $classEnrollment->class_course_id,
+            'class_enrollment_id' => $classEnrollment->class_enrollment_id,
             'score' => $score,
             'created_at' => Carbon::now(),
             'updated_at' => NULL,
