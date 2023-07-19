@@ -116,7 +116,6 @@ class ClassCourseController extends Controller
             $this->classCourse->instructor_id = $request->input('instructor_id');
             $this->classCourse->created_at = date('Y-m-d H:i:s');
             $this->classCourse->save();
-            $this->classCourse::commit();
 
             return response()->json([
                 'status' => 200,
