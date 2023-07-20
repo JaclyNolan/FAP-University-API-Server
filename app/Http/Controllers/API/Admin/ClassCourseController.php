@@ -235,6 +235,24 @@ class ClassCourseController extends Controller
         ], 200);
     }
 
+    public function listForStudent(Request $request)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        $query->select('class_course_id','class_id','course_id','instructor_id');
+        $query->whereHas('classEnrollments', function ($q) use ($user) {
+            $q->where('student_id', $user->student_id);
+        });
+        $classCourses = $query->with([
+            'class:class_id,class_name',
+            'course:course_id,course_name',
+            'instructor:instructor_id,full_name',
+        ])->get();
+        return response()->json([
+            'classCourses' => $classCourses,
+        ], 200);
+    }
+
     public function showForInstructor(Request $request, $id)
     {
         $user = $request->user();

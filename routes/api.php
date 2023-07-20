@@ -199,6 +199,7 @@ Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
         });
         Route::group(['prefix' => '/classCourse'],function () {
             Route::get('/', [ClassCourseController::class, 'indexForStudent']);
+            Route::get('/list', [ClassCourseController::class, 'listForStudent']);
             Route::get('/{id}', [ClassCourseController::class, 'showForStudent']);
             Route::get('/{id}/students', [ClassCourseController::class, 'showStudentsForStudent']);
             Route::get('/{id}/classSchedules', [ClassCourseController::class, 'showClassSchedulesForStudent']);
@@ -212,6 +213,10 @@ Route::middleware(['auth:sanctum', 'can:isStudent'])->group(function () {
         });
         Route::group(['prefix' => '/instructor'],function () {
             Route::get('/list', [InstructorController::class, 'listForStudent']);
+        });
+        Route::group(['prefix' => '/feedback'],function () {
+            Route::get('/', [FeedbackController::class, 'indexForStudent']);
+            Route::post('/', [FeedbackController::class, 'storeForStudent']);
         });
         Route::get('/detail', [StudentController::class, 'showForStudent']);
     });

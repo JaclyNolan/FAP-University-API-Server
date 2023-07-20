@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\API\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreFeedbackForStudentRequest;
 use App\Models\Feedback;
 use App\Models\Instructor;
 use App\Models\Student;
@@ -24,6 +25,30 @@ class FeedbackController extends Controller
     {
         $this->feedback = new Feedback;
     }
+
+    public function buildMultpleFeedback(Request $request, Builder $query)
+    {
+        $instructorId = $request->input('instructor_id');
+        $classId = $request->input('class_id');
+        $courseId = $request->input('course_id');
+
+        if ($instructorId) {
+            $query->whereHas('classEnrollment.classCourse', function ($q) use ($instructorId) {
+                $q->where('instructor_id', $instructorId);
+            });
+        }
+        if ($classId) {
+            $query->whereHas('classEnrollment.classCourse', function ($q) use ($classId) {
+                $q->where('class_id', $classId);
+            });
+        }
+        if ($courseId) {
+            $query->whereHas('classEnrollment.classCourse', function ($q) use ($courseId) {
+                $q->where('course_id', $courseId);
+            });
+        }
+    }
+
     public function index(Request $request)
     {
         try {
@@ -145,6 +170,53 @@ class FeedbackController extends Controller
         ], 200);
     }
 
+    public function indexForStudent(Request $request)
+    {
+        $classCourseId = $request->input('class_course_id');
+        $user = $request->user();
+        $query = Feedback::query();
+        //Belong to instructor
+        $query->whereHas('classEnrollment', function ($q) use ($user) {
+            $q->where('student_id', $user->student_id);
+        });
+        //Filter
+        $this->buildMultpleFeedback($request, $query);
+
+        $feedbacks = $query->with([
+            'classEnrollment:class_enrollment_id,class_course_id',
+            'classEnrollment.classCourse:class_course_id,class_id,course_id,instructor_id',
+            'classEnrollment.classCourse.class:class_id,class_name',
+            'classEnrollment.classCourse.course:course_id,course_name',
+            'classEnrollment.classCourse.instructor:instructor_id,full_name',
+        ])->orderByDesc('created_at')->get();
+
+        return response()->json([
+            'feedbacks' => $feedbacks,
+        ], 200);
+    }
+
+    public function storeForStudent(StoreFeedbackForStudentRequest $request)
+    {
+        $user = $request->user();
+        $data = $request->input('data');
+        $classCourseId = $data['class_course_id'];
+        $content = $data['content'];
+
+        $query = ClassEnrollment::query();
+        $query->whereHas('classCourse', function($q) use ($classCourseId) {
+            $q->where('class_course_id', $classCourseId);
+        });
+        $query->where('student_id', $user->student_id);
+        $classEnrollment = $query->first();
+
+        Feedback::create([
+            'class_enrollment_id' => $classEnrollment->class_enrollment_id,
+            'feedback_content' => $content,
+            'created_at' => now()->toDateString(),
+        ]);
+
+        return response()->json('', 204);
+    }
     public function edit($id)
     {
         try {
