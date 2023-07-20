@@ -79,6 +79,16 @@ class NewsController extends Controller
             ], 500);
         }
     }
+
+    public function indexForPublic(Request $request)
+    {
+        $query = NewsContent::query();
+        $query->where('status', true);
+        $news = $query->get();
+        return response()->json([
+            'news' => $news
+        ], 200);
+    }
     public function store(Request $request)
     {
         try {

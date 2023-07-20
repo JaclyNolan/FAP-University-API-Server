@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('content');
             $table->string('author');
-            $table->integer('status');
+            $table->boolean('status')->default(true);
             $table->dateTime('created_at');
             $table->dateTime('updated_at')->nullable();
             $table->dateTime('deleted_at')->nullable();

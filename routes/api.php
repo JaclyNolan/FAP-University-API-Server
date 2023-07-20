@@ -222,6 +222,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/check-token', [AuthController::class, 'checkToken']);
     Route::get('/enrollment/status', [EnrollmentController::class, 'showStatus']);
     Route::get('/classSchedule/slotTimes', [ClassScheduleController::class, 'showSlotTimes']);
+    Route::get('/news', [NewsController::class, 'indexForPublic']);
 });
 
 Route::post('/google-login', [AuthController::class, 'googleLogin']);
