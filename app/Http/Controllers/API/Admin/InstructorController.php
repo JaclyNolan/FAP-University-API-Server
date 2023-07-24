@@ -139,7 +139,7 @@ class InstructorController extends Controller
                 $this->instructor->getTable() . '.date_of_birth AS Dob',
                 (new User)->getTable() . '.email',
                 (new User)->getTable() . '.username',
-                $this->instructor->getTable() . '.phone_number AS phone',
+                $this->instructor->getTable() . '.phone_number',
                 $this->instructor->getTable() . '.address',
                 $this->instructor->getTable() . '.position',
                 (new Major)->getTable() . '.major_id',
