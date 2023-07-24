@@ -173,6 +173,7 @@ class StudentController extends Controller
                 $this->student->getTable() . '.address',
                 $this->student->getTable() . '.gpa',
                 $this->student->getTable() . '.status',
+                (new Major)->getTable() . '.major_id',
                 (new Major)->getTable() . '.major_name'
             )
                 ->leftJoin((new User)->getTable(),  $this->student->getTable() . '.student_id', '=', (new User)->getTable() . '.student_id')
