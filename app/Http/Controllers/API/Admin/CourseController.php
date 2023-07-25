@@ -164,7 +164,7 @@ class CourseController extends Controller
                 (new Major)->getTable() . '.major_id',
                 (new Major)->getTable() . '.major_name',
                 $this->course->getTable() . '.credits',
-                Course::raw('courses.credits * 300 as tuition_fee')
+                Course::raw($this->course->getTable() . '.credits * 300 as tuition_fee')
             )
                 ->join((new Major)->getTable(), $this->course->getTable() . '.major_id', '=', (new Major)->getTable() . '.major_id')
                 ->where($this->course->getTable() . '.course_id', $id)
