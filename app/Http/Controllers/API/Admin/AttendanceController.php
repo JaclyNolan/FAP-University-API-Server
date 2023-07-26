@@ -120,7 +120,7 @@ class AttendanceController extends Controller
                 (new ClassSchedule)->getTable() . '.day',
                 (new ClassSchedule)->getTable() . '.slot',
                 (new ClassSchedule)->getTable() . '.room',
-                $this->attendance->getTable() . '.instructor_comment',
+                $this->attendance->getTable() . '.attendance_comment',
                 $this->attendance->getTable() . '.attendance_status AS status'
             )
                 ->join((new ClassEnrollment)->getTable(), $this->attendance->getTable() . '.class_enrollment_id', '=', (new ClassEnrollment)->getTable() . '.class_enrollment_id')
