@@ -169,10 +169,11 @@ class StudentController extends Controller
                 $this->student->getTable() . '.date_of_birth AS Dob',
                 (new User)->getTable() . '.email',
                 (new User)->getTable() . '.username',
-                $this->student->getTable() . '.phone_number AS phone',
+                $this->student->getTable() . '.phone_number',
                 $this->student->getTable() . '.address',
                 $this->student->getTable() . '.gpa',
                 $this->student->getTable() . '.status',
+                (new Major)->getTable() . '.major_id',
                 (new Major)->getTable() . '.major_name'
             )
                 ->leftJoin((new User)->getTable(),  $this->student->getTable() . '.student_id', '=', (new User)->getTable() . '.student_id')
@@ -221,7 +222,7 @@ class StudentController extends Controller
             $student->major_id = $request->input('major_id');
             $student->academic_year = $request->input('academic_year');
             $student->image = $request->input('image');
-            $student->updated_at = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
+            $student->updated_at = date('Y-m-d H:i:s'); 
             $student->update();
 
             return response()->json([
@@ -236,7 +237,7 @@ class StudentController extends Controller
             ], 500);
         }
     }
-
+    
     public function delete($id)
     {
         try {

@@ -44,7 +44,7 @@ class ClassScheduleController extends Controller
                 ->join((new ClassCourse)->getTable(), $this->classSchedule->getTable() . '.class_course_id', '=', (new ClassCourse)->getTable() . '.class_course_id')
                 ->join((new ClassModel)->getTable(), (new ClassCourse)->getTable() . '.class_id', '=', (new ClassModel)->getTable() . '.class_id')
                 ->join((new Course)->getTable(), (new ClassCourse)->getTable() . '.course_id', '=', (new Course)->getTable() . '.course_id')
-                ->whereNull($this->classSchedule->getTable() . '.deleted_at')
+               // ->whereNull($this->classSchedule->getTable() . '.deleted_at')
                 ->orderBy($this->classSchedule->getTable() . '.class_schedule_id');
 
             if ($request->has('class')) {
@@ -396,7 +396,7 @@ class ClassScheduleController extends Controller
             )
                 ->join((new ClassCourse)->getTable(), $this->classSchedule->getTable() . '.class_course_id', '=', (new ClassCourse)->getTable() . '.class_course_id')
                 ->where($this->classSchedule->getTable() . '.class_schedule_id', $id)
-                ->whereNull($this->classSchedule->getTable() . '.deleted_at')
+                //->whereNull($this->classSchedule->getTable() . '.deleted_at')
                 ->first();
 
             if (!$classSchedule) {

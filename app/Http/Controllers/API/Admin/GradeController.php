@@ -57,7 +57,6 @@ class GradeController extends Controller
                         $q->where(function ($innerQuery) use ($keyword) {
                             $innerQuery->where((new Student)->getTable() . '.full_name', 'LIKE', "%$keyword%")
                             ->orWhere((new Student)->getTable() . '.student_id', 'LIKE', "$keyword")
-                            ->orWhere((new Student)->getTable() . '.student_name', 'LIKE', "%$keyword%")
                                 ->orWhere($this->grade->getTable() . '.grade_id', 'LIKE', "$keyword");
 
                         });
@@ -151,7 +150,7 @@ class GradeController extends Controller
                 ], 404);
             }
 
-            $grade->class_enrollment_id = $request->input('class_enrollment_id');
+           //$grade->class_enrollment_id = $request->input('class_enrollment_id');
             $grade->score = $request->input('score');
             $grade->status = $request->input('status');
 

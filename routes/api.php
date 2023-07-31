@@ -15,6 +15,7 @@ use App\Http\Controllers\API\Admin\GradeController;
 use App\Http\Controllers\API\Admin\FeedbackController;
 use App\Http\Controllers\API\Admin\AttendanceController;
 use App\Http\Controllers\API\Admin\EnrollmentController;
+use App\Http\Controllers\File\FileController;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -43,6 +44,12 @@ Route::middleware(['auth:sanctum', 'can:isAdmin'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
     // User with admin and staff role can access these routes
+    // image
+    Route::group(['prefix' => 'students'], function () {
+        Route::get('/', [StudentController::class, 'index']);// lay ra file name, chan kich thuoc
+        Route::post('/add-image', [StudentController::class, 'store']);
+        Route::get('/edit-image/{id}', [StudentController::class, 'edit']); 
+    });
     // students
     Route::group(['prefix' => 'students'], function () {
         Route::get('/', [StudentController::class, 'index']);
@@ -142,12 +149,18 @@ Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
         Route::put('/update-attendance/{id}', [AttendanceController::class, 'update']);
     });
 
-    // Enrollments
+    // Enrollments 
     Route::group(['prefix' => 'enrollments'], function () {
         Route::get('/', [EnrollmentController::class, 'index']);
         Route::get('/edit-enrollment/{id}', [EnrollmentController::class, 'edit']);
         Route::put('/update-enrollment/{id}', [EnrollmentController::class, 'update']);
     });
+});
+
+// file 
+Route::group(['prefix' => 'files'], function () {
+    Route::get('/get-file/{id}', [FileController::class, 'getFile']);
+    Route::post('/save-file', [FileController::class, 'store']);
 });
 
 Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
@@ -175,7 +188,6 @@ Route::middleware(['auth:sanctum', 'can:isInstructor'])->group(function () {
         Route::group(['prefix' => '/detail'], function () {
             Route::get('/', [InstructorController::class, 'showForInstructor']);
         });
-
     });
 });
 
