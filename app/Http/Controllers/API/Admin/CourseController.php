@@ -101,33 +101,36 @@ class CourseController extends Controller
         return $query;
     }
 
-    public function indexForStudent(Request $request)
+    // public function indexForStudent(Request $request)
+    // {
+    //     $enrollmentStatus = $request->input('enrollment_status');
+    //     $user = $request->user();
+    //     $query = Course::query();
+    //     // Get the table columns
+    //     $tableColumns = Schema::getColumnListing((new Course)->getTable());
+    //     // Exclude the timestamp columns
+    //     $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+    //     $query->select($columnsToSelect);
+    //     //Belong to the major that the student is in
+    //     $query->where('major_id', $user->student->major_id);
+    //     $query = $this->buildMultipleCourses($request, $query);
+    //     //Filter enrollmentStatus
+
+
+    //     return response()->json([
+    //         'courses' => $courses,
+    //     ], 200);
+    // }
+
+    public function listForStudent(Request $request)
     {
-        $enrollmentStatus = $request->input('enrollment_status');
         $user = $request->user();
         $query = Course::query();
-        // Get the table columns
-        $tableColumns = Schema::getColumnListing((new Course)->getTable());
-        // Exclude the timestamp columns
-        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
-        $query->select($columnsToSelect);
-        //Belong to the major that the student is in
-        $query->where('major_id', $user->student->major_id);
-        $query = $this->buildMultipleCourses($request, $query);
-        //Filter enrollmentStatus
-        if ($enrollmentStatus) {
-            $query->whereHas('enrollments', function ($q) use ($user, $enrollmentStatus) {
-                $q->where('student_id', $user->student_id)
-                    ->where('status', $enrollmentStatus);
-            });
-        }
-        $courses = $query->with([
-            'enrollments' => function ($q) use ($user) {
-                $q->select('enrollment_id', 'student_id', 'course_id', 'status', 'status_name')
-                    ->where('student_id', $user->student_id);
-            },
-        ])->get();
-
+        $query->select('course_id','course_name');
+        $query->whereHas('classCourses.classEnrollments', function ($q) use ($user) {
+            $q->where('student_id', $user->student_id);
+        });
+        $courses = $query->get();
         return response()->json([
             'courses' => $courses,
         ], 200);

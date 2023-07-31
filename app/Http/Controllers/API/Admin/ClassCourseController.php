@@ -209,6 +209,32 @@ class ClassCourseController extends Controller
         ], 200);
     }
 
+    public function indexForStudent(Request $request)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        $query->whereHas('classEnrollments', function ($q) use ($user){
+            $q->where('student_id', $user->student_id);
+        });
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassCourse)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+        $query->select($columnsToSelect);
+        //Apply filter and search
+        $query = $this->buildMultipleClassCourse($query, $request);
+        $classCourses = $query->with([
+            'class:class_id,major_id,class_name',
+            'course:course_id,course_name',
+            'instructor:instructor_id,full_name',
+        ])->get();
+
+        return response()->json([
+            'classCourses' => $classCourses,
+        ], 200);
+    }
+
     public function showForInstructor(Request $request, $id)
     {
         $user = $request->user();
@@ -222,11 +248,40 @@ class ClassCourseController extends Controller
         // Select the desired columns
         $query->select($columnsToSelect);
         $query->where('class_course_id', $id);
+        $query->where('instructor_id', $user->instructor_id);
         $query = $this->buildSingleClassCourse($query, $id);
 
         $classCourse = $query->with([
             'class:class_id,class_name',
             'course:course_id,course_name',
+        ])->first();
+        return response()->json([
+            'classCourse' => $classCourse,
+        ], 200);
+    }
+
+    public function showForStudent(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassCourse)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+        // Select the desired columns
+        $query->select($columnsToSelect);
+        $query->where('class_course_id', $id);
+        $query->whereHas('classEnrollments', function ($q) use ($user){
+            $q->where('student_id', $user->student_id);
+        });
+        $query = $this->buildSingleClassCourse($query, $id);
+
+        $classCourse = $query->with([
+            'class:class_id,class_name',
+            'course:course_id,course_name',
+            'instructor:instructor_id,full_name',
         ])->first();
         return response()->json([
             'classCourse' => $classCourse,
@@ -258,6 +313,32 @@ class ClassCourseController extends Controller
         ], 200);
     }
 
+    public function showStudentsForStudent(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassCourse)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+        // Select the desired columns
+        $query->select($columnsToSelect);
+        $query = $this->buildSingleClassCourse($query, $id);
+        $query->whereHas('classEnrollments', function ($q) use ($user){
+            $q->where('student_id', $user->student_id);
+        });
+        $classCourse = $query->with(
+            'classEnrollments:class_course_id,class_enrollment_id,student_id',
+            'classEnrollments.student:student_id,image,full_name,gender,date_of_birth',
+        )->first();
+
+        return response()->json([
+            'classCourse' => $classCourse,
+        ], 200);
+    }
+
     public function showClassSchedulesForInstructor(Request $request, $id)
     {
         $user = $request->user();
@@ -276,6 +357,40 @@ class ClassCourseController extends Controller
             'classSchedules' => function ($query) {
                 $query->select('class_schedule_id', 'class_course_id', 'day', 'slot', 'room', 'status', 'submit_time')
                     ->orderBy('day', 'desc');
+            }
+        ])->first();
+
+        return response()->json([
+            'classCourse' => $classCourse,
+        ], 200);
+    }
+
+    public function showClassSchedulesForStudent(Request $request, $id)
+    {
+        $user = $request->user();
+        $query = ClassCourse::query();
+        // Get the table columns
+        $tableColumns = Schema::getColumnListing((new ClassCourse)->getTable());
+
+        // Exclude the timestamp columns
+        $columnsToSelect = array_diff($tableColumns, ['created_at', 'updated_at', 'deleted_at']);
+
+        // Select the desired columns
+        $query->select($columnsToSelect);
+        $query = $this->buildSingleClassCourse($query, $id);
+        $query->whereHas('classEnrollments', function ($q) use ($user){
+            $q->where('student_id', $user->student_id);
+        });
+        $classCourse = $query->with([
+            'classSchedules' => function ($query) {
+                $query->select('class_schedule_id', 'class_course_id', 'day', 'slot', 'room', 'status', 'submit_time')
+                    ->orderBy('day', 'desc');
+            },
+            'classSchedules.attendances' => function ($query) use ($user) {
+                $query->select('attendance_id','class_schedule_id','class_enrollment_id','attendance_status','attendance_time')
+                ->whereHas('classEnrollment', function ($q) use ($user) {
+                    $q->where('student_id', $user->student_id);
+                });
             }
         ])->first();
 

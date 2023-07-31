@@ -109,6 +109,13 @@ class ClassScheduleController extends Controller
         }
     }
 
+    public function showSlotTimes(Request $request)
+    {
+        return response()->json([
+            'slotTimes' => ClassSchedule::getSlotTimes(),
+        ], 200);
+    }
+
     private function buildMultipleClassSchedule(Request $request, Builder $query)
     {
         $class_id = $request->input('class_id');
@@ -247,7 +254,6 @@ class ClassScheduleController extends Controller
             $q->where('instructor_id', $user->instructor_id);
         });
         $query->where('class_schedule_id', $id);
-        $query->select('class_schedule_id', 'submit_time');
         $classSchedule = $query->with([
             'attendances:attendance_id,class_schedule_id,class_enrollment_id,attendance_status,attendance_time,attendance_comment',
             'attendances.classEnrollment:class_enrollment_id,student_id',
@@ -309,6 +315,7 @@ class ClassScheduleController extends Controller
             $q->where('instructor_id', $user->instructor_id);
         });
         $query->where('class_schedule_id', $id);
+        $query->where('status', 2);
         $query->select('class_schedule_id');
         /** @var ClassSchedule $classSchedule */
         $classSchedule = $query->with([

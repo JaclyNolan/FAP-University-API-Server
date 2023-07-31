@@ -28,16 +28,16 @@ class Instructor extends Model
 
     public function major()
     {
-        return $this->belongsTo(Major::class);
+        return $this->belongsTo(Major::class, 'major_id', 'major_id');
     }
 
     public function user()
     {
-        return $this->hasOne(User::class);
+        return $this->hasOne(User::class, 'user_id');
     }
 
     public function classCourses()
     {
-        return $this->hasMany(ClassCourse::class);
+        return $this->hasMany(ClassCourse::class, 'instructor_id');
     }
 }

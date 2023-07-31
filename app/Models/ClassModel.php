@@ -25,6 +25,6 @@ class ClassModel extends Model
 
     public function classCourses()
     {
-        return $this->hasMany(ClassCourse::class);
+        return $this->hasMany(ClassCourse::class, 'class_id');
     }
 }

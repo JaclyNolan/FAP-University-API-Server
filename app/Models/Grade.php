@@ -32,6 +32,7 @@ class Grade extends Model
             $grade->status = $grade->findStatus($grade->score);
         });
         static::updating(function($grade) {
+            if ($grade->isDirty('score'))
             $grade->status = $grade->findStatus($grade->score);
         });
     }
