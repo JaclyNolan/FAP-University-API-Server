@@ -222,7 +222,7 @@ class StudentController extends Controller
             $student->major_id = $request->input('major_id');
             $student->academic_year = $request->input('academic_year');
             $student->image = $request->input('image');
-            $student->updated_at = date('Y-m-d H:i:s'); // Lấy thời gian hiện tại
+            $student->updated_at = date('Y-m-d H:i:s'); 
             $student->update();
 
             return response()->json([
@@ -237,7 +237,7 @@ class StudentController extends Controller
             ], 500);
         }
     }
-
+    
     public function delete($id)
     {
         try {

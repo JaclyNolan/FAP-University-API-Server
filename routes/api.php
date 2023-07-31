@@ -44,6 +44,12 @@ Route::middleware(['auth:sanctum', 'can:isAdmin'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'can:isAdminOrStaff'])->group(function () {
     // User with admin and staff role can access these routes
+    // image
+    Route::group(['prefix' => 'students'], function () {
+        Route::get('/', [StudentController::class, 'index']);// lay ra file name, chan kich thuoc
+        Route::post('/add-image', [StudentController::class, 'store']);
+        Route::get('/edit-image/{id}', [StudentController::class, 'edit']); 
+    });
     // students
     Route::group(['prefix' => 'students'], function () {
         Route::get('/', [StudentController::class, 'index']);
